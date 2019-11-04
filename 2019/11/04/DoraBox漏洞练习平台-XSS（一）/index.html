@@ -6,22 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/GgBoom-993/blog">
-  <title>Web渗透相关小结 | GgBoom993&#39;s Blog</title>
+  <title>DoraBox漏洞练习平台_XSS（一） | GgBoom993&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
-<meta name="keywords" content="Web,Web渗透,XSS,SQL注入">
+  <meta name="description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是一次性的XSS。在满足条件时，只能触发一次，下一次就无法再">
+<meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Web渗透相关小结">
-<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/10/03/aboutWebSecurity/index.html">
+<meta property="og:title" content="DoraBox漏洞练习平台_XSS（一）">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
+<meta property="og:description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是一次性的XSS。在满足条件时，只能触发一次，下一次就无法再">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://github.com/2019/10/03/aboutWebSecurity/Web安全.jpg">
-<meta property="og:updated_time" content="2019-11-01T17:56:00.895Z">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG">
+<meta property="og:updated_time" content="2019-11-04T07:30:37.278Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Web渗透相关小结">
-<meta name="twitter:description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
-<meta name="twitter:image" content="https://github.com/2019/10/03/aboutWebSecurity/Web安全.jpg">
+<meta name="twitter:title" content="DoraBox漏洞练习平台_XSS（一）">
+<meta name="twitter:description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是一次性的XSS。在满足条件时，只能触发一次，下一次就无法再">
+<meta name="twitter:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
   
   
     <link rel="icon" href="/favicon.png">
@@ -151,31 +154,56 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-aboutWebSecurity" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DoraBox漏洞练习平台-XSS（一）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Web渗透相关小结
+      DoraBox漏洞练习平台_XSS（一）
     </h1>
   
 
         
-        <a href="/2019/10/03/aboutWebSecurity/" class="archive-article-date">
-  	<time datetime="2019-10-03T06:52:00.472Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-03</time>
+        <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" class="archive-article-date">
+  	<time datetime="2019-11-04T06:22:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-04</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>此次Web安全的小结，完成于2018年8月，以导图形式留存。</p>
-<p>导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。</p>
+        <h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
+<p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
+<p>我所理解的反射型XSS是XSS的一种， 是一次性的XSS。在满足条件时，只能触发一次，下一次就无法再触发，除非重新部署。</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
+<p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
 <a id="more"></a>
 
-<img src="/2019/10/03/aboutWebSecurity/Web安全.jpg" title="avatar">
+<h4 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h4><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
+
+<p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
+<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>构造payload提交 ，此payload的效果是弹窗</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG" title="timg">
+
+<p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG" title="timg">
+
+<p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
+<p>小插曲：我被自己XSS了！</p>
+<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG" title="timg">
+
+
+
+
+
+
+
+
 
 
       
@@ -194,15 +222,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">靶场练习</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web渗透</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SQL注入</a>
         		</li>
       		
 		</ul>
@@ -258,7 +286,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/GgBoom-993/blog/2019/10/03/aboutWebSecurity/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -272,18 +300,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/10/03/动态二维码/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MyQR实现动态二维码
+          DoraBox漏洞练习平台_XSS（二）
         
       </div>
     </a>
   
   
-    <a href="/2019/10/01/CVE-2019-0708/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CVE-2019-0708漏洞复现</div>
+    <a href="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">DoraBox漏洞练习平台_SQL注入（三）</div>
       <i class="icon-circle-right"></i>
     </a>
   

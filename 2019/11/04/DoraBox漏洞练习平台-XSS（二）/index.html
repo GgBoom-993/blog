@@ -6,22 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/GgBoom-993/blog">
-  <title>Web渗透相关小结 | GgBoom993&#39;s Blog</title>
+  <title>DoraBox漏洞练习平台_XSS（二） | GgBoom993&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
-<meta name="keywords" content="Web,Web渗透,XSS,SQL注入">
+  <meta name="description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
+<meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Web渗透相关小结">
-<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/10/03/aboutWebSecurity/index.html">
+<meta property="og:title" content="DoraBox漏洞练习平台_XSS（二）">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（二）/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
+<meta property="og:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://github.com/2019/10/03/aboutWebSecurity/Web安全.jpg">
-<meta property="og:updated_time" content="2019-11-01T17:56:00.895Z">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg2.PNG">
+<meta property="og:updated_time" content="2019-11-04T07:30:28.602Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Web渗透相关小结">
-<meta name="twitter:description" content="此次Web安全的小结，完成于2018年8月，以导图形式留存。 导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。">
-<meta name="twitter:image" content="https://github.com/2019/10/03/aboutWebSecurity/Web安全.jpg">
+<meta name="twitter:title" content="DoraBox漏洞练习平台_XSS（二）">
+<meta name="twitter:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
+<meta name="twitter:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
   
   
     <link rel="icon" href="/favicon.png">
@@ -151,32 +153,43 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-aboutWebSecurity" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DoraBox漏洞练习平台-XSS（二）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Web渗透相关小结
+      DoraBox漏洞练习平台_XSS（二）
     </h1>
   
 
         
-        <a href="/2019/10/03/aboutWebSecurity/" class="archive-article-date">
-  	<time datetime="2019-10-03T06:52:00.472Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-10-03</time>
+        <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" class="archive-article-date">
+  	<time datetime="2019-11-04T07:10:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-04</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>此次Web安全的小结，完成于2018年8月，以导图形式留存。</p>
-<p>导图内容主要包含Web渗透常用方法如SQL注入、XSS、CSRF、SSRF、爆破、越权、目录遍历、PHP反序列化、XXE、文件上传下载、REC远程执行的简单描述和简单总结。</p>
+        <h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
+<p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
 <a id="more"></a>
 
-<img src="/2019/10/03/aboutWebSecurity/Web安全.jpg" title="avatar">
+<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG" title="timg">
 
+<p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
+<p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG" title="timg">
+
+<p>我们观察一下前端源码可以发现，每次执行的payload都保留在了网页中</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg2.PNG" title="timg">
+
+<p>不难发现这就是存储型XSS的特点，将恶意代码长时间留存，每次打开网页都会造成一次攻击，威力远超一次性的反射型XSS</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本次漏洞实践，充分表现了反射型XSS和存储型XSS的区别，更加深刻的了解了XSS</p>
 
       
 
@@ -194,15 +207,15 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">靶场练习</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web渗透</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SQL注入</a>
         		</li>
       		
 		</ul>
@@ -258,7 +271,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/GgBoom-993/blog/2019/10/03/aboutWebSecurity/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -272,18 +285,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/10/03/动态二维码/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（三）/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MyQR实现动态二维码
+          DoraBox漏洞练习平台_XSS（三）
         
       </div>
     </a>
   
   
-    <a href="/2019/10/01/CVE-2019-0708/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CVE-2019-0708漏洞复现</div>
+    <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">DoraBox漏洞练习平台_XSS（一）</div>
       <i class="icon-circle-right"></i>
     </a>
   
