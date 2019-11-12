@@ -6,22 +6,15 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://github.com/GgBoom-993/blog">
-  <title>DoraBox漏洞练习平台_XSS（三） | GgBoom993&#39;s Blog</title>
+  <title>Tag: 小工具 | GgBoom993&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="DoraBox_XSS DOM型什么是DOM型XSS个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于DOM文档对象的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。">
-<meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
-<meta property="og:type" content="article">
-<meta property="og:title" content="DoraBox漏洞练习平台_XSS（三）">
-<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（三）/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="GgBoom993&#39;s Blog">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/tags/小工具/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="DoraBox_XSS DOM型什么是DOM型XSS个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于DOM文档对象的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（三）/timg1.PNG">
-<meta property="og:updated_time" content="2019-11-04T08:11:30.092Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="DoraBox漏洞练习平台_XSS（三）">
-<meta name="twitter:description" content="DoraBox_XSS DOM型什么是DOM型XSS个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于DOM文档对象的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。">
-<meta name="twitter:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（三）/timg1.PNG">
+<meta name="twitter:title" content="GgBoom993&#39;s Blog">
   
   
     <link rel="icon" href="/favicon.png">
@@ -151,183 +144,64 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-DoraBox漏洞练习平台-XSS（三）" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      DoraBox漏洞练习平台_XSS（三）
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2019/11/11/Python实现Zip密码暴破/" class="archive-article-date">
+  	<time datetime="2019-11-11T15:43:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-11</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/11/11/Python实现Zip密码暴破/">Python实现Zip密码暴破</a>
     </h1>
   
 
-        
-        <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（三）/" class="archive-article-date">
-  	<time datetime="2019-11-04T07:31:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="DoraBox-XSS-DOM型"><a href="#DoraBox-XSS-DOM型" class="headerlink" title="DoraBox_XSS DOM型"></a>DoraBox_XSS DOM型</h1><h4 id="什么是DOM型XSS"><a href="#什么是DOM型XSS" class="headerlink" title="什么是DOM型XSS"></a>什么是DOM型XSS</h4><p>个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于<a href="https://baike.baidu.com/item/%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/1033822?fr=aladdin&fromtitle=DOM&fromid=50288" target="_blank" rel="noopener">DOM文档对象</a>的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。</p>
-<a id="more"></a>
-
-<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>同样的，先构造payload尝试</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（三）/timg1.PNG" title="timg">
-
-<p>成功，URL中也出现了payload，返回结果和反射型XSS是一样的，那么两者的区别体现在哪？</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>首先观察一下反射型XSS的前端源码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">		&lt;title&gt;DoraBox - 反射XSS&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">	&lt;body&gt;</span><br><span class="line">    	&lt;form action=<span class="string">""</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">    		name: </span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"form1"</span>&gt;</span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> name=<span class="string">"submit"</span> value=<span class="string">"submit"</span>&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">&lt;hr&gt; </span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-
-<p>get方式的提交</p>
-<p>在看一下DOM型XSS的源码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">		&lt;title&gt;DoraBox - DOM_XSS&lt;/title&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body&gt;</span><br><span class="line">		&lt;form action=<span class="string">""</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">			name: </span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"form1"</span>&gt;</span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> name=<span class="string">"submit"</span> value=<span class="string">"submit"</span>&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">		&lt;hr&gt;</span><br><span class="line">		&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">		<span class="keyword">function</span> getURLValue(name)&#123;</span><br><span class="line"> 			var reg = new RegExp(<span class="string">'(^|&amp;)'</span>+ name +<span class="string">'=([^&amp;]*)(&amp;|$)'</span>);</span><br><span class="line">			var r = window.location.search.substr(1).match(reg); </span><br><span class="line">			<span class="keyword">if</span>(r != null)&#123;</span><br><span class="line"> 				<span class="built_in">return</span> unescape(r[2]);</span><br><span class="line"> 			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		 		<span class="built_in">return</span> <span class="string">""</span>;</span><br><span class="line"> 				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		document.write(getURLValue(<span class="string">'name'</span>));</span><br><span class="line"></span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">//windows的location对象，查询参数，在当前页面的URL中得到？的部分 substr（）的作用是去除？，所以此处得到了name参数</span><br><span class="line"></span><br><span class="line">//unescape 方法返回一个包含 charstring 内容的字符串值。所有以 %xx 十六进制形式编码的字符都用 ASCII 字符集中等价的字符代替。</span><br><span class="line"></span><br><span class="line">//document.write()是向文本档输入指定内容，在这里document.write()输入的是name</span><br></pre></td></tr></table></figure>
-
-<p>从DOM型XSS的前端源码中可以观察出，主要实现是通过window.location.search获取name参数，再通过document.write()在页面上返回获取到的name</p>
-<p>印证了前文所述（从客户端获得DOM中的数据并在本地执行）</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Web</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">靶场练习</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Web渗透</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">小工具</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（三）/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2019/11/11/Python实现Zip密码暴破/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Python实现Zip密码暴破
-        
-      </div>
-    </a>
   
   
-    <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">DoraBox漏洞练习平台_XSS（二）</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -350,9 +224,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
