@@ -25,6 +25,9 @@
 <p>没有思考，</p>
 <p>独自飘着。</p>
 ]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
       <tags>
         <tag>随笔</tag>
       </tags>
@@ -89,6 +92,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <h1 id="0x03-源码"><a href="#0x03-源码" class="headerlink" title="0x03 源码"></a>0x03 源码</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">import zipfile </span><br><span class="line">import optparse </span><br><span class="line">import threading  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def Crackzip(zFile,password):</span><br><span class="line">    try:</span><br><span class="line">        zFile.extractall(<span class="built_in">pwd</span>=password) </span><br><span class="line">        <span class="built_in">print</span> <span class="string">' [+] Found Password : '</span>+ password + <span class="string">'\n'</span>  </span><br><span class="line">    except:</span><br><span class="line">       pass </span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    parser = optparse.OptionParser(<span class="string">"you can use this code to Crack Zipfile"</span>+ <span class="string">'\n'</span>+<span class="string">"-f &lt;zipfile&gt;  -d &lt;dictionary&gt;"</span>)</span><br><span class="line">    parser.add_option(<span class="string">'-f'</span>,dest=<span class="string">'zname'</span>,<span class="built_in">type</span>=<span class="string">'string'</span>,<span class="built_in">help</span>=<span class="string">'specify zip file'</span>)</span><br><span class="line">    parser.add_option(<span class="string">'-d'</span>,dest=<span class="string">'dname'</span>,<span class="built_in">type</span>=<span class="string">'string'</span>,<span class="built_in">help</span>=<span class="string">'specify dictionary file'</span>)</span><br><span class="line"></span><br><span class="line">    (options,args) = parser.parse_args()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(options.zname == None ) | (options.dname == None):</span><br><span class="line">        <span class="built_in">print</span> parser.usage</span><br><span class="line">        <span class="built_in">exit</span>(0)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        zname = options.zname</span><br><span class="line">        dname = options.dname</span><br><span class="line"></span><br><span class="line">    zFile = zipfile.ZipFile(zname)</span><br><span class="line">    passFile = open(dname)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> passFile.readlines():</span><br><span class="line">        password = line.strip(<span class="string">'\n'</span>)</span><br><span class="line">        t = threading.Thread(target = Crackzip,args=(zFile,password))</span><br><span class="line">        t.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>编程</category>
+      </categories>
       <tags>
         <tag>python</tag>
         <tag>小工具</tag>
@@ -115,6 +121,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>印证了前文所述（从客户端获得DOM中的数据并在本地执行）</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -143,6 +152,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>不难发现这就是存储型XSS的特点，将恶意代码长时间留存，每次打开网页都会造成一次攻击，威力远超一次性的反射型XSS</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本次漏洞实践，充分表现了反射型XSS和存储型XSS的区别，更加深刻的了解了XSS</p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -185,6 +197,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -221,6 +236,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>SQLi搜索型需要闭合 % 和 ‘</p>
 <p>可见，在进行SQL注入时，要通过错误返回发现SQL执行语句或者大胆猜测SQL执行语句，才能构造完美闭合，达到最终目的。</p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -255,6 +273,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>同数字型方式大致相同，注意单引号闭合即可</p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -304,6 +325,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>本次练习为DoraBox漏洞练习平台中非常基础的SQli数字型注入</p>
 <p>DoraBox项目地址：<a href="https://github.com/gh0stkey/DoraBox">https://github.com/gh0stkey/DoraBox</a></p>
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>靶场练习</tag>
@@ -373,6 +397,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p><a href="https://www.jianshu.com/p/f064ca36ee92" target="_blank" rel="noopener">https://www.jianshu.com/p/f064ca36ee92</a></p>
 <p><a href="https://blog.csdn.net/mjx19951117/article/details/95808633" target="_blank" rel="noopener">https://blog.csdn.net/mjx19951117/article/details/95808633</a></p>
 ]]></content>
+      <categories>
+        <category>硬件</category>
+      </categories>
       <tags>
         <tag>小玩意儿</tag>
         <tag>物理hack</tag>
@@ -427,6 +454,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p><a href="https://www.cnblogs.com/lee-li/p/9080160.html" target="_blank" rel="noopener">https://www.cnblogs.com/lee-li/p/9080160.html</a></p>
 <p><a href="https://cloud.tencent.com/developer/article/1480567" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1480567</a></p>
 ]]></content>
+      <categories>
+        <category>硬件</category>
+      </categories>
       <tags>
         <tag>小玩意儿</tag>
         <tag>物理hack</tag>
@@ -496,13 +526,16 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>最后一点就是要注意细节，往往细节决定成败。就是因为小弗兰克·阿巴戈内尔注意墨水，纸张厚度，折痕这些小细节，才让他手中的支票连银行都无法辨认。</p>
 <p>以上这些都是从一部电影中吸取来的，而我们生活中也处处充满着社工的痕迹，只要我们细心发现，就能从方方面面学到更多，从而提升自己。</p>
 ]]></content>
+      <categories>
+        <category>理论</category>
+      </categories>
       <tags>
         <tag>社工</tag>
         <tag>小玩意儿</tag>
       </tags>
   </entry>
   <entry>
-    <title>信息搜集途径汇总</title>
+    <title>知己知彼-信息搜集</title>
     <url>/2019/10/06/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/</url>
     <content><![CDATA[<p>这是一次有关信息搜集的小结。</p>
 <p>导图主要包含搜集信息的常用途径汇总，如Google Hacking常用语法，Shodan基本使用语法，Recon-ng，Nslookup，cupp，Exif，Archive</p>
@@ -510,8 +543,12 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 <img src="/2019/10/06/信息搜集/信息搜集.jpg" title="avatar">
 ]]></content>
+      <categories>
+        <category>理论</category>
+      </categories>
       <tags>
         <tag>Web</tag>
+        <tag>社工</tag>
         <tag>信息搜集</tag>
       </tags>
   </entry>
@@ -556,6 +593,9 @@ myqr.run(
 <p>colorized指定二维码是否为彩色</p>
 <p>save_name指定生成图片的名称</p>
 ]]></content>
+      <categories>
+        <category>编程</category>
+      </categories>
       <tags>
         <tag>python</tag>
         <tag>小玩意儿</tag>
@@ -571,6 +611,9 @@ myqr.run(
 <img src="/2019/10/03/aboutWebSecurity/Web安全.jpg" title="avatar">
 
 ]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
       <tags>
         <tag>Web</tag>
         <tag>Web渗透</tag>
@@ -632,6 +675,9 @@ exploit</code></pre><p>4、执行成功</p>
 <h2 id="0x03-最后附上补丁地址"><a href="#0x03-最后附上补丁地址" class="headerlink" title="0x03 最后附上补丁地址"></a>0x03 最后附上补丁地址</h2><p>官方补丁下载</p>
 <p>Windows 7 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows 7 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows Server 2008 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu</a><br>Windows Server   2008 Itanium<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu</a><br>Windows Server 2008 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu</a><br>Windows Server 2008 R2 Itanium<br>    <a href="http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu</a><br>Windows Server 2008 R2 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Server   2003 x86<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe</a><br>Windows Server 2003 x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe</a><br>Windows XP SP3<br>    <a href="http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe</a><br>Windows XP SP2 for x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe</a><br>Windows XP SP3 for XPe<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe</a><br>WES09 and   POSReady 2009<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe</a></p>
 ]]></content>
+      <categories>
+        <category>CVE</category>
+      </categories>
       <tags>
         <tag>漏洞</tag>
       </tags>
@@ -654,6 +700,9 @@ exploit</code></pre><p>4、执行成功</p>
 <p>我的Github：<a href="https://github.com/GgBoom-993">GgBoom-993</a></p>
 <p>此外，您还可以在导航栏发现我的所有文章以及我的其他社交联系方式，GgBoom敬上。</p>
 ]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
       <tags>
         <tag>随笔</tag>
       </tags>
