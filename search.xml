@@ -5,7 +5,7 @@
     <url>/2019/11/18/hexo%E4%B8%BB%E9%A2%98%E4%B8%AA%E4%BA%BA%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。</p>
 <p>最开始配置hexo的时候，next主题是使用人数最多的，不过当时没选它，我用的是yilia主题，看上了它的简单，之后做美化还是改成了next，这时候觉得它布局好，可塑性强。</p>
-<p>百度上一搜一大把的next主题优化，无非就是主题配置的 true or false的选择开关，或者一些便捷性改变，比如添加友链，添加分类等等，这些也是能在<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">next官方文档</a>直接查看的，做完这些之后，我发现并不能让我的博客与众不同。也看了更多的next主题美化，内容多是大同小异，即便有令人惊艳之处，作者也不会在文章中说明详细。</p>
+<p>百度上一搜一大把的next主题优化，无非就是主题配置的 true or false的选择开关，或者一些便捷性改变，比如添加友链，添加分类等等，这些也能在<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">next官方文档</a>直接查看，做完这些之后，我发现并不能让我的博客与众不同。也看了更多的next主题美化，内容多是大同小异，即便有令人惊艳之处，作者也不会在文章中说明详细。</p>
 <a id="more"></a>
 
 <p>经过十几个小时的摸索中，可以说弄明白了next主题的大部分css样式，并且经过自己修改，结果还算满意，这是截止至2019年11月18日的博客样子</p>
@@ -703,8 +703,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
