@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","width":280,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":8},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。 最开始配置hexo的时候，next主题是使用人数最多的，不过当时没选它，我用的是yilia主题，看上了它的简单，之后做美化还是改成了next，这时候觉得它布局好，可塑性强。">
+<meta name="keywords" content="Web,博客相关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo主题个人优化">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/18/hexo主题个人优化/index.html">
+<meta property="og:site_name" content="GgBoom993&#39;s Blog">
+<meta property="og:description" content="前言不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。 最开始配置hexo的时候，next主题是使用人数最多的，不过当时没选它，我用的是yilia主题，看上了它的简单，之后做美化还是改成了next，这时候觉得它布局好，可塑性强。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/主页.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg2.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg3.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg4.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg5.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg6.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg7.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg8.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg9.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg10.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg11.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg12.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg13.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg14.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg15.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg16.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg18.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg17.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg21.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg19.PNG">
+<meta property="og:image" content="https://github.com/2019/11/18/hexo主题个人优化/timg20.PNG">
+<meta property="og:updated_time" content="2019-11-18T11:15:11.077Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo主题个人优化">
+<meta name="twitter:description" content="前言不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。 最开始配置hexo的时候，next主题是使用人数最多的，不过当时没选它，我用的是yilia主题，看上了它的简单，之后做美化还是改成了next，这时候觉得它布局好，可塑性强。">
+<meta name="twitter:image" content="https://github.com/2019/11/18/hexo主题个人优化/主页.PNG">
+
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/2019/11/18/hexo主题个人优化/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>hexo主题个人优化 | GgBoom993's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GgBoom993's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2019/11/18/hexo主题个人优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo主题个人优化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-11-18 13:56:56 / 修改时间：19:15:11" itemprop="dateCreated datePublished" datetime="2019-11-18T13:56:56+08:00">2019-11-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。</p>
+<p>最开始配置hexo的时候，next主题是使用人数最多的，不过当时没选它，我用的是yilia主题，看上了它的简单，之后做美化还是改成了next，这时候觉得它布局好，可塑性强。</p>
+<p>百度上一搜一大把的next主题优化，无非就是主题配置的 true or false的选择开关，或者一些便捷性改变，比如添加友链，添加分类等等，这些也是能在<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">next官方文档</a>直接查看的，做完这些之后，我发现并不能让我的博客与众不同。也看了更多的next主题美化，内容多是大同小异，即便有令人惊艳之处，作者也不会在文章中说明详细。</p>
+<a id="more"></a>
+
+<p>经过十几个小时的摸索中，可以说弄明白了next主题的大部分css样式，并且经过自己修改，结果还算满意，这是截止至2019年11月18日的博客样子</p>
+<img src="/2019/11/18/hexo主题个人优化/主页.PNG" title="主页">
+
+<p>下面我将会详细说明我修改的next主题css和基本配置，以供自我回顾，和方便有兴趣的读者参考。</p>
+<h1 id="主题文件配置"><a href="#主题文件配置" class="headerlink" title="主题文件配置"></a>主题文件配置</h1><p>此项所有都在 /blog/thems/next/_config.yml 中修改，可直接搜索关键字定位。</p>
+<h2 id="主题样式"><a href="#主题样式" class="headerlink" title="主题样式"></a>主题样式</h2><p>选择为next主题下的 Mist</p>
+<img src="/2019/11/18/hexo主题个人优化/timg1.PNG">
+
+<h2 id="菜单栏"><a href="#菜单栏" class="headerlink" title="菜单栏"></a>菜单栏</h2><p>菜单栏增加 主页、关于、标签、分类、归档</p>
+<img src="/2019/11/18/hexo主题个人优化/timg2.PNG">
+
+<h2 id="侧边栏"><a href="#侧边栏" class="headerlink" title="侧边栏"></a>侧边栏</h2><p>调整侧边栏出现方向，宽度</p>
+<img src="/2019/11/18/hexo主题个人优化/timg3.PNG">
+
+
+<h2 id="头像"><a href="#头像" class="headerlink" title="头像"></a>头像</h2><p>需将头像图片放入/image/中，自由命名。</p>
+<p>设立圆形头像</p>
+<p>设立头像旋转</p>
+<img src="/2019/11/18/hexo主题个人优化/timg4.PNG">
+
+
+<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><p>联系方式显示在侧边栏中，这里只选择了github和weibo，修改时需替换url为自己的地址。</p>
+<img src="/2019/11/18/hexo主题个人优化/timg5.PNG">
+
+<h2 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h2><p>友情链接可以自己自定义内容，如推荐阅读等</p>
+<img src="/2019/11/18/hexo主题个人优化/timg6.PNG">
+
+<h2 id="显示阅读字数，时间"><a href="#显示阅读字数，时间" class="headerlink" title="显示阅读字数，时间"></a>显示阅读字数，时间</h2><p>在主题文件中做如下修改：</p>
+<img src="/2019/11/18/hexo主题个人优化/timg7.PNG">
+
+<p>在站点配置文件（/blog/_config.yml）中添加：</p>
+<img src="/2019/11/18/hexo主题个人优化/timg8.PNG">
+
+<h2 id="代码块颜色"><a href="#代码块颜色" class="headerlink" title="代码块颜色"></a>代码块颜色</h2><p>可在注释中Available values中进行选择</p>
+<img src="/2019/11/18/hexo主题个人优化/timg9.PNG">
+
+<h2 id="显示阅读百分比和回到顶端"><a href="#显示阅读百分比和回到顶端" class="headerlink" title="显示阅读百分比和回到顶端"></a>显示阅读百分比和回到顶端</h2><img src="/2019/11/18/hexo主题个人优化/timg10.PNG">
+
+<h2 id="设置动态背景（next自带）"><a href="#设置动态背景（next自带）" class="headerlink" title="设置动态背景（next自带）"></a>设置动态背景（next自带）</h2><p>我选择的是canvas_nest，下面参数设定了线条颜色，数量，粗细</p>
+<img src="/2019/11/18/hexo主题个人优化/timg11.PNG">
+
+<h1 id="CSS样式修改"><a href="#CSS样式修改" class="headerlink" title="CSS样式修改"></a>CSS样式修改</h1><p>CSS样式文件位于/blog/themes/next/source/css/_schemes/Mist<br>因为我是用的是Mist所以我修改的CSS都是Mist的CSS，其余主题分支仅供参考</p>
+<h2 id="顶部区域"><a href="#顶部区域" class="headerlink" title="顶部区域"></a>顶部区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_header.styl</p>
+<p>1、修改顶部区域背景。RBG色透明度0.4</p>
+<img src="/2019/11/18/hexo主题个人优化/timg12.PNG">
+
+<h2 id="菜单栏-1"><a href="#菜单栏-1" class="headerlink" title="菜单栏"></a>菜单栏</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_menu.styl</p>
+<p>1、修改菜单栏选项的样式，圆角、模块长度</p>
+<img src="/2019/11/18/hexo主题个人优化/timg13.PNG">
+
+
+<h2 id="分页栏"><a href="#分页栏" class="headerlink" title="分页栏"></a>分页栏</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
+<p>1、修改分页栏长度，居中，背景透明，字体颜色</p>
+<img src="/2019/11/18/hexo主题个人优化/timg14.PNG">
+
+<h2 id="底部区域"><a href="#底部区域" class="headerlink" title="底部区域"></a>底部区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
+<p>1、修改底部区域背景透明，间距，字体颜色</p>
+<img src="/2019/11/18/hexo主题个人优化/timg15.PNG">
+
+<h2 id="主页面文章区域"><a href="#主页面文章区域" class="headerlink" title="主页面文章区域"></a>主页面文章区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_posts-expand.styl</p>
+<p>1、修改主页每篇文章小框架间距，以及标题居中</p>
+<img src="/2019/11/18/hexo主题个人优化/timg16.PNG">
+
+<p>2、修改“阅读全文”，背景、位置等</p>
+<img src="/2019/11/18/hexo主题个人优化/timg18.PNG">
+
+
+<p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
+<p>3、修改主页文章区域背后的白色区域，这里修改为透明</p>
+<img src="/2019/11/18/hexo主题个人优化/timg17.PNG">
+
+<p>4、主页面单独文章框体宽度</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
+<img src="/2019/11/18/hexo主题个人优化/timg21.PNG">
+
+<h2 id="背景图片"><a href="#背景图片" class="headerlink" title="背景图片"></a>背景图片</h2><p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
+<p>1、需将背景图片放入/images/可自由命名</p>
+<img src="/2019/11/18/hexo主题个人优化/timg19.PNG">
+
+<h2 id="侧边栏-1"><a href="#侧边栏-1" class="headerlink" title="侧边栏"></a>侧边栏</h2><p>位于/blog/themes/next/source/css/_common/outline/sidebar/sidebar.styl</p>
+<p>侧边栏我没做很多调整，只修改了字体颜色，看的更清楚些</p>
+<img src="/2019/11/18/hexo主题个人优化/timg20.PNG">
+
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是我的hexo配置。在文件位置中/blog/为自己搭建hexo的根目录，其余在css中提到的修改，如果没有找到对应语句，可自行添加。在next主题7.x中css文件下没有_custom/custom.styl，可以自行创建文件，并在在./blog/themes/next/source/css/main.styl末尾加入 @import “_custom/custom.styl”; 引用即可</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
+              <a href="/tags/博客相关/" rel="tag"><i class="fa fa-tag"></i>博客相关</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/17/SQLi-Labs/" rel="next" title="SQLi-Labs过关笔记">
+                  <i class="fa fa-chevron-left"></i> SQLi-Labs过关笔记
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主题文件配置"><span class="nav-number">2.</span> <span class="nav-text">主题文件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主题样式"><span class="nav-number">2.1.</span> <span class="nav-text">主题样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#菜单栏"><span class="nav-number">2.2.</span> <span class="nav-text">菜单栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#侧边栏"><span class="nav-number">2.3.</span> <span class="nav-text">侧边栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#头像"><span class="nav-number">2.4.</span> <span class="nav-text">头像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联系方式"><span class="nav-number">2.5.</span> <span class="nav-text">联系方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#友情链接"><span class="nav-number">2.6.</span> <span class="nav-text">友情链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示阅读字数，时间"><span class="nav-number">2.7.</span> <span class="nav-text">显示阅读字数，时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码块颜色"><span class="nav-number">2.8.</span> <span class="nav-text">代码块颜色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#显示阅读百分比和回到顶端"><span class="nav-number">2.9.</span> <span class="nav-text">显示阅读百分比和回到顶端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置动态背景（next自带）"><span class="nav-number">2.10.</span> <span class="nav-text">设置动态背景（next自带）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS样式修改"><span class="nav-number">3.</span> <span class="nav-text">CSS样式修改</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#顶部区域"><span class="nav-number">3.1.</span> <span class="nav-text">顶部区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#菜单栏-1"><span class="nav-number">3.2.</span> <span class="nav-text">菜单栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分页栏"><span class="nav-number">3.3.</span> <span class="nav-text">分页栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#底部区域"><span class="nav-number">3.4.</span> <span class="nav-text">底部区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主页面文章区域"><span class="nav-number">3.5.</span> <span class="nav-text">主页面文章区域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#背景图片"><span class="nav-number">3.6.</span> <span class="nav-text">背景图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#侧边栏-1"><span class="nav-number">3.7.</span> <span class="nav-text">侧边栏</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GgBoom993"
+      src="/images/timg1.jpg">
+  <p class="site-author-name" itemprop="name">GgBoom993</p>
+  <div class="site-description" itemprop="description">无名小卒</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/GgBoom-993" title="GitHub → https://github.com/GgBoom-993"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/heren1016" title="Weibo → https://weibo.com/heren1016" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https://github.com/">github官网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.somd5.com/" title="https://www.somd5.com/" rel="noopener" target="_blank">MD5在线解密</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://tool.chinaz.com/" title="http://tool.chinaz.com/" rel="noopener" target="_blank">站长工具</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.sec-wiki.com/" title="https://www.sec-wiki.com/" rel="noopener" target="_blank">SecWiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.dooccn.com" title="http://www.dooccn.com" rel="noopener" target="_blank">在线代码编译</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GgBoom993</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">24k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">22 分钟</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/30/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站已运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,224' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
