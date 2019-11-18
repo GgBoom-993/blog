@@ -50,46 +50,53 @@
 <img src="/2019/11/18/hexo主题个人优化/timg11.PNG">
 
 <h1 id="CSS样式修改"><a href="#CSS样式修改" class="headerlink" title="CSS样式修改"></a>CSS样式修改</h1><p>CSS样式文件位于/blog/themes/next/source/css/_schemes/Mist<br>因为我是用的是Mist所以我修改的CSS都是Mist的CSS，其余主题分支仅供参考</p>
-<h2 id="顶部区域"><a href="#顶部区域" class="headerlink" title="顶部区域"></a>顶部区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_header.styl</p>
-<p>1、修改顶部区域背景。RBG色透明度0.4</p>
+<h2 id="顶部区域"><a href="#顶部区域" class="headerlink" title="顶部区域"></a>顶部区域</h2><p>1、修改顶部区域背景。RBG色透明度0.4</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_header.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg12.PNG">
 
-<h2 id="菜单栏-1"><a href="#菜单栏-1" class="headerlink" title="菜单栏"></a>菜单栏</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_menu.styl</p>
-<p>1、修改菜单栏选项的样式，圆角、模块长度</p>
+<h2 id="菜单栏-1"><a href="#菜单栏-1" class="headerlink" title="菜单栏"></a>菜单栏</h2><p>1、改菜单栏选项的样式，圆角、模块长度</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_menu.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg13.PNG">
 
 
-<h2 id="分页栏"><a href="#分页栏" class="headerlink" title="分页栏"></a>分页栏</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
-<p>1、修改分页栏长度，居中，背景透明，字体颜色</p>
+<h2 id="分页栏"><a href="#分页栏" class="headerlink" title="分页栏"></a>分页栏</h2><p>1、修改分页栏长度，居中，背景透明，字体颜色</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg14.PNG">
 
-<h2 id="底部区域"><a href="#底部区域" class="headerlink" title="底部区域"></a>底部区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
-<p>1、修改底部区域背景透明，间距，字体颜色</p>
+<h2 id="底部区域"><a href="#底部区域" class="headerlink" title="底部区域"></a>底部区域</h2><p>1、修改底部区域背景透明，间距，字体颜色</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg15.PNG">
 
-<h2 id="主页面文章区域"><a href="#主页面文章区域" class="headerlink" title="主页面文章区域"></a>主页面文章区域</h2><p>位于/blog/themes/next/source/css/_schemes/Mist/_posts-expand.styl</p>
-<p>1、修改主页每篇文章小框架间距，以及标题居中</p>
+<h2 id="主页面文章区域"><a href="#主页面文章区域" class="headerlink" title="主页面文章区域"></a>主页面文章区域</h2><p>1、修改主页每篇文章小框架间距，以及标题居中</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_posts-expand.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg16.PNG">
 
 <p>2、修改“阅读全文”，背景、位置等</p>
+<p>位于/blog/themes/next/source/css/_schemes/Mist/_posts-expand.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg18.PNG">
 
-
-<p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
 <p>3、修改主页文章区域背后的白色区域，这里修改为透明</p>
+<p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg17.PNG">
 
 <p>4、主页面单独文章框体宽度</p>
 <p>位于/blog/themes/next/source/css/_schemes/Mist/_layout.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg21.PNG">
 
-<h2 id="背景图片"><a href="#背景图片" class="headerlink" title="背景图片"></a>背景图片</h2><p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
-<p>1、需将背景图片放入/images/可自由命名</p>
+<p>5、修改文章内链样式</p>
+<p>位于/blog/themes/next/source/css/_common/components/post/post.styl</p>
+<p>不修改之前内链颜色为灰色+下划线，不明显，修改之后为蓝色</p>
+<img src="/2019/11/18/hexo主题个人优化/timg22.PNG">
+
+
+<h2 id="背景图片"><a href="#背景图片" class="headerlink" title="背景图片"></a>背景图片</h2><p>1、需将背景图片放入/images/可自由命名</p>
+<p>位于/blog/themes/next/source/css/_custom/custom.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg19.PNG">
 
-<h2 id="侧边栏-1"><a href="#侧边栏-1" class="headerlink" title="侧边栏"></a>侧边栏</h2><p>位于/blog/themes/next/source/css/_common/outline/sidebar/sidebar.styl</p>
-<p>侧边栏我没做很多调整，只修改了字体颜色，看的更清楚些</p>
+<h2 id="侧边栏-1"><a href="#侧边栏-1" class="headerlink" title="侧边栏"></a>侧边栏</h2><p>1、侧边栏我没做很多调整，只修改了字体颜色，看的更清楚些</p>
+<p>位于/blog/themes/next/source/css/_common/outline/sidebar/sidebar.styl</p>
 <img src="/2019/11/18/hexo主题个人优化/timg20.PNG">
+
 
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是我的hexo配置。在文件位置中/blog/为自己搭建hexo的根目录，其余在css中提到的修改，如果没有找到对应语句，可自行添加。在next主题7.x中css文件下没有_custom/custom.styl，可以自行创建文件，并在在./blog/themes/next/source/css/main.styl末尾加入 @import “_custom/custom.styl”; 引用即可</p>
 ]]></content>
@@ -703,8 +710,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>社工</tag>
         <tag>信息搜集</tag>
+        <tag>社工</tag>
       </tags>
   </entry>
   <entry>
