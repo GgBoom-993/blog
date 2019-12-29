@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CSRF本地漏洞实现</title>
+    <url>/2019/12/29/%E6%9C%AC%E5%9C%B0%E9%9D%B6%E5%9C%BA%E5%A4%8D%E7%8E%B0csrf/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>CSRF(跨站请求伪造)</p>
+<p>Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。</p>
+<a id="more"></a>
+
+<h1 id="本地实现"><a href="#本地实现" class="headerlink" title="本地实现"></a>本地实现</h1><p>这里使用Pikachu靶场来进行演示。GitHub：<a href="https://github.com/zhuifengshaonianhanlu/pikachu">https://github.com/zhuifengshaonianhanlu/pikachu</a></p>
+<p>进入到靶场中包含CSRF的页面。</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg1.PNG">
+
+<p>选择修改信息然后使用burp抓包，</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg2.PNG">
+
+<p>可以发现浏览器URL中没有信息，但是使用burp抓包后，可以看见要修改的信息，sex等，然后将此包send to repeater</p>
+<p>在repeater里面将包中信息的内容进行修改，然后send，观察下页面上的信息，已经改变了</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg3.PNG">
+
+<p>到这一步就可以发现确实是存在CSRF漏洞的，在burp中可以直接生成CSRF的相关POC，此功能只有burp pro版可以使用，所以该破解的还是要破解</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg4.png">
+
+<p>利用burp生成的POC其实是一串HTML代码，里面是一个信息from表单。当用户已经打开了修改信息页面，并且此时点击了包含POC的恶意链接，那么用户的信息就会被修改为指定信息。</p>
+<h1 id="防范"><a href="#防范" class="headerlink" title="防范"></a>防范</h1><p>由此可见CSRF的触发条件虽然苛刻，但是CSRF同样存在危害。</p>
+<p>网站如果要防止CSRF攻击，则需要对敏感信息的操作实施对应的安全措施，防止这些操作出现被伪造的情况，从而导致CSRF。比如：<br>–对敏感信息的操作增加安全的token；<br>–对敏感信息的操作增加安全的验证码；<br>–对敏感信息的操作实施安全的逻辑流程，比如修改密码时，需要先校验旧密码等。</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo主题个人优化</title>
     <url>/2019/11/18/hexo%E4%B8%BB%E9%A2%98%E4%B8%AA%E4%BA%BA%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不久之前搭建了hexo博客，陆陆续续的上传了一些整理的东西，之后的内容慢慢来吧。闲下来的时候会逛逛别人的博客，看些技术文章，有时也纯欣赏，回过头看看自己的，一言难尽。博客的内容需要日积月累，但是对于美的追求可以说来就来。</p>
@@ -756,8 +791,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>社工</tag>
         <tag>信息搜集</tag>
+        <tag>社工</tag>
       </tags>
   </entry>
   <entry>

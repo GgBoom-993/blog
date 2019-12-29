@@ -51,18 +51,25 @@
   };
 </script>
 
-  <meta name="description" content="无名小卒">
-<meta property="og:type" content="website">
-<meta property="og:title" content="GgBoom993&#39;s Blog">
-<meta property="og:url" content="https://github.com/GgBoom-993/blog/tags/信息搜集/index.html">
+  <meta name="description" content="前言CSRF(跨站请求伪造) Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。">
+<meta name="keywords" content="Web,靶场练习,Web渗透,漏洞">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSRF本地漏洞实现">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/12/29/本地靶场复现csrf/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="无名小卒">
+<meta property="og:description" content="前言CSRF(跨站请求伪造) Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/2019/12/29/本地靶场复现csrf/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/12/29/本地靶场复现csrf/timg2.PNG">
+<meta property="og:image" content="https://github.com/2019/12/29/本地靶场复现csrf/timg3.PNG">
+<meta property="og:image" content="https://github.com/2019/12/29/本地靶场复现csrf/timg4.png">
+<meta property="og:updated_time" content="2019-12-29T10:23:55.300Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GgBoom993&#39;s Blog">
-<meta name="twitter:description" content="无名小卒">
+<meta name="twitter:title" content="CSRF本地漏洞实现">
+<meta name="twitter:description" content="前言CSRF(跨站请求伪造) Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。">
+<meta name="twitter:image" content="https://github.com/2019/12/29/本地靶场复现csrf/timg1.PNG">
 
-<link rel="canonical" href="https://github.com/GgBoom-993/blog/tags/信息搜集/">
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/2019/12/29/本地靶场复现csrf/">
 
 
 <script id="page-configurations">
@@ -70,13 +77,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: 信息搜集 | GgBoom993's Blog</title>
+  <title>CSRF本地漏洞实现 | GgBoom993's Blog</title>
   
 
 
@@ -210,50 +217,132 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">信息搜集
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2019/12/29/本地靶场复现csrf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSRF本地漏洞实现
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-29 17:54:29 / 修改时间：18:23:55" itemprop="dateCreated datePublished" datetime="2019-12-29T17:54:29+08:00">2019-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>743</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>CSRF(跨站请求伪造)</p>
+<p>Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。</p>
+<a id="more"></a>
+
+<h1 id="本地实现"><a href="#本地实现" class="headerlink" title="本地实现"></a>本地实现</h1><p>这里使用Pikachu靶场来进行演示。GitHub：<a href="https://github.com/zhuifengshaonianhanlu/pikachu">https://github.com/zhuifengshaonianhanlu/pikachu</a></p>
+<p>进入到靶场中包含CSRF的页面。</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg1.PNG">
+
+<p>选择修改信息然后使用burp抓包，</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg2.PNG">
+
+<p>可以发现浏览器URL中没有信息，但是使用burp抓包后，可以看见要修改的信息，sex等，然后将此包send to repeater</p>
+<p>在repeater里面将包中信息的内容进行修改，然后send，观察下页面上的信息，已经改变了</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg3.PNG">
+
+<p>到这一步就可以发现确实是存在CSRF漏洞的，在burp中可以直接生成CSRF的相关POC，此功能只有burp pro版可以使用，所以该破解的还是要破解</p>
+<img src="/2019/12/29/本地靶场复现csrf/timg4.png">
+
+<p>利用burp生成的POC其实是一串HTML代码，里面是一个信息from表单。当用户已经打开了修改信息页面，并且此时点击了包含POC的恶意链接，那么用户的信息就会被修改为指定信息。</p>
+<h1 id="防范"><a href="#防范" class="headerlink" title="防范"></a>防范</h1><p>由此可见CSRF的触发条件虽然苛刻，但是CSRF同样存在危害。</p>
+<p>网站如果要防止CSRF攻击，则需要对敏感信息的操作实施对应的安全措施，防止这些操作出现被伪造的情况，从而导致CSRF。比如：<br>–对敏感信息的操作增加安全的token；<br>–对敏感信息的操作增加安全的验证码；<br>–对敏感信息的操作实施安全的逻辑流程，比如修改密码时，需要先校验旧密码等。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-06T15:25:11+08:00"
-              content="2019-10-06">
-          10-06
-        </time>
-      </div>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
+              <a href="/tags/靶场练习/" rel="tag"><i class="fa fa-tag"></i>靶场练习</a>
+              <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
+              <a href="/tags/漏洞/" rel="tag"><i class="fa fa-tag"></i>漏洞</a>
+          </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/10/06/信息搜集/" itemprop="url">
-            <span itemprop="name">知己知彼-信息搜集</span>
-          </a>
-      </h2>
+        
 
-    </header>
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/11/18/hexo主题个人优化/" rel="next" title="hexo主题个人优化">
+                  <i class="fa fa-chevron-left"></i> hexo主题个人优化
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-    </div>
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -282,6 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本地实现"><span class="nav-number">2.</span> <span class="nav-text">本地实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防范"><span class="nav-number">3.</span> <span class="nav-text">防范</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
