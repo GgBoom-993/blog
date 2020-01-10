@@ -75,10 +75,10 @@
         <category>Web</category>
       </categories>
       <tags>
+        <tag>漏洞</tag>
         <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -837,8 +837,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
