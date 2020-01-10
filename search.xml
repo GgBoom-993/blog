@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>利用IIS+腾讯云服务器部署网站</title>
+    <url>/2020/01/10/%E5%88%A9%E7%94%A8IIS-%E8%85%BE%E8%AE%AF%E4%BA%91%E9%83%A8%E7%BD%B2%E7%BD%91%E7%AB%99/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>前段时间期末大作业，买了一个月服务器，搭建个网站完成测试，过程也没记录下来。</p>
+<p>现在趁着年轻，赶紧回家买了一年服务器（毕竟便宜），一是学习、了解下基本Web配置，二是有个自己的环境吧，方便练手之类的。</p>
+<a id="more"></a>
+
+<h1 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h1><p>我这里购买的是腾讯云学生服务器，很便宜一个月10，一年120，当然配置也只是勉强能用。</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg1.PNG">
+
+<p>在服务器环境上，我选择Windows server 2012R2 集成了PHPstudy，主要还是为了方便，性能什么的就不考虑了。实名，购买等过程就不加赘述，域名我也不打算弄，因为是自己用。</p>
+<h1 id="添加IIS"><a href="#添加IIS" class="headerlink" title="添加IIS"></a>添加IIS</h1><p>购买完成后，在腾讯云控制台可以看见自己的服务器情况，以及进行调整资源、配置安全组等操作。</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg2.PNG">
+
+<p>登录服务器之后，会自动跳出服务器管理工具，选择添加角色和功能把IIS服务勾选添加</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg3.PNG">
+
+<p>下一步后，展开.NET Framework4.5 勾选ASP.NET 以及CGI之后一直下一步到安装</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg4.PNG">
+
+<p>安装完成后通过控制面板→系统和安全→管理工具 打开IIS管理工具</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg5.PNG">
+
+<h1 id="Web配置"><a href="#Web配置" class="headerlink" title="Web配置"></a>Web配置</h1><p>在IIS管理工具中添加网站文件，设置网站名称、网站路径、端口等</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg6.PNG">
+
+<p>需要对网站添加一些配置。首先开启目录浏览，选择网站→目录浏览→启用</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg7.PNG">
+
+<p>接着打开默认文档，设定初始加载网页。由于我这里使用的是PHP的网站源码，所以需要根据源码添加XXX.php</p>
+<p>添加映射。选择处理程序映射→添加模块映射</p>
+<p>选择FastCgiModule模块，并添加exe文件</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg8.PNG">
+
+<p>接着我在配置中开启了父路径，开启父路径后可以用../来表示上一层目录，如果网站程序中使用了../，不开启则网站程序里有../就会报错。<br>选择iis下ASP栏目→启用父路径→设置为True.</p>
+<img src="/2020/01/10/利用IIS-腾讯云部署网站/timg9.PNG">
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>以上做完基本就完成了，可以现在本地浏览，查看效果再发布出去。<br>这次做了一些基本的Web配置，足以让网站顺利运行，日后有其它需要将额外再对配置进行修改。</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>CSRF本地漏洞实现</title>
     <url>/2019/12/29/%E6%9C%AC%E5%9C%B0%E9%9D%B6%E5%9C%BA%E5%A4%8D%E7%8E%B0csrf/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>CSRF(跨站请求伪造)</p>
@@ -344,7 +390,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_XSS（三）</title>
+    <title>DOM型XSS靶场探究</title>
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%89%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-XSS-DOM型"><a href="#DoraBox-XSS-DOM型" class="headerlink" title="DoraBox_XSS DOM型"></a>DoraBox_XSS DOM型</h1><h4 id="什么是DOM型XSS"><a href="#什么是DOM型XSS" class="headerlink" title="什么是DOM型XSS"></a>什么是DOM型XSS</h4><p>个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于<a href="https://baike.baidu.com/item/%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/1033822?fr=aladdin&fromtitle=DOM&fromid=50288" target="_blank" rel="noopener">DOM文档对象</a>的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。</p>
 <a id="more"></a>
@@ -375,7 +421,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_XSS（二）</title>
+    <title>存储型XSS靶场探究</title>
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
@@ -406,7 +452,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_XSS（一）</title>
+    <title>反射型XSS靶场探究</title>
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%80%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
 <p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
@@ -451,7 +497,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_SQL注入（三）</title>
+    <title>搜索型_SQL注入（三）</title>
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%89%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-SQLi搜索型"><a href="#DoraBox-SQLi搜索型" class="headerlink" title="DoraBox_SQLi搜索型"></a>DoraBox_SQLi搜索型</h1><h4 id="进入页面，先submit看一下SQL语句"><a href="#进入页面，先submit看一下SQL语句" class="headerlink" title="进入页面，先submit看一下SQL语句"></a>进入页面，先submit看一下SQL语句</h4><img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg1.PNG" title="timg">
 
@@ -490,7 +536,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_SQL注入（二）</title>
+    <title>字符型_SQL注入（二）</title>
     <url>/2019/11/03/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-SQLi字符型"><a href="#DoraBox-SQLi字符型" class="headerlink" title="DoraBox_SQLi字符型"></a>DoraBox_SQLi字符型</h1><h4 id="进入页面，先submit看一下"><a href="#进入页面，先submit看一下" class="headerlink" title="进入页面，先submit看一下"></a>进入页面，先submit看一下</h4><img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg1.PNG" title="timg">
 
@@ -527,7 +573,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DoraBox漏洞练习平台_SQL注入（一）</title>
+    <title>数字型_SQL注入（一）</title>
     <url>/2019/11/02/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0_SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%80%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-SQLi数字型"><a href="#DoraBox-SQLi数字型" class="headerlink" title="DoraBox_SQLi数字型"></a>DoraBox_SQLi数字型</h1><h4 id="进入SQLi数字型的注入页面"><a href="#进入SQLi数字型的注入页面" class="headerlink" title="进入SQLi数字型的注入页面"></a>进入SQLi数字型的注入页面</h4><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG" title="timg">
 
