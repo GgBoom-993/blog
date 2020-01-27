@@ -51,21 +51,21 @@
   };
 </script>
 
-  <meta name="description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
+  <meta name="description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting），比反射型跨站">
 <meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="存储型XSS靶场探究">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（二）/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
+<meta property="og:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting），比反射型跨站">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg2.PNG">
-<meta property="og:updated_time" content="2020-01-10T17:33:27.280Z">
+<meta property="og:updated_time" content="2020-01-21T14:24:53.023Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="存储型XSS靶场探究">
-<meta name="twitter:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting）">
+<meta name="twitter:description" content="DoraBox_XSS 存储型什么是存储型XSS我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。 在 《XSS跨站脚本攻击剖析与防御》一书中对存储型XSS是这样定义的： 持久型跨站脚本（Presistent Cross-site Scripting）也等于存储型跨站脚本（Stored Cross-site Scripting），比反射型跨站">
 <meta name="twitter:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG">
 
 <link rel="canonical" href="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（二）/">
@@ -251,7 +251,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-11 01:33:27" itemprop="dateModified" datetime="2020-01-11T01:33:27+08:00">2020-01-11</time>
+                <time title="修改时间：2020-01-21 22:24:53" itemprop="dateModified" datetime="2020-01-21T22:24:53+08:00">2020-01-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>672</span>
+              <span>665</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -290,7 +290,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。</p>
+        <h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
 <p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
 <a id="more"></a>
@@ -391,7 +391,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -404,7 +404,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -476,7 +476,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">28 分钟</span>
+    <span title="站点阅读时长">29 分钟</span>
 </div>
 
 <!--

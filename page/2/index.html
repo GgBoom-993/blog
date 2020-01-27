@@ -215,6 +215,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" class="post-title-link" itemprop="url">反射型XSS靶场探究</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-04 14:22:47" itemprop="dateCreated datePublished" datetime="2019-11-04T14:22:47+08:00">2019-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-21 22:23:04" itemprop="dateModified" datetime="2020-01-21T22:23:04+08:00">2020-01-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>857</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
+<p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
+<p>我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署payload</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
+<p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1099,104 +1200,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2019/10/01/CVE-2019-0708/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/timg1.jpg">
-      <meta itemprop="name" content="GgBoom993">
-      <meta itemprop="description" content="无名小卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GgBoom993's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/01/CVE-2019-0708/" class="post-title-link" itemprop="url">CVE-2019-0708漏洞复现</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-10-01 16:02:55" itemprop="dateCreated datePublished" datetime="2019-10-01T16:02:55+08:00">2019-10-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-11-16 22:53:49" itemprop="dateModified" datetime="2019-11-16T22:53:49+08:00">2019-11-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CVE/" itemprop="url" rel="index">
-                    <span itemprop="name">CVE</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>4.4k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>北京时间5月15日，微软发布了针对远程桌面服务的远程执行代码漏洞CVE-2019-0708的修复程序, 漏洞触发无需用户交互。这也就意味着，攻击者可以利用该漏洞制作类似于2017年席卷全球的WannaCry类的蠕虫病毒，进行大规模传播和破坏。</p>
-<p>远程桌面服务（以前称为终端服务）中存在远程执行代码漏洞，当未经身份验证的攻击者使用RDP连接到目标系统并发送特制请求时。成功利用此漏洞的攻击者可以在目标系统上执行任意代码。然后攻击者可以安装程序; 查看，更改或删除数据; 或创建具有完全用户权限的新帐户。要利用此漏洞，攻击者仅需要通过RDP向目标系统远程桌面服务发送恶意请求。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/10/01/CVE-2019-0708/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1247,7 +1250,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1260,7 +1263,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1332,7 +1335,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">28 分钟</span>
+    <span title="站点阅读时长">29 分钟</span>
 </div>
 
 <!--

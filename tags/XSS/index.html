@@ -54,7 +54,7 @@
   <meta name="description" content="无名小卒">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GgBoom993&#39;s Blog">
-<meta property="og:url" content="https://github.com/GgBoom-993/blog/tags/XSS/index.html">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/tags/Xss/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
 <meta property="og:description" content="无名小卒">
 <meta property="og:locale" content="zh-CN">
@@ -62,7 +62,7 @@
 <meta name="twitter:title" content="GgBoom993&#39;s Blog">
 <meta name="twitter:description" content="无名小卒">
 
-<link rel="canonical" href="https://github.com/GgBoom-993/blog/tags/XSS/">
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/tags/Xss/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title>标签: XSS | GgBoom993's Blog</title>
+  <title>标签: Xss | GgBoom993's Blog</title>
   
 
 
@@ -216,14 +216,14 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <h1 class="collection-header">XSS
+        <h1 class="collection-header">Xss
           <small>标签</small>
         </h1>
       </div>
 
       
     <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
+      <h1 class="collection-header">2020</h1>
     </div>
 
   <article itemscope itemtype="http://schema.org/Article">
@@ -231,75 +231,15 @@
 
       <div class="post-meta">
         <time itemprop="dateCreated"
-              datetime="2019-11-04T15:31:46+08:00"
-              content="2019-11-04">
-          11-04
+              datetime="2020-01-26T23:49:16+08:00"
+              content="2020-01-26">
+          01-26
         </time>
       </div>
 
       <h2 class="post-title">
-          <a class="post-title-link" href="/2019/11/04/DoraBox漏洞练习平台-XSS（三）/" itemprop="url">
-            <span itemprop="name">DOM型XSS靶场探究</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-11-04T15:10:42+08:00"
-              content="2019-11-04">
-          11-04
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" itemprop="url">
-            <span itemprop="name">存储型XSS靶场探究</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-11-04T14:22:47+08:00"
-              content="2019-11-04">
-          11-04
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" itemprop="url">
-            <span itemprop="name">反射型XSS靶场探究</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-03T14:52:00+08:00"
-              content="2019-10-03">
-          10-03
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/10/03/aboutWebSecurity/" itemprop="url">
-            <span itemprop="name">Web渗透相关小结</span>
+          <a class="post-title-link" href="/2020/01/26/XSS利用JS获取Cookie维持权限/" itemprop="url">
+            <span itemprop="name">XSS利用JS获取Cookie维持权限</span>
           </a>
       </h2>
 
@@ -357,7 +297,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -370,7 +310,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -442,7 +382,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">28 分钟</span>
+    <span title="站点阅读时长">29 分钟</span>
 </div>
 
 <!--
@@ -460,6 +400,81 @@
     var now = new Date();
     function createtime() {
         var grt= new Date("09/30/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站已运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,224' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
+��站上线时间
         now.setTime(now.getTime()+250);
         days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
         hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
