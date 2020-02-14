@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/slice-fill1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/slice-fill.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","width":280,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":8},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言此篇将陆续上传一些平时的python小练习，小算法，都是可执行源码 环境采用 python2.7 和 python3.7">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些python练习小例">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2020/02/13/一些python练习小例/index.html">
+<meta property="og:site_name" content="GgBoom993&#39;s Blog">
+<meta property="og:description" content="前言此篇将陆续上传一些平时的python小练习，小算法，都是可执行源码 环境采用 python2.7 和 python3.7">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-14T14:30:26.602Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一些python练习小例">
+<meta name="twitter:description" content="前言此篇将陆续上传一些平时的python小练习，小算法，都是可执行源码 环境采用 python2.7 和 python3.7">
+
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/2020/02/13/一些python练习小例/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>一些python练习小例 | GgBoom993's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GgBoom993's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2020/02/13/一些python练习小例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一些python练习小例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-13 00:45:12" itemprop="dateCreated datePublished" datetime="2020-02-13T00:45:12+08:00">2020-02-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-14 22:30:26" itemprop="dateModified" datetime="2020-02-14T22:30:26+08:00">2020-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>此篇将陆续上传一些平时的python小练习，小算法，都是可执行源码</p>
+<p>环境采用 python2.7 和 python3.7</p>
+<a id="more"></a>
+
+<h1 id="模块库"><a href="#模块库" class="headerlink" title="模块库"></a>模块库</h1><p><code>operator</code>：这个模块为常规的python运算操作符提供了对应的函数，例如：+ 对应 add<br><code>time</code>：这个模块提供各种与时间相关的函数。返回当前时间，休眠等等。<br><code>heapq - nlargest</code>：nlargest可以帮助我们在某个集合中找出最大的N个元素<br><code>collections - Counter</code>：Counter可以用来跟踪值出现的次数<br><code>os</code>：os是用于访问操作系统功能的模块</p>
+<h1 id="正篇"><a href="#正篇" class="headerlink" title="正篇"></a>正篇</h1><h4 id="简易计算器"><a href="#简易计算器" class="headerlink" title="简易计算器"></a>简易计算器</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 简易计算器</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate</span><span class="params">(way,num1,num2)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>&#123;<span class="string">'+'</span>:add,<span class="string">'-'</span>:sub,<span class="string">'*'</span>:mul,<span class="string">'/'</span>:pow&#125;[way](num1,num2)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    calculate(<span class="string">'+'</span>,<span class="number">1</span>,<span class="number">2</span>)  <span class="comment">#  1 + 2 = 3</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="去掉最大最小值求平均"><a href="#去掉最大最小值求平均" class="headerlink" title="去掉最大最小值求平均"></a>去掉最大最小值求平均</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 去掉最大最小值求平均</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    list = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>):</span><br><span class="line">        list.append(input(<span class="string">'input your No.&#123;&#125; number in this list'</span>.format(i)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'[+] In the calculation......\n'</span>,<span class="string">'[+] Get rid of the maximum\n'</span>,<span class="string">'[+] Get rid of the minimum\n'</span>,<span class="string">'[+] Calculate the final result......\n'</span></span><br><span class="line"></span><br><span class="line">    list.sort()</span><br><span class="line">    list2 = list[<span class="number">1</span>:<span class="number">8</span>]</span><br><span class="line">    result = round((sum(list2)/len(list2)),<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'[+] The end result is &#123;&#125;\n'</span>.format(result),<span class="string">'[-] Thanks for your use !'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="二分搜索"><a href="#二分搜索" class="headerlink" title="二分搜索"></a>二分搜索</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 二分搜索</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(arr,x)</span>:</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Arrlength = len(arr)</span><br><span class="line"></span><br><span class="line">    left = <span class="number">0</span></span><br><span class="line">    right = Arrlength</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span>  <span class="string">'\nList长度：'</span>,Arrlength, <span class="string">'\nList头索引：'</span>,left, <span class="string">'\nList尾索引：'</span>,right, <span class="string">'\n[+] Starting Binary search......'</span></span><br><span class="line">    <span class="keyword">while</span> left&lt;=right:</span><br><span class="line"></span><br><span class="line">        mid = int((left + right) / <span class="number">2</span>)  <span class="comment"># 求中点如果写成 (left + right)/2 容易溢出</span></span><br><span class="line">        <span class="comment"># 当 X 出现的位置是否在mid</span></span><br><span class="line">        <span class="keyword">if</span> arr[mid] == x:</span><br><span class="line">           <span class="keyword">print</span> <span class="string">'[-] Searching complete ，the number Located in the &#123;&#125; index'</span>.format(mid + <span class="number">1</span>)</span><br><span class="line">           <span class="keyword">break</span></span><br><span class="line">        <span class="comment"># 当 X 出现在mid右边</span></span><br><span class="line">        <span class="keyword">elif</span> arr[mid] &lt; x:</span><br><span class="line">            left = mid + <span class="number">1</span> <span class="comment"># 此时区间变为 [ mid+1 : right]</span></span><br><span class="line">            <span class="keyword">print</span> <span class="string">'[+] Search interval decreases[&#123;&#125;:&#123;&#125;]'</span>.format(mid+<span class="number">1</span>,right)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 当 X 出现在mid左边</span></span><br><span class="line">        <span class="keyword">elif</span> arr[mid] &gt; x:</span><br><span class="line">            right = mid - <span class="number">1</span>  <span class="comment"># 此时区间变为[ left : mid-1 ]</span></span><br><span class="line">            <span class="keyword">print</span> <span class="string">'[+] Search interval decreases[&#123;&#125;:&#123;&#125;]'</span>.format(left,mid<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'[-] End Search!'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    arr1 = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">10</span>):</span><br><span class="line"></span><br><span class="line">        arr1.append(input(<span class="string">'请输入第&#123;&#125;个数 构成一个包含10个数字的List：'</span>.format(i+<span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'List为：'</span>,arr1</span><br><span class="line">    num1 = input(<span class="string">'请输入List中的数字 ，查找该数'</span>)</span><br><span class="line">    main(arr1,num1)</span><br></pre></td></tr></table></figure>
+
+<h4 id="乘法口诀表"><a href="#乘法口诀表" class="headerlink" title="乘法口诀表"></a>乘法口诀表</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 乘法口诀表</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,i+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">'&#123;&#125; * &#123;&#125; = &#123;&#125;'</span>.format(j,i,j*i),end=<span class="string">'\t'</span>)</span><br><span class="line"></span><br><span class="line">        print()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+<h4 id="输出fibonacci数列前n项"><a href="#输出fibonacci数列前n项" class="headerlink" title="输出fibonacci数列前n项"></a>输出fibonacci数列前n项</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 输出fibonacci（斐波那契）数列前 n 项</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fibonacci</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">1</span>]</span><br><span class="line">    fib = [<span class="number">1</span>,<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> len(fib) &lt; n:</span><br><span class="line">        fib.append(fib[len(fib)<span class="number">-1</span>]+fib[len(fib)<span class="number">-2</span>])</span><br><span class="line"></span><br><span class="line">    print(<span class="string">'[+] Waiting .....'</span>)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">'[+] Result already\n'</span>,fib)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    n = int(input(<span class="string">'please input Top Num ：'</span>))</span><br><span class="line"></span><br><span class="line">    fibonacci(n)</span><br></pre></td></tr></table></figure>
+
+<h4 id="检测List中是否有重复元素"><a href="#检测List中是否有重复元素" class="headerlink" title="检测List中是否有重复元素"></a>检测List中是否有重复元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 检查list中是否有重复元素  利用集合（set）是一个无序的不重复元素序列，让两者比较结果得出</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(list)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> len(list) == len(set(list)):</span><br><span class="line">        print(<span class="string">'无重复'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'有重复'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    n = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">5</span>]</span><br><span class="line">    n2 = [<span class="number">12</span>,<span class="number">4</span>,<span class="number">67</span>,<span class="number">12</span>,<span class="number">67</span>,<span class="number">34</span>,<span class="number">7</span>,<span class="number">5</span>,<span class="number">45</span>,<span class="number">67</span>,<span class="number">4</span>,<span class="number">6</span>]</span><br><span class="line">    n3 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">0</span>]</span><br><span class="line">    main(n)  <span class="comment"># 有重复</span></span><br><span class="line">    main(n2) <span class="comment"># 有重复</span></span><br><span class="line">    main(n3) <span class="comment"># 无重复</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="过滤空值"><a href="#过滤空值" class="headerlink" title="过滤空值"></a>过滤空值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 过滤空值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(lst)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(list(filter(bool,lst)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    lst = [<span class="literal">None</span>,<span class="number">0</span>,<span class="string">'1'</span>,<span class="string">''</span>,<span class="string">'ok'</span>,[],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],<span class="literal">False</span>]</span><br><span class="line"></span><br><span class="line">    main(lst) <span class="comment"># ['1', 'ok', [1, 2, 3]]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="列表反转"><a href="#列表反转" class="headerlink" title="列表反转"></a>列表反转</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 列表反转</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(lst)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(lst[::<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    lst1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</span><br><span class="line">    main(lst1)  <span class="comment"># [9.8.7.6.5.4.3.2.1]</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="合并字典"><a href="#合并字典" class="headerlink" title="合并字典"></a>合并字典</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 合并字典</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(dic1,dic2)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(&#123;**dic1,**dic2&#125;) <span class="comment"># python3.5之后支持此方法一行实现合并字典</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    dic1 = &#123;<span class="string">'num1'</span>:<span class="number">1</span>,<span class="string">'num2'</span>:<span class="number">2</span>&#125;</span><br><span class="line">    dic2 = &#123;<span class="string">'num3'</span>:<span class="number">3</span>,<span class="string">'num4'</span>:<span class="number">4</span>&#125;</span><br><span class="line">    main(dic1,dic2)  <span class="comment"># &#123;'num1':1,'num2':2,'num3':3,'num4':4&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="返回字典中最大的前n个值"><a href="#返回字典中最大的前n个值" class="headerlink" title="返回字典中最大的前n个值"></a>返回字典中最大的前n个值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 返回字典中最大的前n个值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> heapq <span class="keyword">import</span> nlargest <span class="comment"># 这个函数可以帮助我们在某个集合中找出最大的N个元素,nsmallest()反之</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(n)</span>:</span></span><br><span class="line"></span><br><span class="line">    dic = &#123;<span class="string">'a'</span>:<span class="number">21</span>,<span class="string">'b'</span>:<span class="number">32</span>,<span class="string">'c'</span>:<span class="number">23</span>,<span class="string">'d'</span>:<span class="number">34</span>,<span class="string">'e'</span>:<span class="number">15</span>,<span class="string">'f'</span>:<span class="number">56</span>,<span class="string">'g'</span>:<span class="number">31</span>,<span class="string">'h'</span>:<span class="number">14</span>,<span class="string">'i'</span>:<span class="number">45</span>&#125;</span><br><span class="line">    print(nlargest(n,dic,key=<span class="keyword">lambda</span> k:dic[k]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    main(<span class="number">3</span>)  <span class="comment"># ['f','i','d'] 最大的前三个值</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="判断换位词"><a href="#判断换位词" class="headerlink" title="判断换位词"></a>判断换位词</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 判断换位词 单词的字母相同顺序不同即是换位词  如 true和ture</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter <span class="comment"># Counter目的是用来跟踪值出现的次数。</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(a,b)</span>:</span></span><br><span class="line"></span><br><span class="line">    print(Counter(a) == Counter(b))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    a = input(<span class="string">'输入第一个单词：\n'</span>)</span><br><span class="line">    b = input(<span class="string">'输入第二个单词：\n'</span>)</span><br><span class="line"></span><br><span class="line">    main(a,b)  <span class="comment"># True or False</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="返回列表中重复元素"><a href="#返回列表中重复元素" class="headerlink" title="返回列表中重复元素"></a>返回列表中重复元素</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 返回列表中重复的元素</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(lst)</span>:</span></span><br><span class="line"></span><br><span class="line">    c = Counter(lst)</span><br><span class="line">    print(list(filter(<span class="keyword">lambda</span> a:c[a]&gt;<span class="number">1</span>,c)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">    find(lst)</span><br></pre></td></tr></table></figure>
+
+<h4 id="返回指定格式的文件名"><a href="#返回指定格式的文件名" class="headerlink" title="返回指定格式的文件名"></a>返回指定格式的文件名</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 返回指定格式的文件名</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_file</span><span class="params">(dir,extension=<span class="string">'jpg'</span>)</span>:</span></span><br><span class="line"></span><br><span class="line">    list = []</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(dir): <span class="comment"># 遍历dir目录下的所有文件和目录名</span></span><br><span class="line"></span><br><span class="line">        splits = os.path.splitext(filename)  <span class="comment"># 分割路径，返回路径名和文件扩展名的元组 如('filename','.jpg')</span></span><br><span class="line">        ext = splits[<span class="number">1</span>] <span class="comment"># 获取扩展名</span></span><br><span class="line">        <span class="keyword">if</span> ext == <span class="string">'.'</span>+extension:</span><br><span class="line">            list.append(filename)</span><br><span class="line">            </span><br><span class="line">    print(<span class="string">'[-] 检索完毕，结果已得出'</span>)</span><br><span class="line">    <span class="keyword">for</span> name <span class="keyword">in</span> list:</span><br><span class="line">        print(name+<span class="string">'\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    dir = input(<span class="string">'请输入要搜索的文件路径'</span>)</span><br><span class="line">    ext = input(<span class="string">'请输入要搜索的文件类型'</span>)</span><br><span class="line">    <span class="comment"># find_file(r'E:\blog\source\_posts','md')</span></span><br><span class="line">    find_file(dir,ext)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i>python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/01/26/XSS利用JS获取Cookie维持权限/" rel="next" title="XSS利用JS获取Cookie维持权限">
+                  <i class="fa fa-chevron-left"></i> XSS利用JS获取Cookie维持权限
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块库"><span class="nav-number">2.</span> <span class="nav-text">模块库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正篇"><span class="nav-number">3.</span> <span class="nav-text">正篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简易计算器"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">简易计算器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#去掉最大最小值求平均"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">去掉最大最小值求平均</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二分搜索"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">二分搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#乘法口诀表"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">乘法口诀表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#输出fibonacci数列前n项"><span class="nav-number">3.0.0.5.</span> <span class="nav-text">输出fibonacci数列前n项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#检测List中是否有重复元素"><span class="nav-number">3.0.0.6.</span> <span class="nav-text">检测List中是否有重复元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤空值"><span class="nav-number">3.0.0.7.</span> <span class="nav-text">过滤空值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表反转"><span class="nav-number">3.0.0.8.</span> <span class="nav-text">列表反转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并字典"><span class="nav-number">3.0.0.9.</span> <span class="nav-text">合并字典</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回字典中最大的前n个值"><span class="nav-number">3.0.0.10.</span> <span class="nav-text">返回字典中最大的前n个值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断换位词"><span class="nav-number">3.0.0.11.</span> <span class="nav-text">判断换位词</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回列表中重复元素"><span class="nav-number">3.0.0.12.</span> <span class="nav-text">返回列表中重复元素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回指定格式的文件名"><span class="nav-number">3.0.0.13.</span> <span class="nav-text">返回指定格式的文件名</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GgBoom993"
+      src="/images/timg1.jpg">
+  <p class="site-author-name" itemprop="name">GgBoom993</p>
+  <div class="site-description" itemprop="description">无名小卒</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/GgBoom-993" title="GitHub → https://github.com/GgBoom-993"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/heren1016" title="Weibo → https://weibo.com/heren1016" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https://github.com/">github官网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.somd5.com/" title="https://www.somd5.com/" rel="noopener" target="_blank">MD5在线解密</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://tool.chinaz.com/" title="http://tool.chinaz.com/" rel="noopener" target="_blank">站长工具</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.sec-wiki.com/" title="https://www.sec-wiki.com/" rel="noopener" target="_blank">SecWiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.dooccn.com" title="http://www.dooccn.com" rel="noopener" target="_blank">在线代码编译</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GgBoom993</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">36k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">32 分钟</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/30/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站已运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,224' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
