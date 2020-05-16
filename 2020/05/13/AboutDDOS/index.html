@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/slice-fill1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/slice-fill.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"right","width":280,"display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":8},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="DOS/DDOS分类攻击源      • 单攻击源：DOS     • 多攻击源：DDOS 攻击方式     • 消耗资源     • 利用漏洞 攻击目标     • 带宽上限     • 协议上限     • 设备性能上限     • 应用性能上限     • 系统性能上限     • 崩溃系统     • 崩溃程序">
+<meta name="keywords" content="Web,DDOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AboutDDOS">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2020/05/13/AboutDDOS/index.html">
+<meta property="og:site_name" content="GgBoom993&#39;s Blog">
+<meta property="og:description" content="DOS/DDOS分类攻击源      • 单攻击源：DOS     • 多攻击源：DDOS 攻击方式     • 消耗资源     • 利用漏洞 攻击目标     • 带宽上限     • 协议上限     • 设备性能上限     • 应用性能上限     • 系统性能上限     • 崩溃系统     • 崩溃程序">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-13T05:56:40.786Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AboutDDOS">
+<meta name="twitter:description" content="DOS/DDOS分类攻击源      • 单攻击源：DOS     • 多攻击源：DDOS 攻击方式     • 消耗资源     • 利用漏洞 攻击目标     • 带宽上限     • 协议上限     • 设备性能上限     • 应用性能上限     • 系统性能上限     • 崩溃系统     • 崩溃程序">
+
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/2020/05/13/AboutDDOS/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>AboutDDOS | GgBoom993's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GgBoom993's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2020/05/13/AboutDDOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AboutDDOS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-05-13 12:58:17 / 修改时间：13:56:40" itemprop="dateCreated datePublished" datetime="2020-05-13T12:58:17+08:00">2020-05-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/随笔/" itemprop="url" rel="index">
+                    <span itemprop="name">随笔</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="DOS-DDOS分类"><a href="#DOS-DDOS分类" class="headerlink" title="DOS/DDOS分类"></a>DOS/DDOS分类</h1><pre><code>攻击源 
+    • 单攻击源：DOS
+    • 多攻击源：DDOS
+攻击方式
+    • 消耗资源
+    • 利用漏洞
+攻击目标
+    • 带宽上限
+    • 协议上限
+    • 设备性能上限
+    • 应用性能上限
+    • 系统性能上限
+    • 崩溃系统
+    • 崩溃程序</code></pre><a id="more"></a>
+
+<h1 id="常见DOS-DDOS方式"><a href="#常见DOS-DDOS方式" class="headerlink" title="常见DOS/DDOS方式"></a>常见DOS/DDOS方式</h1><h2 id="Smurf"><a href="#Smurf" class="headerlink" title="Smurf"></a>Smurf</h2><p>利用ping广播,将广播回复地址设置成攻击目标地址，从而当前网段下所有主机都会向其回复一个响应信息，导致网络阻塞。<br>如今，大多数网络已经对smurf攻击免疫。</p>
+<h2 id="TearDrop"><a href="#TearDrop" class="headerlink" title="TearDrop"></a>TearDrop</h2><p>在数据传输过程中，如果一个数据过大，则数据传输会进行数据包的截断。会对截断位置进行一个标记，等待数据传输完再通过标记对数据进行拼接，从而传输完整的数据。使用TearDrop可以修改数据截断中的标记位置，从而利用截断的偏移让目标死机蓝屏 。<br>TearDrop只针对老系统如win95，安卓2.0，ios6.0等。虽然TearDrop这种攻击已经过时了，但是攻击方式独特，仍有学习的意义。</p>
+<h2 id="Syn-flood"><a href="#Syn-flood" class="headerlink" title="Syn_flood"></a>Syn_flood</h2><p>建立一个完整的TCP连接，需要完成一个“三次握手与四次挥手”。在这个过程中，如果向目标请求TCP连接，发送syn包，目标回复后我们不再回复，则对方的TCP连接状态会暂时处于等待回复状态一段时间后才断开，在这段时间里，攻击方请求大量的TCP连接，发送大量的syn包而不对目标的TCP回复进行响应，则对方会有大量TCP连接处于等待回复状态，从而导致对方网络带宽卡死。</p>
+<h2 id="Sockstress"><a href="#Sockstress" class="headerlink" title="Sockstress"></a>Sockstress</h2><p>Sockstress攻击发生在建立完整的TCP连接之后。通过返回TCP包设定属性windows窗口值为0，即表示本机暂时没地方接受数据，让对方等待。发送大量该类型的包后对方主机会出现内存飙高，Cpu高占用等状态，从而卡死主机达到目的</p>
+<h2 id="DNS放大"><a href="#DNS放大" class="headerlink" title="DNS放大"></a>DNS放大</h2><p>DNS放大攻击通过伪造IP地址向DNS服务器做递归查询，从而DNS服务器向伪造的地址返回大量信息，导致伪造地址目标卡死。<br>DNS放大攻击的优势在与攻击方只需请求很小流量，DNS服务器就能向伪造地址返回大量流量，大大提高了攻击强度和攻击效率。<br>DNS放大攻击需要满足特定条件才能使用：</p>
+<ol>
+<li>所在网络支持伪造被攻击者IP地址</li>
+</ol>
+<ol start="2">
+<li>DNS服务器支持递归查询</li>
+</ol>
+<h2 id="SNMP放大"><a href="#SNMP放大" class="headerlink" title="SNMP放大"></a>SNMP放大</h2><p>SNMP放大也是放大攻击的一种，同样利用了小请求大回复的原理。通过伪造IP地址向SNMP服务器做查询，SNMP会返回大量信息到伪造的地址，从而让对方卡死。<br>常用端口161，162</p>
+<h2 id="NTP放大"><a href="#NTP放大" class="headerlink" title="NTP放大"></a>NTP放大</h2><p>NTP放大攻击同其余放大攻击原理大致相同，伪造IP地址向NTP服务器进行小流量请求，NTP服务器会向伪造地址放回大量信息。<br>NTP放大需要满足的条件：</p>
+<ol>
+<li>必须monlist开启</li>
+</ol>
+<ol start="2">
+<li>常用端口123</li>
+</ol>
+<p>NTP放大攻击的防御措施是：</p>
+<ol>
+<li>对NTP服务器进行合理的管理和配置，将全部的NTP服务软件升级到最新的版本；         4.2.7p26以上版本</li>
+</ol>
+<ol start="2">
+<li>关闭monlist或者在配置文件中添加noquery参数来限制客户端的monlist等信息查询请求</li>
+</ol>
+<ol start="3">
+<li>通过防火墙对UDP试用的123端口进行限制，只允许NTP服务于固定IP进行通信；</li>
+</ol>
+<ol start="4">
+<li>运用足够大的带宽，硬抗NTP服务产生的放大型流量攻击。</li>
+</ol>
+<ol start="5">
+<li>使用DDoS防御产品，将入口异常访问请求进行过滤清洗，然后将正常的访问请求分发给服务器进行业务处理。</li>
+</ol>
+<ol start="6">
+<li>发现漏洞:<br>ntpdc -n -c 1.1.1.1<br>ntpq -c rv 1.1.1.1<br>ntpdc -c sysinfo 1.1.1.1</li>
+</ol>
+<h1 id="应用层DOS"><a href="#应用层DOS" class="headerlink" title="应用层DOS"></a>应用层DOS</h1><h2 id="CesarFTP-0-99服务漏洞"><a href="#CesarFTP-0-99服务漏洞" class="headerlink" title="CesarFTP 0.99服务漏洞"></a>CesarFTP 0.99服务漏洞</h2><p>CesarFTP是一款免费FTP服务器端软件，体积小，随装随用，使用方便。<br>CesarFTP 0.99存在缓冲区一处漏洞，通过命令发送大量‘\n’（通过FUZZ测试得出）导致缓冲区溢出从而服务崩溃</p>
+<h1 id="相关工具"><a href="#相关工具" class="headerlink" title="相关工具"></a>相关工具</h1><h2 id="Slowhttptest"><a href="#Slowhttptest" class="headerlink" title="Slowhttptest"></a>Slowhttptest</h2><p>Slowhttptest是依赖HTTP协议的慢速攻击DoS攻击工具，设计的基本原理是服务器在请求完全接收后才会进行处理，如果客户端的发送速度缓慢或者发送不完整，服务端为其保留连接资源池占用，大量此类请求并发将导致DoS。<br>包含四种攻击方式</p>
+<ol>
+<li>Slowloris：完整的http请求是以\r\n\r\n结尾，攻击时仅发送\r\n，少发送一个\r\n，服务器认为请求还未发完，就会一直等待直至超时。等待过程中占用连接数达到服务器连接数上限，服务器便无法处理其他请求。 </li>
+</ol>
+<ol start="2">
+<li>Slow POST：在HTTP头申明较大content长度，body部分缓慢发送</li>
+</ol>
+<ol start="3">
+<li>Slow Read attack：请求正常发送，慢速读取响应数据，调整TCP连接中window窗口大小（ps：sockstress中将window调为0）</li>
+</ol>
+<ol start="4">
+<li>Apache Range Header attack：耗尽cpu，内存</li>
+</ol>
+<h2 id="RUDY（Are-u-dead-yet）"><a href="#RUDY（Are-u-dead-yet）" class="headerlink" title="RUDY（Are-u-dead-yet）"></a>RUDY（Are-u-dead-yet）</h2><p>慢攻击DOS<br>利用数据缓慢发送，耗尽目标资源。<br>针对Web，需要有一个表单提交的页面，每次发送一字节慢慢的发。类似于Slowhttptest<br>获取地址 <a href="https://sourceforge.net/projects/r-u-dead-yet/" target="_blank" rel="noopener">https://sourceforge.net/projects/r-u-dead-yet/</a></p>
+<h2 id="Hping3"><a href="#Hping3" class="headerlink" title="Hping3"></a>Hping3</h2><p>hping是面向命令行的用于生成和解析TCP/IP协议数据包汇编/分析的开源工具。利用hping3中组合语法，可以达到DOS的效果</p>
+<ol>
+<li>Syn Flood:<pre><code>hping3 -c 1000 -d 120 -S -w 64 -p 80 --flood --rand-source 1.1.1.1
+hping3 -S -P -U -p 80 --flood --rand-source 1.1.1.1</code></pre></li>
+<li>ICMP Flood: <pre><code>hping3 -q -n -a 1.1.1.1 --icmp -d 56 --flood 1.1.1.1</code></pre></li>
+<li>UDP Flood: <pre><code>hping3 -a 1.1.1.1 --udp -s 53 -d 100 -p 53 --flood 1.1.1.1  </code></pre></li>
+<li>TCP Flood: <pre><code>hping3 -SARFUP -p 80 --flood --rand-source 1.1.1.1</code></pre></li>
+<li>LAND攻击:<pre><code>特殊种类的SynFlood攻击，源地址和目标地址都是受害者 伪造的源地址和目标地址相同，伪造自己给自己发包，自己给自己回包，自己打自己
+Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
+<li>TCP全连接DOS:<pre><code>nping --tcp-connect --rate=10000 -c 1000000000 -q 1.1.1.1</code></pre></li>
+<li>查公网IP<pre><code>nping --echo-client &quot;public&quot; echo.nmap.org --udp</code></pre></li>
+</ol>
+<h2 id="Siege"><a href="#Siege" class="headerlink" title="Siege"></a>Siege</h2><p>siege是一款针对Web http/https性能测试的一款工具，可以用来进行DOS<br>siege -g <a href="http://1.1.1.1/a.php" target="_blank" rel="noopener">http://1.1.1.1/a.php</a>  /  1.1.1.1<br>siege -i -c 1000 <a href="http://1.1.1.1/a.php" target="_blank" rel="noopener">http://1.1.1.1/a.php</a> -A<br>同时攻击多个URL，添加-f 使用字典文件，siege默认的字典/etc/siege/urls.txt</p>
+<h2 id="T50"><a href="#T50" class="headerlink" title="T50"></a>T50</h2><p>T50是对Web进行网络性能测试工具，可以用来进行DOS。参数可以指定各种网络协议，包括GRE、ICMP、TCP、UDP……<br>t50 1.1.1.1 –flood –turbo -S -protocol TCP –dport 80  (添加turbo参数将提高攻击能力)</p>
+<h2 id="Nmap"><a href="#Nmap" class="headerlink" title="Nmap"></a>Nmap</h2><p>知名网络扫描工具，其内也包含有DOS脚本，存放于 /usr/share/nmap/scripts/script.db</p>
+<h2 id="匿名者DOS工具"><a href="#匿名者DOS工具" class="headerlink" title="匿名者DOS工具"></a>匿名者DOS工具</h2><p>由世界知名黑客组织匿名者发布的DOS工具包，包括LOIC,HOIC,XOIC,DDoSer……<br>这些工具使用简单，图形化界面可指定攻击线程，目标地址，端口，攻击方式等等<br>但是都不支持代理，无法隐藏真实IP</p>
+<h2 id="HULK"><a href="#HULK" class="headerlink" title="HULK"></a>HULK</h2><p>HTTP Unberable Load King 是一款基于python的DOS工具，HULK随机产生大量唯一的地址请求，可以避免缓存命中，耗尽WEB服务器资源池。<br>源客户的混淆——通过一个User Agent的已知列表，每http一个请求的用户代理都是随机来自于已知列表。<br>引用伪装——指向请求的referer是伪造的，要么指向主机自己，要么指向主要的已知站点。referer是产生请求的url。<br>粘附性——使用标准的http请求去请求服务器，使用变化的的keep-alive时间窗保持连接建立不使用缓存——这是一个前提</p>
+<h2 id="GoldenEye"><a href="#GoldenEye" class="headerlink" title="GoldenEye"></a>GoldenEye</h2><p>GoldenEye是一款Layer 7拒绝服务测试工具，基于Python开发。利用的攻击向量：HTTP Keep Alive + NoCache。可指定参数：<br>-u：指定需要使用的user-agent列表文件（默认随机生成）；</p>
+<p>-w：指定并行worker数量（默认50）；</p>
+<p>-s：指定并行socket数量（默认30）；</p>
+<p>-m：指定使用的HTTP方法，“get“、”post“或”random“（默认get）；</p>
+<p>-d：启用调试模式，可输出更多的verbose内容（默认False）；</p>
+<p>-n：关闭SSL证书验证功能（默认True）；</p>
+<p>-h：查看帮助信息</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
+              <a href="/tags/DDOS/" rel="tag"><i class="fa fa-tag"></i>DDOS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/03/02/2020-03-02深信服安服一面/" rel="next" title="2020.03.02深信服安服一面">
+                  <i class="fa fa-chevron-left"></i> 2020.03.02深信服安服一面
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/" rel="prev" title="【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破">
+                  【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DOS-DDOS分类"><span class="nav-number">1.</span> <span class="nav-text">DOS/DDOS分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见DOS-DDOS方式"><span class="nav-number">2.</span> <span class="nav-text">常见DOS/DDOS方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Smurf"><span class="nav-number">2.1.</span> <span class="nav-text">Smurf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TearDrop"><span class="nav-number">2.2.</span> <span class="nav-text">TearDrop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Syn-flood"><span class="nav-number">2.3.</span> <span class="nav-text">Syn_flood</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sockstress"><span class="nav-number">2.4.</span> <span class="nav-text">Sockstress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS放大"><span class="nav-number">2.5.</span> <span class="nav-text">DNS放大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNMP放大"><span class="nav-number">2.6.</span> <span class="nav-text">SNMP放大</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NTP放大"><span class="nav-number">2.7.</span> <span class="nav-text">NTP放大</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用层DOS"><span class="nav-number">3.</span> <span class="nav-text">应用层DOS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CesarFTP-0-99服务漏洞"><span class="nav-number">3.1.</span> <span class="nav-text">CesarFTP 0.99服务漏洞</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关工具"><span class="nav-number">4.</span> <span class="nav-text">相关工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Slowhttptest"><span class="nav-number">4.1.</span> <span class="nav-text">Slowhttptest</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUDY（Are-u-dead-yet）"><span class="nav-number">4.2.</span> <span class="nav-text">RUDY（Are-u-dead-yet）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hping3"><span class="nav-number">4.3.</span> <span class="nav-text">Hping3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Siege"><span class="nav-number">4.4.</span> <span class="nav-text">Siege</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#T50"><span class="nav-number">4.5.</span> <span class="nav-text">T50</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nmap"><span class="nav-number">4.6.</span> <span class="nav-text">Nmap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#匿名者DOS工具"><span class="nav-number">4.7.</span> <span class="nav-text">匿名者DOS工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HULK"><span class="nav-number">4.8.</span> <span class="nav-text">HULK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GoldenEye"><span class="nav-number">4.9.</span> <span class="nav-text">GoldenEye</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GgBoom993"
+      src="/images/timg1.jpg">
+  <p class="site-author-name" itemprop="name">GgBoom993</p>
+  <div class="site-description" itemprop="description">无名小卒</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/GgBoom-993" title="GitHub → https://github.com/GgBoom-993"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/heren1016" title="Weibo → https://weibo.com/heren1016" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https://github.com/">github官网</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.somd5.com/" title="https://www.somd5.com/" rel="noopener" target="_blank">MD5在线解密</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://tool.chinaz.com/" title="http://tool.chinaz.com/" rel="noopener" target="_blank">站长工具</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.sec-wiki.com/" title="https://www.sec-wiki.com/" rel="noopener" target="_blank">SecWiki</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.dooccn.com" title="http://www.dooccn.com" rel="noopener" target="_blank">在线代码编译</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GgBoom993</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">44k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">40 分钟</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  </div>
+-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/30/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站已运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,224' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
