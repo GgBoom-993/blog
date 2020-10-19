@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Crawlergo+Xray实现自动化被动扫描</title>
+    <url>/2020/08/08/Crawlergo+Xray%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1>]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>漏洞挖掘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【疑难杂症】python下使用scapy模块报错</title>
+    <url>/2020/07/09/python%E4%B8%8B%E4%BD%BF%E7%94%A8scapy%E6%A8%A1%E5%9D%97%E6%8A%A5%E9%94%99/</url>
+    <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>python下使用scapy模块进行发包时报错：FATAL Bad Memory Block.（致命的坏内存块。）</p>
+<a id="more"></a>
+
+<img src="/2020/07/09/python下使用scapy模块报错/1.png">
+
+<h1 id="0x01-解决"><a href="#0x01-解决" class="headerlink" title="0x01 解决"></a>0x01 解决</h1><p>针对scapy的该特定错误，百度没有找到明确解决方案。经过多处搜索，发现类似的问题在NMAP扫描时也出现过，主要原因是winpcap冲突。</p>
+<p>检查本地winpcap，果然有两个版本同时存在，一为10.xx 二为4.xx<br>卸载10.xx 重新运行一下程序 正常运行</p>
+<img src="/2020/07/09/python下使用scapy模块报错/2.png">
+]]></content>
+      <categories>
+        <category>疑难杂症</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【浮生六记】低头才是成长的标志</title>
+    <url>/2020/07/07/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91%E4%BD%8E%E5%A4%B4%E6%89%8D%E6%98%AF%E6%88%90%E9%95%BF%E7%9A%84%E6%A0%87%E5%BF%97/</url>
+    <content><![CDATA[<blockquote>
+<p>从高考走向生活——从反抗到身不由己</p>
+</blockquote>
+<a id="more"></a>
+
+<p>7月7号，以往此时最能让人想起的是“七七事变”，而今天绝大多数人关注的是这独特而又不独特的高考。是的，2020年，高考延期一个月。</p>
+<p>我的整个高中时期，可以说90%没有在学习。作为从农村转学去城市上学的一名学生，学校一开始就将我分配在最差的班里，成绩最差的班。为什么我要强调一遍成绩最差？因为在整个高中时期，最值得让我回忆的就是这个班了，也很不幸，之后成绩突出被调去实验班了。这些个故事，都不是重点，日后有机会仍然能讲给熟悉的或者不熟悉的、人生过客也好、白头终老也罢。</p>
+<p>总之，我的高中是失败的，我的高考也是失败的，但是丝毫不会影响我对未来每次高考的辩思，我对生活的辩思。</p>
+<p>我是一个极度不情愿学习的人，我这里说的“学习”指的是很纯粹的学习应式教材书本知识，所以即使我上了大学已经作为一个“过来人”经历了高考，并且对其心生遗憾的同时，我依旧没有任何考研的想法。</p>
+<p>教材上的知识，是让我很不屑且愤慨的。这样的知识在我看来是非常不符合“知识”存在的真正意义，也偏离了“知识”应该给我们带来的正确影响，本该和其本心从根源处接受转化，却变成了浮躁的带有目的的应试产物。总是思考这些问题着实让我心里感到难受，于是我抗拒，我不学，我说要当圣人，生活都是世俗之物，真正的知识才能让人升华。没错，我高中就是这样想的，谁还没有个中二的时代呢。因此才有了我开始讲的小插曲，我学习不好，我抗拒学习等等。当然这些都是我的个人原因，并不能代表大众，不能代表每一个高中学子。有可能某个学生只是单纯的不喜欢学习，还有可能他只是没有学习的天赋，我们不能否定每个行为每个工作都离不开讨论天赋这个问题。但是不管你出于什么理由，大多数人都很难对高中学习报以极大的热情，确实如此。语文一门卷子，数学一门卷子，英语一门卷子，生物一门卷子……门门老师都说，我的作业不多，门门老师都忘了“不积小流无以成江海”。 这就是现实，那有多少人能996学习一天，晚上回去还热情高涨的刷完十套卷子？其实是没有的。你喜欢吃巧克力，我让你天天吃巧克力，007的吃巧克力你也会吃腻，你没法热情高涨。可能会人有问，那为什么学霸就可以？其实学霸也不可以，只是学霸低头了。</p>
+<p>对这个世界最好的思考方式，就是任何一件事都值得抱有怀疑的态度。学霸学会了向高考低头，而你以为自己学会了低头。大概从什么时候起，可能是小学可能是初中，甚至更早。在我生活的年代，小时候我们会偶尔的从杂志上，报纸上，甚至故事会上瞥见一些鸡汤——诸如要学会低头此类的。除此之外，我们还可以从各种途径耳濡目染到传播此类思想的东西，比如新华字典会告诉你“大丈夫能屈能伸”，还有某电视剧会告诉你，人在屋檐下不得不低头……这种例子很多。你一听，嗷，我懂了，原来是这么个意思：我们要学会顺从，要能屈能伸，遇见困难要学会低头，避其锋芒……那你真的懂了吗，你能屈能伸了吗？你的语文老师很凶，你语文课就乖乖的，语文作业认真写；地理老师很和蔼脾气很好，你就上课偷玩手机，作业蒙混过关。这叫欺软怕硬。当你觉得你学会的时候，就应当怀疑自己真的学会了吗？当回到家里面对数十张卷子，头皮发麻，心力交瘁的时候，多数人会选择成全自己，少做几张或者随便做做以满足自己心里或者生理上渴望的需求。少数人会选择牺牲自己，顶着压力和心中的一百个不愿意去做完这些卷子，甚至还会多做。在牺牲高考和牺牲自己之间对应着的是向自己低头还是向高考低头，每个人都会说大丈夫能屈能伸，却没有一个人会告诉你向谁屈向谁伸。普通人向自己屈，学霸向高考屈。</p>
+<p>我在大学期间，依旧是一个普通人。走过了大二才开始悔恨当初为什么不好好学习，如今找工作都很不容易。但是，这一次，我学会了低头，向生活低头。不再一腔热血的高呼圣人为上，不再相信“天生我材必有用”这样的志气。因为现实，不是跑到黄鹤楼上写首诗，亦或者喊一句“我辈岂是蓬蒿人”就能自命不凡的。多少人向生活低了头，这样的话早就成为各类毒鸡汤的经典材料了，但是事实确实如此，毒鸡汤这次说的对。小时候老师问你的梦想是什么，小朋友会说我要当老师像老师一样伟大，我要当消防员去消灭火灾，我要当医生造福社会治病救人……20年后，曾经相当老师的孩子觉得老师工资太低于是做了程序员；曾经想当消防员的孩子为了让父母安心终老，考了公务员；曾经相当医生的孩子在面试了很多家医院后发现，名额都是内定的，没有关系根本进不去，只能转行在一家小公司天天做PPT。这才是生活，充满无奈又苦涩。</p>
+<p>我宁愿多吃一点亏，也想保留住少时的童真；善良的对待每一件事，因为我觉得世界也会善良对我；不加以揣测，尽力躲避着社会黑暗的一面，乞求不要打破心中的乌托邦……</p>
+<p>而现在，每一件事都越来越难了。</p>
+]]></content>
+      <categories>
+        <category>浮生六记</category>
+      </categories>
+      <tags>
+        <tag>感悟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【疑难杂症】pycharm出现大量破浪下划线</title>
+    <url>/2020/07/05/pycharm%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F%E7%A0%B4%E6%B5%AA%E4%B8%8B%E5%88%92%E7%BA%BF/</url>
+    <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>最近准备写个简单的扫描器，想通过python+pyqt5实现。看了一些前车之鉴，发现python3.8和QT5有冲突，就换了个3.7的环境。结果一打开pycharm满屏的波浪线。理论上我换个环境，pycharm设置又没动，我也没更新，突然就出现这个问题。</p>
+<a id="more"></a>
+<img src="/2020/07/05/pycharm出现大量破浪下划线/1.png">
+<p>除此之外连if name = main都下划线提示有问题，我就很纳闷。<br>先随便点一个看看提示</p>
+<img src="/2020/07/05/pycharm出现大量破浪下划线/2.png">
+<p>百度了一下，是语法检查问题，大部分都不符合PEPE8标准，少几个空行就一顿波浪线，这就得吐槽一下，怎么连注释都不放过检查？</p>
+<h1 id="0x01-解决"><a href="#0x01-解决" class="headerlink" title="0x01 解决"></a>0x01 解决</h1><p>1、百度CSDN提供的方法<br>pycharm右下角小人头点开，向左拖动就不提示了。确实是不提示了，但是也啥都不检查了。比如我先使用random也不提示没有import了，很麻烦。</p>
+<img src="/2020/07/05/pycharm出现大量破浪下划线/6.png">
+
+<p>2、pycharm左上角 file-&gt;setting-&gt;inspection-&gt;python</p>
+<img src="/2020/07/05/pycharm出现大量破浪下划线/3.png">
+<p>进入修改语法检查设置，可以个性化设置代码检查。<br>但是全是英文还都是专业词汇实在不太好理解，整了半天又不敢乱点。<br>于是我就全都翻译了一遍，记录下来，以便之后再用。</p>
+<img src="/2020/07/05/pycharm出现大量破浪下划线/4.png">
+<img src="/2020/07/05/pycharm出现大量破浪下划线/5.png">
+
+<p>我自己设置取消了PEP8的编码规范检查，以及空的文档字符串。理论上，颜色浅的，在右侧severity表示为wake warning的都可以取消勾选，影响不大。</p>
+]]></content>
+      <categories>
+        <category>疑难杂症</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【疑难杂症】kali环境下dirsearch.py未找到命令</title>
+    <url>/2020/06/30/kali%E7%8E%AF%E5%A2%83%E4%B8%8Bdirsearch%E6%9C%AA%E6%89%BE%E5%88%B0%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>将dirsearch移到kali上后 出现如下问题</p>
+<img src="/2020/06/30/kali环境下dirsearch未找到命令/1.png">
+<a id="more"></a>
+
+<h1 id="0x01-解决"><a href="#0x01-解决" class="headerlink" title="0x01 解决"></a>0x01 解决</h1><p><strong>1、可能是权限问题，尝试更改权限</strong></p>
+<img src="/2020/06/30/kali环境下dirsearch未找到命令/2.png">
+<p>无效。</p>
+<p><strong>2、可能是python问题，尝试更换python版本</strong></p>
+<img src="/2020/06/30/kali环境下dirsearch未找到命令/3.png">
+<p>无效。<br>以后切换python版本可直接使用<br>update-alternatives –config python （选号）</p>
+<p><strong>3、可能是路径问题，尝试放到python目录下</strong></p>
+<img src="/2020/06/30/kali环境下dirsearch未找到命令/4.png">
+<p>依旧无效</p>
+<p><strong>4、命令有错？</strong></p>
+<img src="/2020/06/30/kali环境下dirsearch未找到命令/5.png">
+<p>运行成功，问题解决</p>
+<p>错误指令：dirsearch.py<br>正确指令：./dirsearch.py</p>
+<p>结论：我太蠢了</p>
+]]></content>
+      <categories>
+        <category>疑难杂症</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破</title>
     <url>/2020/05/15/%E3%80%90%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91%E6%9F%90%E7%AB%99%E7%BB%95%E8%BF%87%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇为前几日所挖Web漏洞记录，图中将抹去真实地址，已提交src，过程仅供学习参考。</p>
@@ -36,11 +151,11 @@
 </ol>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>Web</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -140,7 +255,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>-h：查看帮助信息</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>Web</tag>
@@ -170,11 +285,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>有遗憾，有收获，挺好。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>学习笔记</category>
       </categories>
-      <tags>
-        <tag>随笔</tag>
-      </tags>
   </entry>
   <entry>
     <title>一些python练习小例</title>
@@ -222,7 +334,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 
 ]]></content>
       <categories>
-        <category>编程</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -259,11 +371,11 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>①已经获取Webshell ②有修改权限</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -310,12 +422,12 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>在蚁剑中获取shell</p>
 <img src="/2020/01/20/htaccess文件上传漏洞利用/timg4.PNG">]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
-        <tag>Web渗透</tag>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -358,7 +470,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>以上做完基本就完成了，可以现在本地浏览，查看效果再发布出去。<br>这次做了一些基本的Web配置，足以让网站顺利运行，日后有其它需要将额外再对配置进行修改。</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>Web</tag>
@@ -390,13 +502,13 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>网站如果要防止CSRF攻击，则需要对敏感信息的操作实施对应的安全措施，防止这些操作出现被伪造的情况，从而导致CSRF。比如：<br>–对敏感信息的操作增加安全的token；<br>–对敏感信息的操作增加安全的验证码；<br>–对敏感信息的操作实施安全的逻辑流程，比如修改密码时，需要先校验旧密码等。</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -500,7 +612,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是我的hexo配置。在文件位置中/blog/为自己搭建hexo的根目录，其余在css中提到的修改，如果没有找到对应语句，可自行添加。在next主题7.x中css文件下没有_custom/custom.styl，可自行创建文件，并在<br>在./blog/themes/next/source/css/main.styl末尾加入 @import “_custom/custom.styl”; 引用即可</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>Web</tag>
@@ -598,18 +710,18 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 
 <h2 id="Less8"><a href="#Less8" class="headerlink" title="Less8"></a>Less8</h2>]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
     <title>尘</title>
-    <url>/2019/11/13/%E5%B0%98/</url>
+    <url>/2019/11/13/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91%E5%B0%98/</url>
     <content><![CDATA[<h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p>尘，不知道下一刻自己会去哪</p>
 <p>尘，不知道下一刻会不会遇见其他的尘</p>
 <p>尘，不知道下一刻自己是什么样</p>
@@ -633,7 +745,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>独自飘着。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>浮生六记</category>
       </categories>
       <tags>
         <tag>随笔</tag>
@@ -700,7 +812,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 ]]></content>
       <categories>
-        <category>编程</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -769,12 +881,12 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>DOM型XSS同反射型XSS与存储型XSS区别于恶意代码的执行源，非传统型的XSS。</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -869,13 +981,13 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>可见，在进行SQL注入时，要通过错误返回发现SQL执行语句或者大胆猜测SQL执行语句，才能构造完美闭合，达到最终目的。</p>
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
       </tags>
   </entry>
   <entry>
@@ -941,7 +1053,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p><a href="https://blog.csdn.net/mjx19951117/article/details/95808633" target="_blank" rel="noopener">https://blog.csdn.net/mjx19951117/article/details/95808633</a></p>
 ]]></content>
       <categories>
-        <category>硬件</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>小玩意儿</tag>
@@ -998,7 +1110,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p><a href="https://cloud.tencent.com/developer/article/1480567" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1480567</a></p>
 ]]></content>
       <categories>
-        <category>硬件</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>小玩意儿</tag>
@@ -1070,7 +1182,7 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>以上这些都是从一部电影中吸取来的，而我们生活中也处处充满着社工的痕迹，只要我们细心发现，就能从方方面面学到更多，从而提升自己。</p>
 ]]></content>
       <categories>
-        <category>理论</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>社工</tag>
@@ -1087,12 +1199,12 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <img src="/2019/10/06/信息搜集/信息搜集.jpg" title="avatar">
 ]]></content>
       <categories>
-        <category>理论</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
@@ -1137,7 +1249,7 @@ myqr.run(
 <p>save_name指定生成图片的名称</p>
 ]]></content>
       <categories>
-        <category>编程</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>python</tag>
@@ -1155,12 +1267,12 @@ myqr.run(
 
 ]]></content>
       <categories>
-        <category>Web</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
+        <tag>Web</tag>
         <tag>sql注入</tag>
         <tag>Web渗透</tag>
-        <tag>Web</tag>
         <tag>XSS</tag>
       </tags>
   </entry>
@@ -1219,7 +1331,7 @@ exploit</code></pre><p>4、执行成功</p>
 <p>Windows 7 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows 7 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows Server 2008 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu</a><br>Windows Server   2008 Itanium<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu</a><br>Windows Server 2008 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu</a><br>Windows Server 2008 R2 Itanium<br>    <a href="http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu</a><br>Windows Server 2008 R2 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Server   2003 x86<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe</a><br>Windows Server 2003 x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe</a><br>Windows XP SP3<br>    <a href="http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe</a><br>Windows XP SP2 for x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe</a><br>Windows XP SP3 for XPe<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe</a><br>WES09 and   POSReady 2009<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe</a></p>
 ]]></content>
       <categories>
-        <category>CVE</category>
+        <category>学习笔记</category>
       </categories>
       <tags>
         <tag>漏洞</tag>
@@ -1227,8 +1339,8 @@ exploit</code></pre><p>4、执行成功</p>
   </entry>
   <entry>
     <title>我的第一个blog</title>
-    <url>/2019/09/30/FistBlog/</url>
-    <content><![CDATA[<img src="/2019/09/30/FistBlog/FirstBlog.jpeg">
+    <url>/2019/09/30/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91FistBlog/</url>
+    <content><![CDATA[<img src="/2019/09/30/【浮生六记】FistBlog/FirstBlog.jpeg">
 
 
 <p>有幸终于搭建了自己的技术博客，这样提上日程的事情，竟是迟到了许久。</p>
@@ -1243,11 +1355,7 @@ exploit</code></pre><p>4、执行成功</p>
 <p>此外，您还可以在导航栏发现我的所有文章以及我的其他社交联系方式，GgBoom敬上。</p>
 ]]></content>
       <categories>
-        <category>随笔</category>
+        <category>浮生六记</category>
       </categories>
-      <tags>
-        <tag>随笔</tag>
-        <tag>博客相关</tag>
-      </tags>
   </entry>
 </search>
