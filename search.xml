@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Crawlergo+Xray实现自动化被动扫描</title>
-    <url>/2020/08/08/Crawlergo+Xray%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%A2%AB%E5%8A%A8%E6%89%AB%E6%8F%8F/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1>]]></content>
+    <title>深信服VPN下使用burp无法进行内网操作</title>
+    <url>/2020/11/30/%E6%B7%B1%E4%BF%A1%E6%9C%8DVPN%E4%B8%8B%E4%BD%BF%E7%94%A8burp%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E5%86%85%E7%BD%91%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="0X00-问题"><a href="#0X00-问题" class="headerlink" title="0X00 问题"></a>0X00 问题</h1><p>某次客户内部渗透，需要使用深信服VPN进入内网,使用VPN后发现无法访问内网资源，并且burp收不到请求，无法进一步测试；</p>
+<a id="more"></a>
+
+<p>1、火狐浏览器使用burp代理，无法访问；同时使用其他浏览器，可正常访问；<br>2、chrome浏览器使用burp代理，无法访问；同时使用其他浏览器，可正常访问；<br>3、虚拟机内NAT模式下使用burp，可以访问；</p>
+<h1 id="0X01-解决"><a href="#0X01-解决" class="headerlink" title="0X01 解决"></a>0X01 解决</h1><p>猜测是深信服VPN对burp流量有默认策略<br>1、本地开启socks进行流量妆发，burp内设置使用socks代理，可正常访问，但是访问速度会降低；</p>
+<p>2、在虚拟机内进行测试；</p>
+]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>疑难杂症</category>
       </categories>
       <tags>
-        <tag>工具</tag>
-        <tag>漏洞挖掘</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
-    <title>【疑难杂症】python下使用scapy模块报错</title>
+    <title>Python_FOFASearch+Xray</title>
+    <url>/2020/11/30/FOFASearch/</url>
+    <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>功能：通过调用FOFA api批量提取数据,并自动生成Xray批量bat脚本;</p>
+<p>环境：python3</p>
+<a id="more"></a>
+<p>说明：自用脚本，因此写死了email和key；普通会员只能取前100条，因此写死了page和size；自动生成Xray批量bat，通过注释main中的CreatXraybat()可取消该功能；以上灵活配置，按需更改；</p>
+<p>使用：配置好email和key，运行后按照提示输入FOFA语法，运行完成后将在当前目录下生成result_url.txt和scan.bat；在Xray目录下使用scan.bat将自动使用Xray基础爬虫进行批量扫描并生成html报告；</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">                   </span></span><br><span class="line"><span class="string">    [   Date  ] :  2020/11/18 17:09   </span></span><br><span class="line"><span class="string">    [  Author ] :  ggboom993</span></span><br><span class="line"><span class="string">    V1.0:   实现基本功能，获取Fofa数据</span></span><br><span class="line"><span class="string">    V1.1:   优化回显，加入调用API的返回状态判断；</span></span><br><span class="line"><span class="string">    V1.2:   加入可输出批量Xray_bat脚本；优化回显</span></span><br><span class="line"><span class="string">    V1.3    模块化，加入DOS参数运行（暂未投入使用），优化使用，写死email和key仅供个人使用。</span></span><br><span class="line"><span class="string">    V1.4    普通会员只能查前100条数据，因此写死page 和 size；只有语句是自定义的</span></span><br><span class="line"><span class="string">    V1.5    对提取到的url通过正则匹配统一为https://的形式，以解决xray有时无法扫描www开头域名的情况</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> getopt</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">调用Fofa API 获取数据，并生成文件</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Fofa_result</span><span class="params">(search)</span>:</span></span><br><span class="line">    email = <span class="string">"ggboom993@foxmail.com"</span>    <span class="comment"># 填入FofaEmail</span></span><br><span class="line">    key = <span class="string">"3f5b4146ffb8229f1231f5511053b782"</span>  <span class="comment"># 填入FofaKey</span></span><br><span class="line">    <span class="comment"># search = 'title="中医院"'   # 搜索语法</span></span><br><span class="line">    target = base64.b64encode(search.encode(<span class="string">'utf-8'</span>)).decode(<span class="string">"utf-8"</span>)   <span class="comment"># 建立访问目标</span></span><br><span class="line">    page = <span class="string">"1"</span>    <span class="comment"># 翻页数,默认为1；如需要第二页数据时需要在下方url后加入page参数: page=</span></span><br><span class="line">    size = <span class="string">"100"</span>  <span class="comment"># 每页返回记录数；普通会员每天免费100个，所以此处使用默认100即可</span></span><br><span class="line"></span><br><span class="line">    url = <span class="string">"https://fofa.so/api/v1/search/all?email="</span>+email+<span class="string">"&amp;key="</span>+key+<span class="string">"&amp;qbase64="</span>+target+<span class="string">"&amp;size="</span>+size+<span class="string">"&amp;page="</span>+page</span><br><span class="line"></span><br><span class="line">    response = requests.get(url)    <span class="comment"># 获取request结果</span></span><br><span class="line">    print(<span class="string">"[+] Get Request Connecting"</span>)</span><br><span class="line">    res_data = json.loads(response.text) <span class="comment"># 返回json形式数据结果</span></span><br><span class="line">    print(<span class="string">"[+] Get Response Data"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> response.status_code!=<span class="number">200</span>:   <span class="comment"># 判断状态码，不为200则回显错误信息,否则开始写文件</span></span><br><span class="line">        print(<span class="string">"[-] End: Error , "</span>+res_data[<span class="string">'errmsg'</span>]+<span class="string">" No files were created "</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"[+] Recording the file"</span>)</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'result_url.txt'</span>,<span class="string">'w+'</span>) <span class="keyword">as</span> f:   <span class="comment"># 写文件操作</span></span><br><span class="line">             <span class="keyword">for</span> i <span class="keyword">in</span> res_data[<span class="string">'results'</span>]:</span><br><span class="line">                 <span class="comment"># print(i[0])</span></span><br><span class="line">                 f.write(i[<span class="number">0</span>]+<span class="string">'\n'</span>) <span class="comment"># 写入results中的url，并换行</span></span><br><span class="line">        print(<span class="string">"[-] End: Success ! Result written in file 'result_url.txt'"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">创建批量Xray_bat脚本；</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatXraybat</span><span class="params">()</span>:</span></span><br><span class="line">    i = <span class="number">1</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'scan.bat'</span>,<span class="string">'w+'</span>) <span class="keyword">as</span> a:</span><br><span class="line">            <span class="keyword">with</span> open(<span class="string">'result_url.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> b:</span><br><span class="line">                <span class="keyword">for</span> line <span class="keyword">in</span> b.readlines():</span><br><span class="line">                    url = line.strip(<span class="string">'\n'</span>)</span><br><span class="line">                    <span class="comment"># 在URL中正则匹配http://  http无法使用https；https使用http则会自动跳转成https，因此使用http</span></span><br><span class="line">                    <span class="keyword">if</span> re.match(<span class="string">r"[http:]+//"</span>, url,re.I):</span><br><span class="line">                        <span class="keyword">pass</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        url = <span class="string">"http://"</span> + url</span><br><span class="line"></span><br><span class="line">                    <span class="comment"># 写bat文件</span></span><br><span class="line">                    bat_string = <span class="string">"xray webscan --basic-crawler &#123;&#125; --html-output &#123;&#125;.html \n"</span>.format(url,i)</span><br><span class="line">                    i=i+<span class="number">1</span></span><br><span class="line">                    a.write(bat_string)</span><br><span class="line">        print(<span class="string">"[-] End: Success ! Xray_Script written in file 'scan.bat'"</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        print(<span class="string">"[-] End: Error , Xray_Script written Fail no such file 'result_url.txt'"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">参数执行,感觉用参数反而不方便，会有遗漏参数导致使用FOFA_API的默认配置</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">def opt():</span></span><br><span class="line"><span class="string">    try:</span></span><br><span class="line"><span class="string">        opts,args = getopt.getopt(argv,["email=","key=","target=","page=","size=","help"],)</span></span><br><span class="line"><span class="string">    except getopt.GetoptError:</span></span><br><span class="line"><span class="string">        print('----------------------------\n--email    FOFA_Email[example@gmail.com]\n--key  FOFA_Key[5fd6946705a59example2a7u7eb1194]\n--target    SearchString[title="OA"]\n--page   Search PageNum[1]\n--size    One Page ResultSize[100]\n--help   View Help to Use-------------------------')</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"""</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">___________________  ________________   </span></span><br><span class="line"><span class="string">\_   _____/\_____  \ \_   _____/  _  \  </span></span><br><span class="line"><span class="string"> |    __)   /   |   \ |    __)/  /_\  \ </span></span><br><span class="line"><span class="string"> |     \   /    |    \|     \/    |    \ </span></span><br><span class="line"><span class="string"> \___  /   \_______  /\___  /\____|__  /</span></span><br><span class="line"><span class="string">     \/            \/     \/         \/  API_v1.5                  </span></span><br><span class="line"><span class="string">                </span></span><br><span class="line"><span class="string">                    Direct by  ggboom993</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    """</span>)</span><br><span class="line"></span><br><span class="line">    search = input(<span class="string">"FOFA语法："</span>)</span><br><span class="line">    Fofa_result(search)</span><br><span class="line">    CreatXraybat()</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>脚本工具</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python下使用scapy模块报错</title>
     <url>/2020/07/09/python%E4%B8%8B%E4%BD%BF%E7%94%A8scapy%E6%A8%A1%E5%9D%97%E6%8A%A5%E9%94%99/</url>
     <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>python下使用scapy模块进行发包时报错：FATAL Bad Memory Block.（致命的坏内存块。）</p>
 <a id="more"></a>
@@ -33,8 +55,8 @@
       </tags>
   </entry>
   <entry>
-    <title>【浮生六记】低头才是成长的标志</title>
-    <url>/2020/07/07/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91%E4%BD%8E%E5%A4%B4%E6%89%8D%E6%98%AF%E6%88%90%E9%95%BF%E7%9A%84%E6%A0%87%E5%BF%97/</url>
+    <title>低头才是成长的标志</title>
+    <url>/2020/07/07/%E4%BD%8E%E5%A4%B4%E6%89%8D%E6%98%AF%E6%88%90%E9%95%BF%E7%9A%84%E6%A0%87%E5%BF%97/</url>
     <content><![CDATA[<blockquote>
 <p>从高考走向生活——从反抗到身不由己</p>
 </blockquote>
@@ -54,11 +76,11 @@
         <category>浮生六记</category>
       </categories>
       <tags>
-        <tag>感悟</tag>
+        <tag>随笔</tag>
       </tags>
   </entry>
   <entry>
-    <title>【疑难杂症】pycharm出现大量破浪下划线</title>
+    <title>pycharm出现大量破浪下划线</title>
     <url>/2020/07/05/pycharm%E5%87%BA%E7%8E%B0%E5%A4%A7%E9%87%8F%E7%A0%B4%E6%B5%AA%E4%B8%8B%E5%88%92%E7%BA%BF/</url>
     <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>最近准备写个简单的扫描器，想通过python+pyqt5实现。看了一些前车之鉴，发现python3.8和QT5有冲突，就换了个3.7的环境。结果一打开pycharm满屏的波浪线。理论上我换个环境，pycharm设置又没动，我也没更新，突然就出现这个问题。</p>
 <a id="more"></a>
@@ -86,7 +108,7 @@
       </tags>
   </entry>
   <entry>
-    <title>【疑难杂症】kali环境下dirsearch.py未找到命令</title>
+    <title>kali环境下dirsearch.py未找到命令</title>
     <url>/2020/06/30/kali%E7%8E%AF%E5%A2%83%E4%B8%8Bdirsearch%E6%9C%AA%E6%89%BE%E5%88%B0%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h1 id="0x00-问题"><a href="#0x00-问题" class="headerlink" title="0x00 问题"></a>0x00 问题</h1><p>将dirsearch移到kali上后 出现如下问题</p>
 <img src="/2020/06/30/kali环境下dirsearch未找到命令/1.png">
@@ -117,31 +139,31 @@
   </entry>
   <entry>
     <title>【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破</title>
-    <url>/2020/05/15/%E3%80%90%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91%E6%9F%90%E7%AB%99%E7%BB%95%E8%BF%87%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
+    <url>/2020/05/15/%E6%9F%90%E7%AB%99%E7%BB%95%E8%BF%87%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇为前几日所挖Web漏洞记录，图中将抹去真实地址，已提交src，过程仅供学习参考。</p>
 <a id="more"></a>
 
 
 <h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><p>该漏洞发现于某商场注册功能处。先通过正常流程注册一个测试账号，账号aaaa1234  密码aaaa1234。</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/注册.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/注册.png">
 
 <p>开burp，挂代理，再次注册，抓包，可以得到注册的请求数据包。如图</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/注册抓包.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/注册抓包.png">
 
 <p>将此包发送到intruder模块，此时不要forward即可保留验证码的时效性，forward后爆破时会提示验证码过期。<br>在intruder模块中我选择了username和email两个参数进行爆破，在此之前通过验证得出如果email已被注册则不论用户名是否存在，都会优先提示“emai已被注册”，所以将email也加入变量。<br>用户名字典就使用常见的字典，然后在其中添加测试号保证最终结果的准确性<br>email字典是我写了一个python脚本生成的随机邮箱字典</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatFile</span><span class="params">(array)</span>:</span></span><br><span class="line">    filename = <span class="string">'RandomEmail.txt'</span></span><br><span class="line">    <span class="keyword">with</span> open(filename,<span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> array:</span><br><span class="line">            file.write(j + <span class="string">"\n"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatRndomEmail</span><span class="params">()</span>:</span></span><br><span class="line">    email_end = (<span class="string">'@qq.com'</span>)</span><br><span class="line">    email_array = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">        email_start = random.randint(<span class="number">12001</span>,<span class="number">95126445</span>)</span><br><span class="line">        email = str(email_start) + email_end</span><br><span class="line">        email_array.append(email)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> email_array</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    CreatFile(CreatRndomEmail())</span><br></pre></td></tr></table></figure>
 
 <p>start，可见枚举结果，其中length为263时都是提示用户名已存在：</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/枚举.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/枚举.png">
 
 <p>将已存在用户名导出到txt，可作为之后爆破密码的字典使用，可以看见测试账号也在其中，说明结果准确</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/枚举结果.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/枚举结果.png">
 
 <p>通过绕过验证码获得了已存在的用户，再前往登录页面进行密码爆破</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/登录.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/登录.png">
 
 <p>输入登录信息后，用将拦截下来的请求包发送至intruder，同样的此时不能将该包forward<br>在intruder模块中对username和password两个变量进行爆破。username字典使用刚才枚举出的结果，password字典可以使用常用弱口令字典。</p>
-<img src="/2020/05/15/【漏洞挖掘】某站绕过验证码实现用户枚举-密码爆破/爆破结果.png">
+<img src="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/爆破结果.png">
 <p>可以看见length为217的结果，页面都会返回登录成功，此处只有一个账号成功，就是之前注册的测试账号aaaa1234 ，已经可以确认漏洞存在。<br>至于更多的账号或者密码则可以使用更强大的字典，然此处仅做测试，勿要违法。</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><ol>
 <li>从注册处可以添加手机短信验证码注册，并设置发送验证码的时间间隔</li>
@@ -263,9 +285,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </tags>
   </entry>
   <entry>
-    <title>2020.03.02深信服安服一面</title>
-    <url>/2020/03/02/2020-03-02%E6%B7%B1%E4%BF%A1%E6%9C%8D%E5%AE%89%E6%9C%8D%E4%B8%80%E9%9D%A2/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>半个月前（2020.2.15）网申了深信服21届安服实习，今天一面结束，对提出的问题再做一下回顾和总结</p>
+    <title>2020.03.02记某次面试</title>
+    <url>/2020/03/02/2020.03.02%E8%AE%B0%E6%9F%90%E6%AC%A1%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>半个月前（2020.2.15）网申21届安服实习，今天面试结束，对提出的问题做一下回顾和总结</p>
 <h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>1、网投简历<br>2、收到面试短信，约定面试时间<br>3、电话面试</p>
 <p>面试全程大概30min</p>
 <a id="more"></a>
@@ -281,8 +303,7 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p><strong>10、你参加过强网杯和红帽杯，说说比赛中你做出来的印象最深的题</strong><br>    这两个比赛我参加时，没有让我眼前一亮的题目，可能是能力有限这些题对我来说只有难度上的区别，但是我在平时刷题时有遇见让我印象深刻的题目。<br>    这是一道隐写题，首先通过解密图片获取Web地址下载得到俩压缩包，通过题目信息猜出其中一个解压密码，解压出来一音频文件，通过音频频谱高低得到摩斯密码，解摩斯密码得到另一个压缩文件密码，另一个压缩文件中包含四个图片，通过stegsolve处理后并拼接四个图片得到一个二维码，扫描二维码得到flag.<br>    这道题刷新了我对CTF的认知，让我对CTF正视起来。</p>
 <p><strong>11、你是怎样学习安全的？你今后会想往哪方面学习和发展</strong><br>    主要通过网络课程自学安全，然后有问题就在小圈子里问大佬。<br>    零碎的时间会看安全公众号以及VX\QQ群获取新的资讯。<br>    干货一点的知识我主要通过加入大佬的知识星球，多看看别人的经验<br>    此外会刷一些靶场，自己动手简单测试一些小站，复现一些漏洞<br>    这些平时的学习我会做一个系统的分类的笔记，慢慢的点满自己的技能树<br>    在Web安全有一定实力后，我有往内网渗透方面发展的意向</p>
 <p><strong>12、你还有什么想问的？</strong><br>    略</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在面试之前有拜托别人问一下深信服安服的实习面试会考察什么，说的是弄懂XSS,CSRF，SQL注入基本原理等大部分Web安全漏洞原理就没问题。那我就想没啥问题了呀。<br>我自己的弱项就是网络协议，很怕被问到这方面，不过虽然没明确说要考察网络协议，但是心里还是得有点B数。所以临时又补充看了一些，但还是答的不好。<br>让我没想到的是，问了DDOS。好在之前玩过，有一些基础，不然一问三不知太尴尬了。<br>最后结束的时候我还是提了一个问题，我说我以上的问题我哪些回答的不好，我的个人水平应该继续怎么提升？面试官还是很不错的，之前我在回答的时候没说上来的，说的不好的他都当场帮助我指正了，感激！然后最后他说我的网络协议不太好（我自己也清楚），此外对于Web漏洞这一块我回答的太浅显了，理解的不够深入，可能是实战经验少的原因。<br>那这样一说我也猜想没多大可能了，事实也如此。虽然一面没过，但是更加清楚了自己目前的问题，又明确了新的方向。</p>
-<p>有遗憾，有收获，挺好。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>有遗憾，有收获，挺好。</p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
@@ -426,8 +447,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>漏洞</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -506,9 +527,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>靶场练习</tag>
-        <tag>Web渗透</tag>
         <tag>漏洞</tag>
+        <tag>Web渗透</tag>
+        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -714,14 +735,14 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
-        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
     <title>尘</title>
-    <url>/2019/11/13/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91%E5%B0%98/</url>
+    <url>/2019/11/13/%E5%B0%98/</url>
     <content><![CDATA[<h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p>尘，不知道下一刻自己会去哪</p>
 <p>尘，不知道下一刻会不会遇见其他的尘</p>
 <p>尘，不知道下一刻自己是什么样</p>
@@ -812,11 +833,11 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 
 ]]></content>
       <categories>
-        <category>学习笔记</category>
+        <category>脚本工具</category>
       </categories>
       <tags>
         <tag>python</tag>
-        <tag>小工具</tag>
+        <tag>工具</tag>
       </tags>
   </entry>
   <entry>
@@ -885,9 +906,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>靶场练习</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
+        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -985,9 +1006,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
-        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1271,9 +1292,9 @@ myqr.run(
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>sql注入</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
@@ -1339,8 +1360,8 @@ exploit</code></pre><p>4、执行成功</p>
   </entry>
   <entry>
     <title>我的第一个blog</title>
-    <url>/2019/09/30/%E3%80%90%E6%B5%AE%E7%94%9F%E5%85%AD%E8%AE%B0%E3%80%91FistBlog/</url>
-    <content><![CDATA[<img src="/2019/09/30/【浮生六记】FistBlog/FirstBlog.jpeg">
+    <url>/2019/09/30/FistBlog/</url>
+    <content><![CDATA[<img src="/2019/09/30/FistBlog/FirstBlog.jpeg">
 
 
 <p>有幸终于搭建了自己的技术博客，这样提上日程的事情，竟是迟到了许久。</p>
@@ -1357,5 +1378,8 @@ exploit</code></pre><p>4、执行成功</p>
       <categories>
         <category>浮生六记</category>
       </categories>
+      <tags>
+        <tag>随笔</tag>
+      </tags>
   </entry>
 </search>
