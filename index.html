@@ -215,6 +215,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2020/12/09/常见漏洞整改建议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/09/常见漏洞整改建议/" class="post-title-link" itemprop="url">常见漏洞整改建议</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-09 17:44:46" itemprop="dateCreated datePublished" datetime="2020-12-09T17:44:46+08:00">2020-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-15 11:50:32" itemprop="dateModified" datetime="2020-12-15T11:50:32+08:00">2020-12-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>常见漏洞的整改措施，可用于SRC、渗透报告的简要描述；<br>此建议仅供在大方向上参考，具体整改措施应根据业务系统实际情况而定。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/09/常见漏洞整改建议/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2020/11/30/Python-CreatFolder文件批量处理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,10 +335,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-30 13:14:45 / 修改时间：13:30:38" itemprop="dateCreated datePublished" datetime="2020-11-30T13:14:45+08:00">2020-11-30</time>
+              <time title="创建时间：2020-11-30 13:14:45" itemprop="dateCreated datePublished" datetime="2020-11-30T13:14:45+08:00">2020-11-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-08 20:27:02" itemprop="dateModified" datetime="2020-12-08T20:27:02+08:00">2020-12-08</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -283,9 +386,14 @@
 <p>功能： 按行读取txt内的文件名，在指定路径下创建n个新文件夹，并将指定文件内的所有文件复制到每一个新文件夹内。</p>
 <p>环境： python3</p>
 <p>使用：创建name.txt放入文件名，更改file_path为指定文件夹的路径，更改with open为name.txt 的路径。其余功能可通过其余注释代码进行自由配置； </p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> glob2 <span class="keyword">import</span> glob</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># def mycopyfile(srcfile, dstpath):  # 复制函数</span></span><br><span class="line"><span class="comment">#     # 如果不存在就提示不存在</span></span><br><span class="line"><span class="comment">#     if not os.path.isfile(srcfile):</span></span><br><span class="line"><span class="comment">#         print("%s not exist!" % (srcfile))</span></span><br><span class="line"><span class="comment">#     else:</span></span><br><span class="line"><span class="comment">#         fpath, fname = os.path.split(srcfile)  # 分离文件名和路径</span></span><br><span class="line"><span class="comment">#         if not os.path.exists(dstpath):</span></span><br><span class="line"><span class="comment">#             os.makedirs(dstpath)  # 创建路径</span></span><br><span class="line"><span class="comment">#         shutil.copy(srcfile, dstpath + fname)  # 复制文件</span></span><br><span class="line"><span class="comment">#         print("copy %s -&gt; %s" % (srcfile, dstpath + fname))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 被复制的文件夹路径</span></span><br><span class="line"><span class="comment"># src_dir = 'C:/Users/dell/Desktop/xxx/'</span></span><br><span class="line"><span class="comment"># # 目标路径</span></span><br><span class="line"><span class="comment"># dst_dir = './copy/'  # 目的路径记得加斜杠</span></span><br><span class="line"><span class="comment"># src_file_list = glob(src_dir + '*')  # glob获得路径下所有文件，可根据需要修改</span></span><br><span class="line"><span class="comment"># for srcfile in src_file_list:</span></span><br><span class="line"><span class="comment">#     mycopyfile(srcfile, dst_dir)  # 复制文件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取目录下文件列表</span></span><br><span class="line"><span class="comment"># v_foleder='C:/Users/dell/Desktop/xxx/xxx/'</span></span><br><span class="line"><span class="comment"># Vname_list=os.listdir(v_foleder)</span></span><br><span class="line"><span class="comment"># print(Vname_list)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定路径创建新文件夹</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"C:/Users/dell/Desktop/name.txt"</span>,<span class="string">"r"</span>,encoding=<span class="string">"UTF-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        folder_name= line.strip(<span class="string">'\n'</span>)</span><br><span class="line">        <span class="comment"># print(folder_name)</span></span><br><span class="line">        file_path = <span class="string">'C:/Users/dell/Desktop/评估/'</span>+ folder_name</span><br><span class="line">        <span class="comment"># print(file_path)</span></span><br><span class="line">        <span class="comment"># file_path2 = file_path + "/xxx"</span></span><br><span class="line">        <span class="comment"># print(file_path2)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_path): <span class="comment"># 判断文件夹是否已经存在,不存在就创建，并且复制文件进去；</span></span><br><span class="line">            <span class="comment"># 新建文件夹</span></span><br><span class="line">            os.mkdir(file_path)</span><br><span class="line">            <span class="comment"># os.mkdir(file_path2)</span></span><br><span class="line">            <span class="comment"># 复制文件夹进去</span></span><br><span class="line">            <span class="comment"># for srcfile in src_file_list:</span></span><br><span class="line">            <span class="comment">#     # print(srcfile)</span></span><br><span class="line">            <span class="comment">#     shutil.copy(srcfile, file_path2)</span></span><br><span class="line">            print(<span class="string">'[+] '</span>+ file_path + <span class="string">'-------- 创建成功'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">'[-] '</span>+ file_path + <span class="string">'-------- 目录已存在'</span>)</span><br><span class="line">print(<span class="string">"[-] 文件处理结束"</span>)</span><br></pre></td></tr></table></figure>
-
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/11/30/Python-CreatFolder文件批量处理/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -892,7 +1000,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/" class="post-title-link" itemprop="url">【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破</a>
+            <a href="/2020/05/15/某站绕过验证码实现用户枚举-密码爆破/" class="post-title-link" itemprop="url">某站绕过验证码实现用户枚举+密码爆破</a>
         </h1>
 
         <div class="post-meta">
@@ -909,7 +1017,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 18:09:09" itemprop="dateModified" datetime="2020-06-30T18:09:09+08:00">2020-06-30</time>
+                <time title="修改时间：2020-12-09 18:00:24" itemprop="dateModified" datetime="2020-12-09T18:00:24+08:00">2020-12-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1081,105 +1189,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2020/03/02/2020.03.02记某次面试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/timg1.jpg">
-      <meta itemprop="name" content="GgBoom993">
-      <meta itemprop="description" content="无名小卒">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GgBoom993's Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/02/2020.03.02记某次面试/" class="post-title-link" itemprop="url">2020.03.02记某次面试</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-02 19:30:28" itemprop="dateCreated datePublished" datetime="2020-03-02T19:30:28+08:00">2020-03-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-30 12:29:12" itemprop="dateModified" datetime="2020-11-30T12:29:12+08:00">2020-11-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">学习笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>半个月前（2020.2.15）网申21届安服实习，今天面试结束，对提出的问题做一下回顾和总结</p>
-<h1 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h1><p>1、网投简历<br>2、收到面试短信，约定面试时间<br>3、电话面试</p>
-<p>面试全程大概30min</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/03/02/2020.03.02记某次面试/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1230,7 +1239,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1251,9 +1260,6 @@
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
         <a href="https://github.com/GgBoom-993" title="GitHub → https://github.com/GgBoom-993"><i class="fa fa-fw fa-github"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://weibo.com/heren1016" title="Weibo → https://weibo.com/heren1016" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
       </span>
   </div>
 
@@ -1309,13 +1315,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">51k</span>
+    <span title="站点总字数">56k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">47 分钟</span>
+    <span title="站点阅读时长">51 分钟</span>
 </div>
 
 <!--

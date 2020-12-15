@@ -1,12 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>常见漏洞整改建议</title>
+    <url>/2020/12/09/%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%95%B4%E6%94%B9%E5%BB%BA%E8%AE%AE/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>常见漏洞的整改措施，可用于SRC、渗透报告的简要描述；<br>此建议仅供在大方向上参考，具体整改措施应根据业务系统实际情况而定。</p>
+<a id="more"></a>
+
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><pre><code>验证所有输入数据，有效检测攻击；对所有输出数据进行适当的编码，以防止任何已成功注入的脚本在浏览器端运行。具体如下 ：
+    1.输入验证：某个数据被接受为可被显示或存储之前，使用标准输入验证机制，验证所有输入数据的长度、类型、语法以及业务规则。
+    2.输出编码：数据输出前，确保用户提交的数据已被正确进行entity编码，建议对所有字符进行编码而不仅局限于某个子集。
+    3.明确指定输出的编码方式：不要允许攻击者为你的用户选择编码方式(如ISO8859-1或 UTF 8)。
+    4.警惕规范化错误：验证输入之前，必须进行解码及规范化以符合应用程序当前的内部表示方法。请确定应用程序对同一输入不做两次解码。
+    5.对客户端提交的数据进行过滤，一般建议过滤掉双引号（”）、尖括号（&lt;、&gt;）等特殊字符，或者对客户端提交的数据中包含的特殊字符进行实体转换，常见过滤符号如下所示：|&amp;; $%,\&apos;&quot;&lt;&gt;() 
+    6.在不影响应用的前提下，建议将cookie标记为httpOnly，同时禁用TRACE方法。
+    7.html实体编码。</code></pre><h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><pre><code>1.通过referer判断页面来源进行CSRF防护，该方式无法防止站内CSRF攻击及referer字段伪造。
+2.重要功能点使用动态验证码进行CSRF防护。
+3.通过token方式进行CSRF防护。
+4.为每个session创建唯一的随机字符串，并在受理请求时验证。</code></pre><h2 id="SSRF"><a href="#SSRF" class="headerlink" title="SSRF"></a>SSRF</h2><pre><code>1.过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。如果web应用是去获取某一种类型的文件，那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。
+2.禁用不需要的协议，仅仅允许http和https请求。可以防止file/gopher/dict等协议引起的问题。
+3.设置URL白名单或者限制内网IP。（使用gethostbyname()判断是否为内网IP）
+4.限制请求的端口为http常用的端口，比如 80、443、8080、8090
+5.统一配置错误信息，避免用户可以根据错误信息来判断远程服务器的端口状态。</code></pre><h2 id="CRLF"><a href="#CRLF" class="headerlink" title="CRLF"></a>CRLF</h2><pre><code>1.过滤 \r 、\n 之类的行结束符，避免输入的数据污染其他 HTTP 首部字段。</code></pre><h2 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h2><pre><code>1.不信任未经身份验证的跨域请求，应该首先验证Session ID或者Cookie。
+
+2.对于请求方来说验证接收的数据有效性，服务方仅暴露最少最必须的功能。
+
+3.通过多种条件屏蔽掉非法的请求，例如HTTP头、参数等。
+
+4.将Access-Control-Allow-Credentials设置为true，启用凭据传输。
+
+5.设置固定的Access-Control-Allow-Origin，而不是根据用户跨域请求数据的Origin来定。</code></pre><h2 id="SQLInject"><a href="#SQLInject" class="headerlink" title="SQLInject"></a>SQLInject</h2><pre><code>1.程序代码里的所有查询语句，使用标准化的数据库查询语句API接口，设定语句的参数进行过滤一些非法的字符，防止用户输入恶意的字符传入到数据库中执行sql语句。
+
+2.对用户提交的的参数进行严格的安全过滤，如’、”、&lt;、&gt;、/、*、;、+、-、&amp;、|、(、)、and、or、select、union等，并进行相关字符进行转义操作,以及编码的安全转换。
+
+3.网站的代码层编码尽量统一，建议使用utf8编码，如果代码里的编码都不一样，会导致一些过滤被直接绕过。
+
+4.网站的数据类型，必须确定，是数字型，就是数字型，字符型就是字符型，数据库里的存储字段类型也设置为ini型。
+
+5.对用户的操作权限进行安全限制，普通用户只给普通权限，管理员后台的操作权限要放开，尽量减少对数据库的恶意攻击。
+
+6.网站的报错信息尽量不要返回给客户端，比如一些字符错误，数据库的报错信息，尽可能的防止泄露给客户端。</code></pre><h2 id="越权"><a href="#越权" class="headerlink" title="越权"></a>越权</h2><pre><code>1.对该功能所有的查询接口进行权限控制。
+2.严格校验用户权限。</code></pre><h2 id="目录浏览"><a href="#目录浏览" class="headerlink" title="目录浏览"></a>目录浏览</h2><pre><code>1.可以在每个目录下创建一个空的index.html页面。
+2.设置目录访问权限。
+3.针对不同的中间件有不同的配置修改方案，如下：
+    ▪ IIS
+    打开 IIS 管理器，然后导航至您要管理的级别；
+    在“功能视图”中，双击“目录浏览”；
+    在“操作”窗格中，选择“目录浏览”功能，单击“禁用”。
+    ▪ Apache
+    修改Apache配置文件[httpd.conf]，搜索“Options Indexes FollowSymLinks”，修改为“Options -Indexes FollowSymLinks”即可。
+    Indexes 的作用就是当该目录下没有 index.html 文件时，就显示目录结构，去掉 Indexes，Apache 就不会显示该目录的列表了。
+    在Indexes前，加 + 代表允许目录浏览；加 – 代表禁止目录浏览。这样的话就属于整个Apache禁止目录浏览了。
+    通过.htaccess文件，可以在根目录新建或修改 .htaccess 文件中添加如下代码就可以禁止Apache显示目录索引:
+    ▪ Nginx
+    找到Nginx配置文件中的“autoindex”，设置为“off”即可。
+    ▪ Tomcat
+    在应用的WEB-INF目录找到web.xml配置文件，将“listings”参数的初始化值设置为“false”</code></pre><h2 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h2><pre><code>1.过滤点、斜杠、反斜杠等特殊字符，使用户在url中不能回溯上级目录。
+2.文件命名为复杂名字，采用随机生成方式进行命名。
+3.控制文件访问权限。</code></pre><h2 id="短信轰炸"><a href="#短信轰炸" class="headerlink" title="短信轰炸"></a>短信轰炸</h2><pre><code>1.限制单个IP单位时间内获取短信验证码的请求次数；合理配置短信接口，对于同一手机号码，发送次数不超过3-5次，并且对发送的时间间隔做限制。
+2.加强发送验证码处时间限制的逻辑性。
+3.限制单用户发送上限，即设置每个用户单位时间内发送短信数的上限，如果超过阈值就不允许今天再次调用短信接口。
+4.在页面中加入验证码逻辑校验。    </code></pre><h2 id="明文传输"><a href="#明文传输" class="headerlink" title="明文传输"></a>明文传输</h2><pre><code>1.对明文传输密码字段进行加密。
+    ▪ 使用公开加密方式并进加盐加密；
+    ▪ 使用私有加密方式；</code></pre><h2 id="URL重定向"><a href="#URL重定向" class="headerlink" title="URL重定向"></a>URL重定向</h2><pre><code>对传入的URL做有效性的认证，保证该URL来自于信任域。限制的方式可参考以下两种：
+    1.限制Referer（Referer是HTTP header中的字段，当浏览器向web服务器发送请求时，一般会带上Referer，告诉服务器是从哪个页面链接过来的），通过限制Referer保证将要跳转URL的有效性，避免攻击者生成自己的恶意跳转链接；
+    2.加入有效性验证Token，保证所有生成的链接都来自于可信域，通过在生成的链接里加入用户不可控的Token对生成的链接进行校验。</code></pre><h2 id="未授权访问"><a href="#未授权访问" class="headerlink" title="未授权访问"></a>未授权访问</h2><pre><code>1.对接口进行权限控制校验,严格校验cookie、源……；</code></pre><h2 id="用户名枚举"><a href="#用户名枚举" class="headerlink" title="用户名枚举"></a>用户名枚举</h2><pre><code>1.对登录的判断回显修改为一致。：用户名或密码错误或其他模糊提示。
+2.限制请求时间间隔</code></pre><h2 id="验证码爆破"><a href="#验证码爆破" class="headerlink" title="验证码爆破"></a>验证码爆破</h2><pre><code>1.增加短信验证码复杂度或者长度，建议不少于6位。
+2.缩短验证码有效期，建议不超过1分钟。
+3.验证码错误次数超过上限应采取账户锁定策略。</code></pre><h2 id="Session复用"><a href="#Session复用" class="headerlink" title="Session复用"></a>Session复用</h2><pre><code>1.用户退出系统后，服务器端应清空此用户的Session信息。</code></pre><h2 id="任意文件上传"><a href="#任意文件上传" class="headerlink" title="任意文件上传"></a>任意文件上传</h2><pre><code>1.最有效的，将文件上传目录直接设置为不可执行，对于Linux而言，撤销其目录的&apos;x&apos;权限；实际中很多大型网站的上传应用都会放置在独立的存储上作为静态文件处理，一是方便使用缓存加速降低能耗，二是杜绝了脚本执行的可能性。
+2.文件类型检查：建议使用白名单方式，结合MIME Type、后缀检查等方式（即只允许允许的文件类型进行上传。
+3.使用随机数改写文件名和文件路径，使得用户不能轻易访问自己上传的文件。</code></pre><h2 id="任意文件下载"><a href="#任意文件下载" class="headerlink" title="任意文件下载"></a>任意文件下载</h2><pre><code>1.对用户传过来的文件名参数进行硬编码或统一编码，对文件类型进行白名单控制，对包含恶意字符或者空字符的参数进行拒绝。
+2.文件路径保存至数据库，让用户提交文件对应ID下载文件。
+3.用户下载文件之前需要进行权限判断。
+4.文件放在web无法直接访问的目录下。
+5.不允许提供目录遍历服务。
+6.公开文件可放置在web应用程序下载目录中通过链接进行下载。</code></pre><h2 id="任意账号注册"><a href="#任意账号注册" class="headerlink" title="任意账号注册"></a>任意账号注册</h2><pre><code>1.不要将返回信息直接显示在返回包中。
+2.注册时对验证码进行更严格的逻辑验证。</code></pre><h2 id="任意密码重置"><a href="#任意密码重置" class="headerlink" title="任意密码重置"></a>任意密码重置</h2><pre><code>1.服务端对验证码进行验证，结果为true时直接跳到下一步，无需向客户端单独返回验证结果。
+2.输入新的密码，然后提交到服务端，服务端应对当前用户名、手机号、短信验证码进行二次匹配验证，都为true时，才可以修改成功。</code></pre><h2 id="用户名暴力破解"><a href="#用户名暴力破解" class="headerlink" title="用户名暴力破解"></a>用户名暴力破解</h2><pre><code>1.账户锁定
+    账户锁定是很有效的方法，因为暴力破解程序在5-6次的探测中猜出密码的可能性很小。但是同时也拒绝了正常用户的使用。如果攻击者的探测是建立在用户名探测成功之后的行为，那么会造成严重的拒绝服务攻击。对于对大量用户名只用一个密码的探测攻击账户锁定无效。如果对已经锁定的账户并不返回任何信息，可能迷惑攻击者；
+2.返回信息
+    如果不管结果如何都返回成功的信息，破解软件就会停止攻击。但是对人来说很快就会被识破；
+3.页面跳转
+    产生登录错的的时候就跳到另一个页面要求重新登录。比如126和校内网都是这样做的。局限性在于不能总是跳转页面，一般只在第一次错误的时候跳转，但是第一次之后又可以继续暴力探测了；
+4.适当的延时
+    检查密码的时候适当的插入一些暂停，可以减缓攻击，但是可能对用户造成一定的影响；
+5.封锁多次登录的IP地址
+    这种方法也是有缺点的，因为攻击者可以定时更换自己的IP；
+6.验证码
+    验证码是阻止暴力攻击的好方法，但设计不好的验证码是可以绕过的，而且对于特定目标的手工探测来说验证码是没有作用的    ；</code></pre><h2 id="短信验证码绕过"><a href="#短信验证码绕过" class="headerlink" title="短信验证码绕过"></a>短信验证码绕过</h2><pre><code>1.系统在开发时注意验证识别后销毁session中的验证码。
+2.限制用户提交的验证码不能为空。
+3.判断提交的验证码与服务器上存储的是否一致。
+4.禁止将验证码明文信息发送至客户端。</code></pre><h2 id="Github信息泄露"><a href="#Github信息泄露" class="headerlink" title="Github信息泄露"></a>Github信息泄露</h2><pre><code>1.及时删除github上面泄露的敏感信息。
+2.员工意识培训，禁止将公司文件上传到github。</code></pre><h2 id="报错敏感信息泄露"><a href="#报错敏感信息泄露" class="headerlink" title="报错敏感信息泄露"></a>报错敏感信息泄露</h2><pre><code>1.编码时增加异常处理模块，对错误页面做统一的自定义返回界面，隐藏服务器版本信息。
+2.不对外输出程序运行时产生的异常错误信息详情。</code></pre><h2 id="备份文件信息泄露"><a href="#备份文件信息泄露" class="headerlink" title="备份文件信息泄露"></a>备份文件信息泄露</h2><pre><code>1.网站管理员严格检查web中可访问的路径下是否存在备份文件，常见备份文件后缀为.jsp.bak、.bak、.sql、.txt、等等。如果有这些文件，直接将该备份文件进行转移到其他目录或者直接删除即可。
+2.严格控制可网站可访问目录下的文件敏感度的存放问题，不要将敏感文件置于该目录。</code></pre>]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python_CreatFolder文件批量处理</title>
     <url>/2020/11/30/Python-CreatFolder%E6%96%87%E4%BB%B6%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>因业务需要大量创建文件并复制相同内容</p>
 <p>功能： 按行读取txt内的文件名，在指定路径下创建n个新文件夹，并将指定文件内的所有文件复制到每一个新文件夹内。</p>
 <p>环境： python3</p>
 <p>使用：创建name.txt放入文件名，更改file_path为指定文件夹的路径，更改with open为name.txt 的路径。其余功能可通过其余注释代码进行自由配置； </p>
+<a id="more"></a>
+
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> glob2 <span class="keyword">import</span> glob</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># def mycopyfile(srcfile, dstpath):  # 复制函数</span></span><br><span class="line"><span class="comment">#     # 如果不存在就提示不存在</span></span><br><span class="line"><span class="comment">#     if not os.path.isfile(srcfile):</span></span><br><span class="line"><span class="comment">#         print("%s not exist!" % (srcfile))</span></span><br><span class="line"><span class="comment">#     else:</span></span><br><span class="line"><span class="comment">#         fpath, fname = os.path.split(srcfile)  # 分离文件名和路径</span></span><br><span class="line"><span class="comment">#         if not os.path.exists(dstpath):</span></span><br><span class="line"><span class="comment">#             os.makedirs(dstpath)  # 创建路径</span></span><br><span class="line"><span class="comment">#         shutil.copy(srcfile, dstpath + fname)  # 复制文件</span></span><br><span class="line"><span class="comment">#         print("copy %s -&gt; %s" % (srcfile, dstpath + fname))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># # 被复制的文件夹路径</span></span><br><span class="line"><span class="comment"># src_dir = 'C:/Users/dell/Desktop/xxx/'</span></span><br><span class="line"><span class="comment"># # 目标路径</span></span><br><span class="line"><span class="comment"># dst_dir = './copy/'  # 目的路径记得加斜杠</span></span><br><span class="line"><span class="comment"># src_file_list = glob(src_dir + '*')  # glob获得路径下所有文件，可根据需要修改</span></span><br><span class="line"><span class="comment"># for srcfile in src_file_list:</span></span><br><span class="line"><span class="comment">#     mycopyfile(srcfile, dst_dir)  # 复制文件</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取目录下文件列表</span></span><br><span class="line"><span class="comment"># v_foleder='C:/Users/dell/Desktop/xxx/xxx/'</span></span><br><span class="line"><span class="comment"># Vname_list=os.listdir(v_foleder)</span></span><br><span class="line"><span class="comment"># print(Vname_list)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定路径创建新文件夹</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"C:/Users/dell/Desktop/name.txt"</span>,<span class="string">"r"</span>,encoding=<span class="string">"UTF-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">        folder_name= line.strip(<span class="string">'\n'</span>)</span><br><span class="line">        <span class="comment"># print(folder_name)</span></span><br><span class="line">        file_path = <span class="string">'C:/Users/dell/Desktop/评估/'</span>+ folder_name</span><br><span class="line">        <span class="comment"># print(file_path)</span></span><br><span class="line">        <span class="comment"># file_path2 = file_path + "/xxx"</span></span><br><span class="line">        <span class="comment"># print(file_path2)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_path): <span class="comment"># 判断文件夹是否已经存在,不存在就创建，并且复制文件进去；</span></span><br><span class="line">            <span class="comment"># 新建文件夹</span></span><br><span class="line">            os.mkdir(file_path)</span><br><span class="line">            <span class="comment"># os.mkdir(file_path2)</span></span><br><span class="line">            <span class="comment"># 复制文件夹进去</span></span><br><span class="line">            <span class="comment"># for srcfile in src_file_list:</span></span><br><span class="line">            <span class="comment">#     # print(srcfile)</span></span><br><span class="line">            <span class="comment">#     shutil.copy(srcfile, file_path2)</span></span><br><span class="line">            print(<span class="string">'[+] '</span>+ file_path + <span class="string">'-------- 创建成功'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">'[-] '</span>+ file_path + <span class="string">'-------- 目录已存在'</span>)</span><br><span class="line">print(<span class="string">"[-] 文件处理结束"</span>)</span><br></pre></td></tr></table></figure>
 
 ]]></content>
@@ -156,7 +258,7 @@
       </tags>
   </entry>
   <entry>
-    <title>【漏洞挖掘】某站绕过验证码实现用户枚举+密码爆破</title>
+    <title>某站绕过验证码实现用户枚举+密码爆破</title>
     <url>/2020/05/15/%E6%9F%90%E7%AB%99%E7%BB%95%E8%BF%87%E9%AA%8C%E8%AF%81%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%94%A8%E6%88%B7%E6%9E%9A%E4%B8%BE-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本篇为前几日所挖Web漏洞记录，图中将抹去真实地址，已提交src，过程仅供学习参考。</p>
 <a id="more"></a>
@@ -465,8 +567,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>漏洞</tag>
         <tag>Web渗透</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -545,9 +647,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>漏洞</tag>
         <tag>Web渗透</tag>
         <tag>靶场练习</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -1242,8 +1344,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>社工</tag>
         <tag>信息搜集</tag>
+        <tag>社工</tag>
       </tags>
   </entry>
   <entry>
