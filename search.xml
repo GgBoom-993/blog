@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>爬取补天最新公益列表</title>
+    <url>/2020/12/16/%E7%88%AC%E5%8F%96%E8%A1%A5%E5%A4%A9%E6%9C%80%E6%96%B0%E5%85%AC%E7%9B%8A%E5%88%97%E8%A1%A8/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>补天换域名后部分html结构有所改变，网上公开的爬虫代码会报错，所以对源码进行了一些修改。<br>需要将cookie替换为登陆后的cookie，爬取过程中偶尔会无法连接，可根据实际情况调整sleep时间；<br>该结果取自2020年12月16日，文内附爬虫源码；</p>
+<a id="more"></a>
+<p>运行效果图：</p>
+<img src="/2020/12/16/爬取补天最新公益列表/timg1.png"><img src="/2020/12/16/爬取补天最新公益列表/timg2.png">
+
+
+
+<h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">                   </span></span><br><span class="line"><span class="string">    [   Date  ] :  2020/12/15 16:30   </span></span><br><span class="line"><span class="string">    [  Author ] :  ggboom993</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spider</span><span class="params">(Cookie,Allpages)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    爬取所有公益厂商的ID</span></span><br><span class="line"><span class="string">    保存为id.txt</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">'Host'</span>: <span class="string">'www.butian.net'</span>,</span><br><span class="line">        <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'</span>,</span><br><span class="line">        <span class="string">'Accept'</span>: <span class="string">'application/json, text/javascript, */*; q=0.01'</span>,</span><br><span class="line">        <span class="string">'Accept-Language'</span>: <span class="string">'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'</span>,</span><br><span class="line">        <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate'</span>,</span><br><span class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded; charset=UTF-8'</span>,</span><br><span class="line">        <span class="string">'X-Requested-With'</span>: <span class="string">'XMLHttpRequest'</span>,</span><br><span class="line">        <span class="string">'Referer'</span>: <span class="string">'https://www.butian.net/'</span>,</span><br><span class="line">        <span class="string">'Cookie'</span>: Cookie,</span><br><span class="line">        <span class="string">'Connection'</span>: <span class="string">'keep-alive'</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">174</span>,Allpages):</span><br><span class="line">        data=&#123;</span><br><span class="line">            <span class="string">'p'</span>: i,</span><br><span class="line">            <span class="string">'token'</span>: <span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">        time.sleep(<span class="number">3</span>)</span><br><span class="line">        res = requests.post(<span class="string">'https://www.butian.net/Reward/pub'</span>, data=data,headers=headers,timeout=(<span class="number">4</span>,<span class="number">20</span>))</span><br><span class="line">        allResult = &#123;&#125;</span><br><span class="line">        allResult = json.loads(res.text)</span><br><span class="line">        <span class="comment"># print(allResult)</span></span><br><span class="line">        currentPage = str(allResult[<span class="string">'data'</span>][<span class="string">'current'</span>])</span><br><span class="line">        currentNum = str(len(allResult[<span class="string">'data'</span>][<span class="string">'list'</span>]))</span><br><span class="line">        print(<span class="string">'正在获取第'</span> + currentPage + <span class="string">'页数据'</span>)</span><br><span class="line">        <span class="comment"># print('本页共有' + currentNum + '条数据')</span></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> range(int(currentNum)):</span><br><span class="line">            print(allResult[<span class="string">'data'</span>][<span class="string">'list'</span>][int(num)][<span class="string">'company_id'</span>]+<span class="string">'\t\t'</span>+allResult[<span class="string">'data'</span>][<span class="string">'list'</span>][int(num)][<span class="string">'company_name'</span>])</span><br><span class="line">            base=<span class="string">'https://www.butian.net/Loo/submit?cid='</span></span><br><span class="line">            <span class="keyword">with</span> open(<span class="string">'id.txt'</span>,<span class="string">'a'</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(base+allResult[<span class="string">'data'</span>][<span class="string">'list'</span>][int(num)][<span class="string">'company_id'</span>]+<span class="string">'\t\t'</span>+allResult[<span class="string">'data'</span>][<span class="string">'list'</span>][int(num)][<span class="string">'company_name'</span>]+<span class="string">'\n'</span>)</span><br><span class="line">        print(<span class="string">'第'</span>+currentPage+<span class="string">'页数据获取完成'</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Url</span><span class="params">(Cookie)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    遍历所有的ID</span></span><br><span class="line"><span class="string">    取得对应的域名</span></span><br><span class="line"><span class="string">    保存为target.txt</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    headers=&#123;</span><br><span class="line">        <span class="string">'Host'</span>:<span class="string">'www.butian.net'</span>,</span><br><span class="line">        <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0'</span>,</span><br><span class="line">        <span class="string">'Accept'</span>: <span class="string">'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'</span>,</span><br><span class="line">        <span class="string">'Accept-Language'</span>:<span class="string">'zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3'</span>,</span><br><span class="line">        <span class="string">'Accept-Encoding'</span>: <span class="string">'gzip, deflate'</span>,</span><br><span class="line">        <span class="string">'Referer'</span>:<span class="string">'https://www.butian.net/'</span>,</span><br><span class="line">        <span class="string">'Cookie'</span>:Cookie,</span><br><span class="line">        <span class="string">'Connection'</span>:<span class="string">'keep-alive'</span>,</span><br><span class="line">        <span class="string">'Upgrade-Insecure-Requests'</span>: <span class="string">'1'</span>,</span><br><span class="line">        <span class="string">'Cache-Control'</span>:<span class="string">'max-age=0'</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'id.txt'</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> target <span class="keyword">in</span> f.readlines():</span><br><span class="line">            i=<span class="number">1</span></span><br><span class="line">            target=target.strip()</span><br><span class="line">            getUrl=requests.get(target,headers=headers,timeout=(<span class="number">4</span>,<span class="number">20</span>))</span><br><span class="line">            result=getUrl.text</span><br><span class="line">            info=BeautifulSoup(result,<span class="string">'lxml'</span>)</span><br><span class="line">            url=info.find(name=<span class="string">'input'</span>,attrs=&#123;<span class="string">"name"</span>:<span class="string">"host"</span>&#125;)</span><br><span class="line">            name = info.find(name=<span class="string">'input'</span>, attrs=&#123;<span class="string">"name"</span>: <span class="string">"company_name"</span>&#125;)</span><br><span class="line">            lastUrl=url.attrs[<span class="string">'value'</span>]</span><br><span class="line">            print(<span class="string">'No.'</span>+i+<span class="string">'\t'</span>+<span class="string">'厂商:'</span> + name.attrs[<span class="string">'value'</span>] + <span class="string">'\t网址:'</span> + url.attrs[<span class="string">'value'</span>])</span><br><span class="line">            <span class="keyword">with</span> open(<span class="string">'target.txt'</span>,<span class="string">'a'</span>) <span class="keyword">as</span> t:</span><br><span class="line">                t.write(lastUrl+<span class="string">'\n'</span>)</span><br><span class="line">            time.sleep(<span class="number">3</span>)</span><br><span class="line">    print(<span class="string">'爬取完成，结果保存在target.txt文件下'</span>)</span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line"></span><br><span class="line">	// 替换成登陆后的cookie</span><br><span class="line">    cookie=<span class="string">''</span></span><br><span class="line">    data = &#123;</span><br><span class="line">            <span class="string">'s'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'p'</span>: <span class="string">'1'</span>,</span><br><span class="line">            <span class="string">'token'</span>: <span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">    res = requests.post(<span class="string">'https://www.butian.net/Reward/pub'</span>, data=data)</span><br><span class="line">    allResult = &#123;&#125;</span><br><span class="line">    allResult = json.loads(res.text)</span><br><span class="line">    allPages = int(allResult[<span class="string">'data'</span>][<span class="string">'count'</span>])</span><br><span class="line">    print(<span class="string">'共'</span> + str(allPages) + <span class="string">'页'</span>)</span><br><span class="line">    spider(cookie,allPages)</span><br><span class="line">    Url(cookie)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>脚本工具</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>常见漏洞整改建议</title>
     <url>/2020/12/09/%E5%B8%B8%E8%A7%81%E6%BC%8F%E6%B4%9E%E6%95%B4%E6%94%B9%E5%BB%BA%E8%AE%AE/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>常见漏洞的整改措施，可用于SRC、渗透报告的简要描述；<br>此建议仅供在大方向上参考，具体整改措施应根据业务系统实际情况而定。</p>
@@ -624,6 +645,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
 <p>Cross-site request forgery 简称为“CSRF”，在CSRF的攻击场景中攻击者会伪造一个请求（这个请求一般是一个链接），然后欺骗目标用户进行点击，用户一旦点击了这个请求，整个攻击就完成了。所以CSRF攻击也成为”one click”攻击。 CSRF攻击需要很多条件，首先用户需要点击恶意连接，其次用户PC上需要已经打开包含CSRF的网页。</p>
 <a id="more"></a>
 
+<p>—2020年12月16日—</p>
+<p>回头看发现当初的复现过程根本就是错的。<br>正解如下：<br>1、可直接在Burp内生成CSRFpoc进行测试。<br>2、复制URL在新浏览器内打开，观察信息是否被修改。</p>
 <h1 id="本地实现"><a href="#本地实现" class="headerlink" title="本地实现"></a>本地实现</h1><p>这里使用Pikachu靶场来进行演示。GitHub：<a href="https://github.com/zhuifengshaonianhanlu/pikachu">https://github.com/zhuifengshaonianhanlu/pikachu</a></p>
 <p>进入到靶场中包含CSRF的页面。</p>
 <img src="/2019/12/29/本地靶场复现csrf/timg1.PNG">
@@ -647,8 +670,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
         <tag>漏洞</tag>
       </tags>
   </entry>
@@ -855,9 +878,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -972,27 +995,28 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
 <p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
 <h2 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h2><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
 
 <p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
 <h2 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>构造payload提交 ，此payload的效果是弹窗</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre>{% asset_img timg1.PNG timg %}
+<p>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG">
 
 <p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
-{% asset_img timg4.PNG timg %}
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG">
 
 <p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
 <p>小插曲：我被自己XSS了！</p>
-<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
-{% asset_img timg3.PNG timg %}
+<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章，就在刚才写完准备检查一遍的时候，我惊了。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG">
 
 
 <h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h2 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h2><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
 <p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
-<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
+<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去<br>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
 
 <p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
 <p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
@@ -1007,7 +1031,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
 <!--more-->
 
 <h2 id="构造攻击-2"><a href="#构造攻击-2" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同样的，先构造payload尝试</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
+<p>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
 
 <p>成功，URL中也出现了payload，返回结果和反射型XSS是一样的，那么两者的区别体现在哪？</p>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先观察一下反射型XSS的前端源码</p>
@@ -1026,9 +1051,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
-        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -1126,9 +1151,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1412,9 +1437,9 @@ myqr.run(
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>sql注入</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
-        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>

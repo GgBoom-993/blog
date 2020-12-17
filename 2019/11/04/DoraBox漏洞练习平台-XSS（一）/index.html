@@ -52,7 +52,7 @@
 </script>
 
   <meta name="description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
-<meta name="keywords" content="Web,Web渗透,XSS,靶场练习">
+<meta name="keywords" content="Web,靶场练习,Web渗透,XSS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XSS_DoraBox靶场">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2019/11/04/DoraBox漏洞练习平台-XSS（一）/index.html">
@@ -60,11 +60,14 @@
 <meta property="og:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG">
+<meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg22.PNG">
 <meta property="og:image" content="https://github.com/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG">
-<meta property="og:updated_time" content="2020-06-30T10:09:53.122Z">
+<meta property="og:updated_time" content="2020-12-16T09:48:10.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS_DoraBox靶场">
 <meta name="twitter:description" content="前言DoraBox是米斯特安全团推出的一款基础练习靶场，配合米斯特安全团队的教学视频练习可以快速入门，更易理解Web漏洞的实现， 这里使用DoraBox探究XSS漏洞">
@@ -253,7 +256,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-30 18:09:53" itemprop="dateModified" datetime="2020-06-30T18:09:53+08:00">2020-06-30</time>
+                <time title="修改时间：2020-12-16 17:48:10" itemprop="dateModified" datetime="2020-12-16T17:48:10+08:00">2020-12-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,7 +276,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -301,27 +304,28 @@
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对反射型XSS是这样定义的：</p>
 <p><a href="http://www.ttlsa.com/safe/xss-description/" target="_blank" rel="noopener">反射型跨站脚本（Reflected Cross-site Scripting）</a>也称非持久型，参数型跨站脚本。这类跨站脚本是做常见的，主要是将恶意脚本附加到URL地址参数中。反射型XSS的利用一般是攻击者通过特殊的手法（比如利用电子邮件），诱使用户点击这些特定链接时，恶意的JavaScript代码会直接在受害者主机上执行。他的特点是指在用户点击时触发，而且只执行一次，非持久化，所以称为反射型跨站脚本。</p>
 <h2 id="观察环境"><a href="#观察环境" class="headerlink" title="观察环境"></a>观察环境</h2><p>进入XSS环境，根据先前对反射型XSS的描述（将恶意脚本附加到URL地址参数），这提醒我们可以先观察URL是否满足条件。</p>
-<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG" title="timg">
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg2.PNG">
 
 <p>可以看见，红色箭头指向的地方，在URL中出现了submit提交的name参数(红色箭头指向)</p>
 <h2 id="构造攻击"><a href="#构造攻击" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>构造payload提交 ，此payload的效果是弹窗</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre>{% asset_img timg1.PNG timg %}
+<p>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg1.PNG">
 
 <p>执行成功，同时可以看见URL中 name参数 变成了我们的payload。当我们对弹框点击确定后，XSS消失。观察前端源码可以发现我们的payload</p>
-{% asset_img timg4.PNG timg %}
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg4.PNG">
 
 <p>不难理解，反射型XSS就是通过提交恶意代码让浏览器执行一次，从而达到我们需要的目的。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>在2019年OWASP Top10中，XSS位列第三，可见XSS在Web安全漏洞中的重要地位。</p>
 <p>小插曲：我被自己XSS了！</p>
-<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章<br>，就在刚才写完准备检查一遍的时候，我惊了。</p>
-{% asset_img timg3.PNG timg %}
+<p>前文写到的payload，因为要在本地localhost刷新，看完最终效果后我才会上传文章，就在刚才写完准备检查一遍的时候，我惊了。</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg3.PNG">
 
 
 <h1 id="DoraBox-XSS-存储型"><a href="#DoraBox-XSS-存储型" class="headerlink" title="DoraBox_XSS 存储型"></a>DoraBox_XSS 存储型</h1><h2 id="什么是存储型XSS"><a href="#什么是存储型XSS" class="headerlink" title="什么是存储型XSS"></a>什么是存储型XSS</h2><p>我个人对存储型XSS的理解，反射型XSS即时执行一次，而存储型XSS在满足触发条件后执行，就像埋了个地雷。</p>
 <p>在 <a href="https://baike.baidu.com/item/XSS%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB%E5%89%96%E6%9E%90%E4%B8%8E%E9%98%B2%E5%BE%A1/12350206?fr=aladdin" target="_blank" rel="noopener">《XSS跨站脚本攻击剖析与防御》</a>一书中对存储型XSS是这样定义的：</p>
 <p>持久型跨站脚本（Presistent Cross-site Scripting）也等于<a href="https://blog.csdn.net/weixin_44720762/article/details/89736508" target="_blank" rel="noopener">存储型跨站脚本（Stored Cross-site Scripting）</a>，比反射型跨站脚本更具有威胁性，并且可能影响到Web服务器的安全。持久型XSS一般出现在网站的留言、评论、博客日志等交互处，恶意脚本被存储到客户端或服务器的数据库中，当其他用户浏览该网页时，站点即从数据库中读取恶意用户存入的非法数据，然后显示在网页中，即在受害者主机上的浏览器执行恶意代码。</p>
-<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
+<h2 id="构造攻击-1"><a href="#构造攻击-1" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同之前一样，我们先构造一个XSS的payload的提交上去<br>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg11.PNG" title="timg">
 
 <p>触发弹窗，payload执行成功，观察URL这次没有name参数了。</p>
 <p>但是当我们点击确定的时候，弹窗重新出现。尝试刷新，弹窗依旧没有消失。而这，就是存可以执行多次的储型XSS，它将payload存储在了页面中，导致每次打开页面时都会执行一次payload。</p>
@@ -336,7 +340,8 @@
 <!--more-->
 
 <h2 id="构造攻击-2"><a href="#构造攻击-2" class="headerlink" title="构造攻击"></a>构造攻击</h2><p>同样的，先构造payload尝试</p>
-<pre><code>&lt;script&gt;alert(/xss/)&lt;/script&gt;</code></pre><img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
+<p>&lt;script&gt;alert(/xss/)&lt;/script&gt;</p>
+<img src="/2019/11/04/DoraBox漏洞练习平台-XSS（一）/timg111.PNG" title="timg">
 
 <p>成功，URL中也出现了payload，返回结果和反射型XSS是一样的，那么两者的区别体现在哪？</p>
 <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>首先观察一下反射型XSS的前端源码</p>
@@ -359,9 +364,9 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
+              <a href="/tags/靶场练习/" rel="tag"><i class="fa fa-tag"></i>靶场练习</a>
               <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
               <a href="/tags/XSS/" rel="tag"><i class="fa fa-tag"></i>XSS</a>
-              <a href="/tags/靶场练习/" rel="tag"><i class="fa fa-tag"></i>靶场练习</a>
           </div>
 
         
@@ -433,7 +438,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -509,13 +514,13 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">56k</span>
+    <span title="站点总字数">59k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">51 分钟</span>
+    <span title="站点阅读时长">53 分钟</span>
 </div>
 
 <!--
