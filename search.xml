@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>多线程与Quene</title>
+    <url>/2020/12/23/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EQuene/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　关于pyhton多线程的操作一直没有去接触，一是以往造轮子的时候即便不使用多线程，处理速度也能满足需求；二是因为暂时用不到多线程的话直接去学习相关知识实在提不起兴趣。前几日造轮子的时候发现，当需要发送大量requests请求时，需要等待上一个请求完成后，才能开始下一个请求，完成一次遍历请求操作速度极慢，就不得不用到多线程。</p>
+<a id="more"></a>
+
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="threading"><a href="#threading" class="headerlink" title="threading"></a>threading</h2><p>　　关于threading模块，在Python3中 thread 模块已被废弃。用户可以使用 threading 模块代替。所以，在 Python3 中不能再使用”thread” 模块。为了兼容性，Python3 将 thread 重命名为 “_thread”。</p>
+<h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>　　Thread是threading模块下的一个类。Thread类的主要作用是控制线程。注意此处的Thread不是前文所说的thread模块。可用大小写区分辨别。</p>
+<pre><code>threading.Thread（group = None，target = None，name = None，args =（），kwargs = {} ）
+    group 应该None，在实现ThreadGroup类时保留用于将来的扩展。
+    target 是run()方法调用的可调用对象。默认为None，意味着什么都没有被调用。
+    name 是线程名称。默认情况下，唯一名称由“Thread- N ” 形式构成，其中N是小十进制数。
+    args 是目标调用的参数元组。默认为()。类型必须为元组
+    kwargs 是目标调用的关键字参数字典。默认为{} </code></pre><p>　　Thread类定义了多个方法：</p>
+<pre><code>　　start（）
+　　　　启动线程的活动。
+　　　　每个线程对象最多只能调用一次，它安排在一个单独的控制线程中调用对象的 run()方法。
+　　　　如果在同一个线程对象上多次调用此方法，则会引发RuntimeError。
+
+　　run（）
+　　　　表示线程活动的方法。
+　　　　你可以在子类中覆盖此方法。 标准的 run()方法调用传递给对象构造函数的可调用对象作为目标参数，分别使用args和kwargs参数中的顺序和关键字参数。
+
+　　join（[ timeout] ）
+　　　　等待线程终止，这将阻塞调用线程，直到调用其join()方法的线程终止，或者直到发生异常、超时。
+　　　　当timeout参数存在且非None时，它应该是一个浮点数，用于指定操作的超时（以秒为单位）；反之当timeout参数不存在或为None时，操作将阻塞直到线程终止。
+　　　　由于join()总是返回None，你必须在join()之后调用isAlive()来判断是否发生了超时，如果线程仍处于活动状态，则join()调用超时。
+　　　　如果在线程启动之前调用join()，则会引发RuntimeError。
+
+　　name（）
+　　　　一个仅用于识别目的字符串，它没有语义。 多个线程可以赋予相同的名称，初始名称由构造函数设置。
+　　　　getName()
+　　　　setName()
+
+　　ident
+　　　　该线程的标识符，如果线程尚未启动，则为None，这是一个非零整数。当线程退出并创建另一个线程时，线程标识符可以被回收。 即使在线程退出后，该标识符也可用。
+
+　　is_alive（）
+　　　　等同于isAlive（），返回线程是否存活。
+　　　　此方法在run()方法启动之前返回True，直到run()方法终止之后。 模块函数enumerate()返回所有活动线程的列表。
+
+　　daemon（）
+　　　　一个布尔值，指示此线程是否为守护程序线程True 或False。 必须在调用start()之前设置它，否则引发RuntimeError。 它的初始值继承自创建线程，主线程不是守护程序线程，因此在主线程中创建的所有线程都默认为daemon = False。</code></pre><p>　　因此可以通过threading.Thread创建一个线程，start()方法启动线程；来完成基本的线程操作；</p>
+<h3 id="单线程"><a href="#单线程" class="headerlink" title="单线程"></a>单线程</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法：实现打印操作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Threadtest</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function">	<span class="title">print</span><span class="params">(i)</span></span></span><br><span class="line">t = threading.Thread(target=Threadtest,args(1,))# 实例化线程对象</span><br><span class="line">t.start()<span class="comment"># 线程开始</span></span><br><span class="line"></span><br><span class="line">console result:</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><p>　　使用threading.Thread创建一个线程后通过for循环创建多个线程并启动。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 方法：实现打印操作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Threadtest</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function">	<span class="title">print</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"># 创建10个线程执行<span class="title">Threadtest</span>方法</span></span><br><span class="line"><span class="function"><span class="title">for</span> <span class="title">i</span> <span class="title">in</span> <span class="title">range</span><span class="params">(<span class="number">10</span>)</span>:</span></span><br><span class="line">		t = threading.Thread(target=Threadtest,args(i,))</span><br><span class="line">		t.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">console result:</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="number">8</span></span><br><span class="line"><span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><p>　　之前两个例子应该能很好的理解线程操作了，但是运用到实际中往往会遇到很多问题。这就得回到实际需求中来说。<br>起因是我准备整理一下吉他谱，把常用的打印成册，就不用每次打开电脑，毕竟脑子笨记不住谱。在搜集整理的过程中，发现一件很离谱的事！</p>
+<img src="/2020/12/23/多线程与Quene/timg1.png">
+<p>以前这些谱都是不要钱的，现在只能看第一张，后面的还要收费，那必须学以致用安排一下。<br>　　burp一顿操作，付款处没发现逻辑漏洞；信息搜集，WordPress5.5.3 2020年12月版的，php7.2.13，360waf，感觉不太好搞，就没有继续了。思考了一下整个页面的加载逻辑，抓了几次包观察了一下，猜测是先验证权限然后ajax请求图片地址加载到页面上，既然是JS请求那查看加载的JS文件应该能有收获，接着看了一遍js，没发现地址暴露。然后突发奇想，查看了唯一一张显示的图片的地址:<br><a href="https://www.xxx.com/wp-content/uploads/2020/12/2020121007354618.png" target="_blank" rel="noopener">https://www.xxx.com/wp-content/uploads/2020/12/2020121007354618.png</a><br>图片命名貌似有规律，接着我在同网站下找了其他的免费谱，分别比较了同一首音乐不同曲谱图片的url，发现确有规律 Baseurl+年+月+日+时+分+4位数，尝试访问一下，图片存在则直接返回图片，不存在会返回404。那只要遍历最后4位数字，返回200的地址，就是隐藏在付款背后的图片地址。<br>写个脚本跑，第一版</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">baseurl = <span class="string">"https://www.xxx.com/wp-content/uploads/2020/12/202012100735"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">9999</span>)</span><br><span class="line">	i = <span class="string">"&#123;0:04d&#125;"</span>.format(i)</span><br><span class="line">	url = baseurl+i+<span class="string">".png"</span></span><br><span class="line">	res = requests.get(url)</span><br><span class="line"><span class="keyword">if</span> res.status.code == <span class="number">200</span>:</span><br><span class="line">	print(url)</span><br></pre></td></tr></table></figure>
+
+<p>　　就像开头说的，太慢了，非常慢。于是就想到用多线程，第二版加入了多线程</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Getpage</span><span class="params">()</span>:</span></span><br><span class="line">	baseurl = <span class="string">"https://www.xxx.com/wp-content/uploads/2020/12/202012100735"</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0.9999</span>):</span><br><span class="line">		i = <span class="string">"&#123;0:04d&#125;"</span>.format(i)</span><br><span class="line">		print(i)</span><br><span class="line">		url = baseurl+i+<span class="string">".png"</span></span><br><span class="line">		res = requests.get(get)</span><br><span class="line">	<span class="keyword">if</span> res.status_code == <span class="number">200</span>:</span><br><span class="line">		print(url)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">		t = threading.Thread(target=Getpage)</span><br><span class="line">		t.start()</span><br></pre></td></tr></table></figure>
+
+<p>一运行就发现了问题<img src="/2020/12/23/多线程与Quene/timg2.png"><br>　　10个线程应该同时请求10个不同的url，现在却都在请求了同一个url。回头审了一遍代码，感觉是逻辑出了问题，但是又找不出来；于是回头看了之前多线程的实现案例</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 方法：实现打印操作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Threadtest</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function">	<span class="title">print</span><span class="params">(i)</span></span></span><br><span class="line"><span class="function"># 创建10个线程执行<span class="title">Threadtest</span>方法</span></span><br><span class="line"><span class="function"><span class="title">for</span> <span class="title">i</span> <span class="title">in</span> <span class="title">range</span><span class="params">(<span class="number">10</span>)</span>:</span></span><br><span class="line">		t = threading.Thread(target=Threadtest,args(i,))</span><br><span class="line">		t.start()</span><br></pre></td></tr></table></figure>
+
+<p>　　在这个例子中，多线程对象向打印方法传递参数i，打印方法再打印i，因此实现了10个线程同时打印10个数字的效果，此处线程传递的参数和方法的参数相同。回到我的需求上来，我需要遍历0000-9999，难道开9999个线程吗？那肯定是不行的。思考后感觉是线程同步的问题，问了一下部门的大佬然后又查了些资料，才明白需要Quene队列来实现。</p>
+<h2 id="Quene"><a href="#Quene" class="headerlink" title="Quene"></a>Quene</h2><p>　　Python的Queue模块中提供了同步的、线程安全的队列类，包括FIFO（先入先出)队列Queue，LIFO（后入先出）队列LifoQueue，和优先级队列PriorityQueue。这些队列都实现了锁原语，能够在多线程中直接使用。可以使用队列来实现线程间的同步。</p>
+<p>　　常用方法：</p>
+<ul>
+<li>Queue.qsize() 返回队列的大小</li>
+<li>Queue.empty() 如果队列为空，返回True,反之False</li>
+<li>Queue.full() 如果队列满了，返回True,反之False，Queue.full 与 maxsize 大小对应</li>
+<li>Queue.get([block[, timeout]])获取队列，timeout等待时间</li>
+<li>Queue.get_nowait() 相当于Queue.get(False)，非阻塞方法</li>
+<li>Queue.put(item) 写入队列，timeout等待时间</li>
+<li>Queue.task_done() 在完成一项工作之后，Queue.task_done()函数向任务已经完成的队列发送一个信号。每个get()调用得到一个任务，接下来task_done()调用告诉队列该任务已经处理完毕。</li>
+<li>Queue.join() 实际上意味着等到队列为空，再执行别的操作</li>
+</ul>
+<h2 id="Queue与线程同步"><a href="#Queue与线程同步" class="headerlink" title="Queue与线程同步"></a>Queue与线程同步</h2><p>　　Queue是如何完成多线程同步的？看下官方文档给的示例</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 新建队列</span></span><br><span class="line">q = queue.Queue()</span><br><span class="line"><span class="comment"># 新建数组</span></span><br><span class="line">threads = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动多线程</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(num_worker_threads):</span><br><span class="line">    t = threading.Thread(target=worker)</span><br><span class="line">    t.start()</span><br><span class="line">    threads.append(t)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 队列数据存放</span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> source():</span><br><span class="line">    q.put(item)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 操作方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        item = q.get()</span><br><span class="line">        <span class="keyword">if</span> item <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">	<span class="comment"># 实现方法</span></span><br><span class="line">        do_work(item)</span><br><span class="line">        q.task_done()</span><br></pre></td></tr></table></figure>
+
+<p>　　在这个示例中，首先实例化了一个Queue对象作为q，建立一个名为threads的数组；接着通过一个for循环启动多线程并将其放入threads数组中；再通过一个一个for循环将源数据（需要处理的数据）放入队列q中；定义了一个worker()方法：从q队列内取出源数据去实现do_worker()；<br>可以对比我的第二版代码发现一个很大的区别，我的遍历操作直接体现在方法上，执行9999次不一样的操作，这个操作在代码运行中是实时的，如果没有执行到第二次循环就不会有第二次循环的操作代码产生；示例中加入Queue后，相当于多了一个缓存池，把所有的操作命令存放在Queue队列中，再从其中取出执行，此时的线程行为-执行数据-执行操作三者是分开的，块间联系高而块内联系低，这就是高内聚低耦合；使得模块的可重用性、移植性大大增强。</p>
+<p>　　这里就得说一种开发模式，生产者消费者模式</p>
+<img src="/2020/12/23/多线程与Quene/timg3.jpg">
+<p>　　生产者消费者模式是通过一个容器来解决生产者和消费者的高耦合问题。生产者模块儿负责产生数据，放入缓冲区，这些数据由另一个消费者模块儿来从缓冲区取出并进行消费者相应的处理。生产者和消费者彼此之间不直接通讯，而是通过阻塞队列来进行通讯，所以生产者生产完数据之后不用等待消费者处理，直接扔给阻塞队列，消费者不找生产者要数据，而是直接从阻塞队列里取。阻塞队列相当于一个缓冲区，平衡了生产者和消费者的处理能力。这样看来该模式和MVC还有些异曲同工之妙。<br>　　生产者消费者模式的优点在于：</p>
+<ul>
+<li>解耦：缓冲区的存在可以让生产者和消费者降低互相之间的依赖性，一个模块儿代码变化，不会直接影响另一个模块儿</li>
+<li>并发：由于缓冲区，生产者和消费者不是直接调用，而是两个独立的并发主体，生产者产生数据之后把它放入缓冲区，就继续生产数据，不依赖消费者的处理速度</li>
+</ul>
+<h2 id="需求实现"><a href="#需求实现" class="headerlink" title="需求实现"></a>需求实现</h2><p>　　看完官方文档示例，充分学习queue和多线程并了解其原理后，又参考了网上一些其他的多线程并发相关的代码，最终的完成代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading,queue,time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatQueue</span><span class="params">(baseurl)</span>:</span></span><br><span class="line">    urlQueue = queue.Queue()</span><br><span class="line">    <span class="keyword">for</span> inc <span class="keyword">in</span> range(<span class="number">5000</span>, <span class="number">7500</span>):</span><br><span class="line">        inc = <span class="string">"&#123;0:04d&#125;"</span>.format(inc)</span><br><span class="line">        url = baseurl + <span class="string">"&#123;&#125;.png"</span>.format(inc)</span><br><span class="line">        <span class="comment"># 将url加入到队列中，在处理函数中读取</span></span><br><span class="line">        urlQueue.put(url)</span><br><span class="line">    <span class="keyword">return</span> urlQueue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CreatThread</span><span class="params">(urlQueue)</span>:</span></span><br><span class="line">    threads = []</span><br><span class="line">    <span class="comment"># 可以调节线程数， 进而控制抓取速度</span></span><br><span class="line">    threadNum = <span class="number">40</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, threadNum):</span><br><span class="line">        t = threading.Thread(target=fechUrl, args=(urlQueue,))</span><br><span class="line">        threads.append(t)</span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">        t.start()</span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> threads:</span><br><span class="line">        <span class="comment"># 多线程多join的情况下，依次执行各线程的join方法, 这样可以确保主线程最后退出， 且各个线程间没有阻塞</span></span><br><span class="line">        t.join()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fechUrl</span><span class="params">(urlQueue)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 不阻塞的读取队列数据</span></span><br><span class="line">            url = urlQueue.get_nowait()</span><br><span class="line">            inc = urlQueue.qsize()</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">print</span> (<span class="string">'\rCurrent Thread Name %s, Url: %s '</span> % (threading.currentThread().name, url),end=<span class="string">""</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            req = requests.get(url)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> req.status_code == <span class="number">200</span>:</span><br><span class="line">            print(<span class="string">"url status 200: -&gt; "</span>+url)</span><br><span class="line">            <span class="comment"># time.sleep(1)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    startTime = time.time()</span><br><span class="line"></span><br><span class="line">    baseurl = <span class="string">"https://www.xxx.com/wp-content/uploads/2019/08/201908240408"</span></span><br><span class="line">    CreatThread(CreatQueue(baseurl))</span><br><span class="line"></span><br><span class="line">    endTime = time.time()</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">'Done, Time cost: %s '</span> % (endTime - startTime))</span><br></pre></td></tr></table></figure>
+
+<p>这里设置40个线程，速度还是挺快的，2500条request用了276.5秒，并且也成功遍历出隐藏的吉他谱图片地址；</p>
+<img src="/2020/12/23/多线程与Quene/timg4.png">
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　轮子造好了，造轮子的过程可不好。编程思维虽然有了，但是作为一个软工专业的学生来说编程能力确实是欠点，竟是沦落到了造轮子的地步。</p>
+<blockquote>
+<p>叹余昔，叹余昔，何苦来哉。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>爬取补天最新公益列表</title>
     <url>/2020/12/16/%E7%88%AC%E5%8F%96%E8%A1%A5%E5%A4%A9%E6%9C%80%E6%96%B0%E5%85%AC%E7%9B%8A%E5%88%97%E8%A1%A8/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>补天换域名后部分html结构有所改变，网上公开的爬虫代码会报错，所以对源码进行了一些修改。<br>需要将cookie替换为登陆后的cookie，爬取过程中偶尔会无法连接，可根据实际情况调整sleep时间；<br>该结果取自2020年12月16日，文内附爬虫源码；</p>
@@ -588,8 +689,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>漏洞</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -670,9 +771,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>漏洞</tag>
         <tag>Web渗透</tag>
         <tag>靶场练习</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -1369,8 +1470,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
