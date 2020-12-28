@@ -54,7 +54,7 @@
   <meta name="description" content="前言　　关于pyhton多线程的操作一直没有去接触，一是以往造轮子的时候即便不使用多线程，处理速度也能满足需求；二是因为暂时用不到多线程的话直接去学习相关知识实在提不起兴趣。前几日造轮子的时候发现，当需要发送大量requests请求时，需要等待上一个请求完成后，才能开始下一个请求，完成一次遍历请求操作速度极慢，就不得不用到多线程。">
 <meta name="keywords" content="python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程与Quene">
+<meta property="og:title" content="多线程与Queue">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2020/12/23/多线程与Quene/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
 <meta property="og:description" content="前言　　关于pyhton多线程的操作一直没有去接触，一是以往造轮子的时候即便不使用多线程，处理速度也能满足需求；二是因为暂时用不到多线程的话直接去学习相关知识实在提不起兴趣。前几日造轮子的时候发现，当需要发送大量requests请求时，需要等待上一个请求完成后，才能开始下一个请求，完成一次遍历请求操作速度极慢，就不得不用到多线程。">
@@ -63,9 +63,9 @@
 <meta property="og:image" content="https://github.com/2020/12/23/多线程与Quene/timg2.png">
 <meta property="og:image" content="https://github.com/2020/12/23/多线程与Quene/timg3.jpg">
 <meta property="og:image" content="https://github.com/2020/12/23/多线程与Quene/timg4.png">
-<meta property="og:updated_time" content="2020-12-25T08:52:41.142Z">
+<meta property="og:updated_time" content="2020-12-28T10:23:10.295Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多线程与Quene">
+<meta name="twitter:title" content="多线程与Queue">
 <meta name="twitter:description" content="前言　　关于pyhton多线程的操作一直没有去接触，一是以往造轮子的时候即便不使用多线程，处理速度也能满足需求；二是因为暂时用不到多线程的话直接去学习相关知识实在提不起兴趣。前几日造轮子的时候发现，当需要发送大量requests请求时，需要等待上一个请求完成后，才能开始下一个请求，完成一次遍历请求操作速度极慢，就不得不用到多线程。">
 <meta name="twitter:image" content="https://github.com/2020/12/23/多线程与Quene/timg1.png">
 
@@ -83,7 +83,7 @@
   };
 </script>
 
-  <title>多线程与Quene | GgBoom993's Blog</title>
+  <title>多线程与Queue | GgBoom993's Blog</title>
   
 
 
@@ -235,7 +235,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          多线程与Quene
+          多线程与Queue
         </h1>
 
         <div class="post-meta">
@@ -252,7 +252,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-25 16:52:41" itemprop="dateModified" datetime="2020-12-25T16:52:41+08:00">2020-12-25</time>
+                <time title="修改时间：2020-12-28 18:23:10" itemprop="dateModified" datetime="2020-12-28T18:23:10+08:00">2020-12-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
