@@ -21,10 +21,10 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Gemini',
     version: '7.5.0',
     exturl: false,
-    sidebar: {"position":"right","width":280,"display":"post","offset":12,"onmobile":false},
+    sidebar: {"position":"left","width":280,"display":"post","offset":10,"onmobile":false},
     copycode: {"enable":false,"show_result":false,"style":null},
     back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
@@ -52,7 +52,7 @@
 </script>
 
   <meta name="description" content="前言.htaccess文件(或者”分布式配置文件”）,全称是Hypertext Access(超文本入口)。它是Apache服务器中的一个配置文件，负责相关目录下的网页配置。通过.htaccess文件，可以帮我们实现:网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。当网站允许上传或修改.htaccess文件时，我们就可以">
-<meta name="keywords" content="Web,漏洞,Web渗透">
+<meta name="keywords" content="Web,Web渗透,漏洞">
 <meta property="og:type" content="article">
 <meta property="og:title" content=".htaccess文件上传漏洞利用">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2020/01/20/htaccess文件上传漏洞利用/index.html">
@@ -339,8 +339,8 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
-              <a href="/tags/漏洞/" rel="tag"><i class="fa fa-tag"></i>漏洞</a>
               <a href="/tags/Web渗透/" rel="tag"><i class="fa fa-tag"></i>Web渗透</a>
+              <a href="/tags/漏洞/" rel="tag"><i class="fa fa-tag"></i>漏洞</a>
           </div>
 
         
@@ -412,7 +412,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -425,7 +425,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -439,24 +439,12 @@
 
   <div class="links-of-blogroll motion-element">
     <div class="links-of-blogroll-title">
-      <i class="fa fa-fw fa-link"></i>
-      友情链接
+      <i class="fa fa-fw fa-vk"></i>
+      --------------------------
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="https://github.com/" title="https://github.com/">github官网</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://www.somd5.com/" title="https://www.somd5.com/" rel="noopener" target="_blank">MD5在线解密</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://tool.chinaz.com/" title="http://tool.chinaz.com/" rel="noopener" target="_blank">站长工具</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://www.sec-wiki.com/" title="https://www.sec-wiki.com/" rel="noopener" target="_blank">SecWiki</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://www.dooccn.com" title="http://www.dooccn.com" rel="noopener" target="_blank">在线代码编译</a>
+          <a href="https://github.com/" title="https://github.com/">我的书单</a>
         </li>
     </ul>
   </div>
@@ -478,7 +466,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -488,20 +476,20 @@
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">74k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:07</span>
 </div>
 
 <!--
   <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://mist.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.5.0
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
   </div>
 -->
 
@@ -556,7 +544,7 @@ setInterval("createtime()",250);
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 <script src="/js/utils.js"></script><script src="/js/motion.js"></script>
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 <script src="/js/next-boot.js"></script>
 
 
