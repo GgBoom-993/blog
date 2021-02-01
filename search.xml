@@ -731,8 +731,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>漏洞</tag>
         <tag>Web渗透</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -813,9 +813,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>漏洞</tag>
         <tag>Web渗透</tag>
         <tag>靶场练习</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
