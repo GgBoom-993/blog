@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/slice-fill1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/slice-fill.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","width":280,"display":"post","offset":10,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":8},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
+<meta name="keywords" content="Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OAuth2认证缺陷分析">
+<meta property="og:url" content="https://github.com/GgBoom-993/blog/2021/02/02/OAuth2认证缺陷分析/index.html">
+<meta property="og:site_name" content="GgBoom993&#39;s Blog">
+<meta property="og:description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/应用场景.png">
+<meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg">
+<meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/CSRF.png">
+<meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/劫持.png">
+<meta property="og:updated_time" content="2021-02-02T11:18:40.142Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OAuth2认证缺陷分析">
+<meta name="twitter:description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
+<meta name="twitter:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/应用场景.png">
+
+<link rel="canonical" href="https://github.com/GgBoom-993/blog/2021/02/02/OAuth2认证缺陷分析/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>OAuth2认证缺陷分析 | GgBoom993's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">GgBoom993's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/GgBoom-993/blog/2021/02/02/OAuth2认证缺陷分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/timg1.jpg">
+      <meta itemprop="name" content="GgBoom993">
+      <meta itemprop="description" content="无名小卒">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GgBoom993's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OAuth2认证缺陷分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-02-02 18:23:25 / 修改时间：19:18:40" itemprop="dateCreated datePublished" datetime="2021-02-02T18:23:25+08:00">2021-02-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段<br>　　<code>Authorization: AOEWQ315na39NGanUAsBO=</code><br>　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。</p>
+<a id="more"></a>
+
+<h1 id="数据授权服务应用场景"><a href="#数据授权服务应用场景" class="headerlink" title="数据授权服务应用场景"></a>数据授权服务应用场景</h1><p>　<img src="/2021/02/02/OAuth2认证缺陷分析/应用场景.png"></p>
+<p>　　服务方需要用户在数据方的部分数据以给用户提供更好的服务，比如授权微信登录直接获取微信头像、地区、名称等；</p>
+<h1 id="传统简单授权存在的安全隐患"><a href="#传统简单授权存在的安全隐患" class="headerlink" title="传统简单授权存在的安全隐患"></a>传统简单授权存在的安全隐患</h1><p>　　服务方想使用用户在其他地方的数据，最简单的授权方法是要求用户输入在数据方的账号密码，然后服务方使用这个账号密码发出请求从而获得数据，但是会出现一些问题及安全隐患：</p>
+<ul>
+<li>服务方会存储用户在其他系统的明文用户名和密码；</li>
+</ul>
+<ul>
+<li>服务方具有该账号在数据方的所有权限以及所有数据，比如修改密码，添加地址等；</li>
+</ul>
+<ul>
+<li>用户想要收回权限，只能更改授权的密码，这会导致在其他服务方的授权也失效；</li>
+</ul>
+<ul>
+<li>只要有一个服务方数据泄露，那么该用户授权的所有服务方，以及数据方的数据都会泄露；</li>
+</ul>
+<p>　　OAuth2认证方式，很好的解决了这些问题</p>
+<h1 id="OAuth2-四种授权方式"><a href="#OAuth2-四种授权方式" class="headerlink" title="OAuth2 四种授权方式"></a>OAuth2 四种授权方式</h1><p>　　密码模式<br>　　授权码模式（本文中的所有OAauth2通指授权码模式）<br>　　简化模式<br>　　客户端模式</p>
+<h1 id="OAuth2认证流程"><a href="#OAuth2认证流程" class="headerlink" title="OAuth2认证流程"></a>OAuth2认证流程</h1><p>　　以授权码模式为对象<br>　　用户在数据方有数据并且具有唯一ID <code>uid=12341234</code><br>　　服务方在数据方具有表明其身份的用户名<code>clientid=8888</code> 和密码<code>client_secret=ccppo123</code></p>
+<p>　　服务方在需要使用用户在数据方的数据时，先向用户申请授权，用户同意后会向数据方发出请求：</p>
+<p>　　　　<em>用户：“服务方，我同意授权你获取我的数据”</em><br>　　　　<em>服务方：“数据方，用户已经同意我获取它的数据，我的用户名clientid是8888”</em><br>　　　　<code>http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback</code></p>
+<p>　　用户同意后，数据方会给服务方返回一个<code>code</code>作为凭证，然后跳转至<code>redirect_uri</code> ，服务方在此接受<code>token</code></p>
+<p>　　　　<em>数据方：“服务方，你的用户同意给你数据了，这是凭证 code=1122aa3344bb55”</em><br>　　　　<code>http://service.com/callback?code=1122aa3344bb55</code></p>
+<p>　　服务方拿着这个凭证找数据方获得钥匙，用来打开数据库：</p>
+<pre><code>POST http://api.data.com/oauth2/access_token HTTP/1.1
+Host: xxxxxxx
+User-Agent: xxxxxx
+Accept: */*
+Referer: xxxxxx
+Accept-Encoding: xxxxxx
+
+client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3344bb55&amp;redirect_uri=http://service.com/callback</code></pre><p>　　数据方在收到凭证后会给服务方对应用户的数据钥匙和钥匙期限</p>
+<p>　　　　<em>数据方：“凭证有效，这是用户uid=12341234的数据钥匙，过期时间为：20天”</em></p>
+<p>　　　　<em>＂access_token＂ = ＂j78954lynjsdcvohsafoi＂</em><br>　　　　<em>＂uid＂ = ＂12341234＂</em><br>　　　　<em>＂expires_in＂ = ＂20＂</em></p>
+<p>　　之后的20天内，服务方都可以使用这个钥匙直接获取用户在数据方的数据</p>
+<p>　　　　<code>http://api.data.com/user/data.json?access_token=j78954lynjsdcvohsafoi&amp;uid=12341234</code></p>
+<p>　　使用时序图更为直观的理解OAuth2认证流程：</p>
+<p>　　　　<img src="/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg"></p>
+<h1 id="OAuth2-可能存在的安全隐患"><a href="#OAuth2-可能存在的安全隐患" class="headerlink" title="OAuth2 可能存在的安全隐患"></a>OAuth2 可能存在的安全隐患</h1><h2 id="跨站请求伪造（CSRF）"><a href="#跨站请求伪造（CSRF）" class="headerlink" title="跨站请求伪造（CSRF）"></a>跨站请求伪造（CSRF）</h2><p>　　我们知道，当需要用户数据时，服务方首先会向用户申请授权，接着向数据方发送请求；<br>　　　<img src="/2021/02/02/OAuth2认证缺陷分析/CSRF.png"><br>　　在前文所述的基本OAuth2认证流程中，数据方如何确保用户发出的授权来自于他本人呢？在没有做其他验证的情况下是无法确定的。以 美团-用户-微博 为例，美团需要使用用户在微博的社交名称和头像作为美团账户信息，假设这个过程使用了有缺陷的OAuth2认证方式，存在CSRF漏洞。我们先使用恶意账户进行一次绑定请求并截获返回的<code>code</code>，此code是目标美团账户绑定微博用户的凭证。接着构造一个CSRF poc 欺骗用户点击。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">		<span class="built_in">window</span>.onload= <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">document</span>.getElementById(<span class="string">'access'</span>).submit();&#125;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"http://service.com/callback?code=ngvoi47asdkq3o8aoha"</span> <span class="attr">method</span>=<span class="string">"GET"</span>  <span class="attr">id</span>=<span class="string">"access"</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>　　如果此时用户美团处于登录状态，并且点击了我们的链接，则该<code>code</code>代表的绑定信息会以当前美团用户的身份直接在回调地址<code>callback</code>中处理。对于美团来说，用户身份是本人，而对于微博来说，该用户是weiboEvalUser。之后该用户的美团账户将被绑定到恶意微博。</p>
+<p>　　案例：<a href="http://wy.zone.ci/bug_detail.php?wybug_id=wooyun-2014-054785" target="_blank" rel="noopener">乌云 -人人网-百度OAuth 2.0 redirect_uir CSRF 漏洞</a></p>
+<h2 id="授权劫持"><a href="#授权劫持" class="headerlink" title="授权劫持"></a>授权劫持</h2><p>　　还记得那个<code>callback</code>回调地址吗？这个地址是由向数据方发出<code>code</code>请求时url中<code>redirect_rui</code>参数决定的，它的存在告诉了数据方处理完请求后将数据返回到哪。如果没有进行<code>redirect_rui</code>的验证或者验证不完善，那么该参数就是可控的，一切可控的参数都是不安全的。<code>redirect_uri</code>更改后数据方返回的<code>code</code>将发往恶意地址，造成授权凭证劫持，根据此凭证攻击者就能任意登录目标用户账号。<br>　　<img src="/2021/02/02/OAuth2认证缺陷分析/劫持.png"></p>
+<p>　　案例：<a href="http://wooyun.2xss.cc/bug_detail.php?wybug_id=wooyun-2013-045327" target="_blank" rel="noopener">乌云-绕过网易oauth认证的redirect_uri限制劫持帐号token</a></p>
+<p>　　对于有<code>redirect_uri</code>验证的OAuth2可以尝试使用以下方法进行绕过：</p>
+<p>　　　　<code>auth.app.com.evil.com</code><br>　　　　<code>evil.com?auth.app.com</code><br>　　　　<code>evil.com?@auth.app.com</code><br>　　　　<code>auth.app.com@evil.com</code><br>　　　　<code>auth.app.com\@evil.com</code><br>　　　　<code>evil.com\auth.app.com</code><br>　　　　<code>evil.com:\auth.app.com</code><br>　　　　<code>evil.com\.auth.app.com</code><br>　　　　<code>evil.com:\@auth.app.com</code><br>　　　　<code>宽字符绕过  http://ｗｗｗ．ｗｏｏｙｕｎ．ｏｒｇ</code><br>　　　　<code>子域绕过 redirect_uri=http://meituan.com/callback?url=http://eval.meituan.com</code></p>
+<h2 id="越权访问"><a href="#越权访问" class="headerlink" title="越权访问"></a>越权访问</h2><p>　　之前所说的都是最基本的OAuth2认证过程，而在稍微复杂的OAuth2环境中，数据方可能会在请求中加入限定权限的参数 <code>scope</code></p>
+<p>　　　<code>http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback&amp;scope=user</code></p>
+<p>　　这是一处github的漏洞案例：</p>
+<p>　　因为gist是github自家的，所以估计github想做得简单一点，当用户访问gist的时候，不会出弹出一个OAuth的页面来让用户授权，不然，用户就会很诧异，都是你们自家的东西，还要授权？所以，hacker猜测github应该是对gist做了自动授权，于是，hacker搞了这样的一个URL（注意其中的 <code>redirect_uri</code>中的<code>scope</code> ）</p>
+<p>　　　<code>https://github.com/login/oauth/authorize?client_id=7e0a3cd836d3e544dbd9&amp;redirect_uri=https%3A%2F%2Fgist.github.com%2Fauth%2Fgithub%2Fcallback/../../../homakov/8820324&amp;response_type=code&amp;scope=repo,gists,user,delete_repo,notifications</code></p>
+<p>　　于是，这个<code>redirect-uri</code>不但帮黑客拿到了访问gist的<code>token</code>，而且还把授权<code>token</code>的<code>scope</code>扩大到了用户的代码库等其它权限。于是你就可以黑入用户的私有代码区了。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>　　OAuth 2.0攻击面与案例总结<br>　　<a href="https://www.freebuf.com/articles/web/110757.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/110757.html</a> </p>
+<p>　　OAuth 2.0 的四种方式<br>　　<a href="http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html</a></p>
+<p>　　OAuth2 认证流程详解<br>　　<a href="https://blog.csdn.net/wenyicodedog/article/details/101103847" target="_blank" rel="noopener">https://blog.csdn.net/wenyicodedog/article/details/101103847</a></p>
+<p>　　从“黑掉GITHUB”学WEB安全开发<br>　　<a href="https://coolshell.cn/articles/11021.html" target="_blank" rel="noopener">https://coolshell.cn/articles/11021.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i>Web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2021/01/08/php代码审计-DVWA/" rel="next" title="php代码审计-DVWA">
+                  <i class="fa fa-chevron-left"></i> php代码审计-DVWA
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据授权服务应用场景"><span class="nav-number">2.</span> <span class="nav-text">数据授权服务应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传统简单授权存在的安全隐患"><span class="nav-number">3.</span> <span class="nav-text">传统简单授权存在的安全隐患</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-四种授权方式"><span class="nav-number">4.</span> <span class="nav-text">OAuth2 四种授权方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2认证流程"><span class="nav-number">5.</span> <span class="nav-text">OAuth2认证流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-可能存在的安全隐患"><span class="nav-number">6.</span> <span class="nav-text">OAuth2 可能存在的安全隐患</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨站请求伪造（CSRF）"><span class="nav-number">6.1.</span> <span class="nav-text">跨站请求伪造（CSRF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授权劫持"><span class="nav-number">6.2.</span> <span class="nav-text">授权劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#越权访问"><span class="nav-number">6.3.</span> <span class="nav-text">越权访问</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GgBoom993"
+      src="/images/timg1.jpg">
+  <p class="site-author-name" itemprop="name">GgBoom993</p>
+  <div class="site-description" itemprop="description">无名小卒</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/GgBoom-993" title="GitHub → https://github.com/GgBoom-993"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-vk"></i>
+      --------------------------
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/" title="https://github.com/">我的书单</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GgBoom993</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">78k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:11</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.5.0
+  </div>
+-->
+
+
+<!-- 在网页底部添加网站运行时间 -->
+<span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/30/2019 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "网站已运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='255,255,224' opacity='1' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
