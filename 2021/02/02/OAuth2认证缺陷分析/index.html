@@ -54,7 +54,7 @@
   <meta name="description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
 <meta name="keywords" content="Web">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OAuth2认证缺陷分析">
+<meta property="og:title" content="OAuth2认证与缺陷分析">
 <meta property="og:url" content="https://github.com/GgBoom-993/blog/2021/02/02/OAuth2认证缺陷分析/index.html">
 <meta property="og:site_name" content="GgBoom993&#39;s Blog">
 <meta property="og:description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
@@ -63,9 +63,9 @@
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg">
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/CSRF.png">
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/劫持.png">
-<meta property="og:updated_time" content="2021-02-02T11:18:40.142Z">
+<meta property="og:updated_time" content="2021-02-07T08:40:43.346Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OAuth2认证缺陷分析">
+<meta name="twitter:title" content="OAuth2认证与缺陷分析">
 <meta name="twitter:description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
 <meta name="twitter:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/应用场景.png">
 
@@ -83,7 +83,7 @@
   };
 </script>
 
-  <title>OAuth2认证缺陷分析 | GgBoom993's Blog</title>
+  <title>OAuth2认证与缺陷分析 | GgBoom993's Blog</title>
   
 
 
@@ -171,6 +171,11 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+        <li class="menu-item menu-item-书单">
+
+    <a href="/book/" rel="section"><i class="fa fa-fw fa-book"></i>书单</a>
+
+  </li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -235,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OAuth2认证缺陷分析
+          OAuth2认证与缺陷分析
         </h1>
 
         <div class="post-meta">
@@ -244,10 +249,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-02-02 18:23:25 / 修改时间：19:18:40" itemprop="dateCreated datePublished" datetime="2021-02-02T18:23:25+08:00">2021-02-02</time>
+              <time title="创建时间：2021-02-02 18:23:25" itemprop="dateCreated datePublished" datetime="2021-02-02T18:23:25+08:00">2021-02-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-02-07 16:40:43" itemprop="dateModified" datetime="2021-02-07T16:40:43+08:00">2021-02-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -307,9 +318,15 @@
 <h1 id="OAuth2-四种授权方式"><a href="#OAuth2-四种授权方式" class="headerlink" title="OAuth2 四种授权方式"></a>OAuth2 四种授权方式</h1><p>　　密码模式<br>　　授权码模式（本文中的所有OAauth2通指授权码模式）<br>　　简化模式<br>　　客户端模式</p>
 <h1 id="OAuth2认证流程"><a href="#OAuth2认证流程" class="headerlink" title="OAuth2认证流程"></a>OAuth2认证流程</h1><p>　　以授权码模式为对象<br>　　用户在数据方有数据并且具有唯一ID <code>uid=12341234</code><br>　　服务方在数据方具有表明其身份的用户名<code>clientid=8888</code> 和密码<code>client_secret=ccppo123</code></p>
 <p>　　服务方在需要使用用户在数据方的数据时，先向用户申请授权，用户同意后会向数据方发出请求：</p>
-<p>　　　　<em>用户：“服务方，我同意授权你获取我的数据”</em><br>　　　　<em>服务方：“数据方，用户已经同意我获取它的数据，我的用户名clientid是8888”</em><br>　　　　<code>http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback</code></p>
+<p>　　　　<em>用户：“服务方，我同意授权你获取我的数据”</em><br>　　　　<em>服务方：“数据方，用户已经同意我获取它的数据，我的用户名clientid是8888”</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback</span><br></pre></td></tr></table></figure>
+
+
 <p>　　用户同意后，数据方会给服务方返回一个<code>code</code>作为凭证，然后跳转至<code>redirect_uri</code> ，服务方在此接受<code>token</code></p>
-<p>　　　　<em>数据方：“服务方，你的用户同意给你数据了，这是凭证 code=1122aa3344bb55”</em><br>　　　　<code>http://service.com/callback?code=1122aa3344bb55</code></p>
+<p>　　　　<em>数据方：“服务方，你的用户同意给你数据了，这是凭证 code=1122aa3344bb55”</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://service.com/callback?code=1122aa3344bb55</span><br></pre></td></tr></table></figure>
+
+
 <p>　　服务方拿着这个凭证找数据方获得钥匙，用来打开数据库：</p>
 <pre><code>POST http://api.data.com/oauth2/access_token HTTP/1.1
 Host: xxxxxxx
@@ -322,7 +339,12 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
 <p>　　　　<em>数据方：“凭证有效，这是用户uid=12341234的数据钥匙，过期时间为：20天”</em></p>
 <p>　　　　<em>＂access_token＂ = ＂j78954lynjsdcvohsafoi＂</em><br>　　　　<em>＂uid＂ = ＂12341234＂</em><br>　　　　<em>＂expires_in＂ = ＂20＂</em></p>
 <p>　　之后的20天内，服务方都可以使用这个钥匙直接获取用户在数据方的数据</p>
-<p>　　　　<code>http://api.data.com/user/data.json?access_token=j78954lynjsdcvohsafoi&amp;uid=12341234</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://api.data.com/user/data.json?access_token=j78954lynjsdcvohsafoi&amp;uid=12341234</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 <p>　　使用时序图更为直观的理解OAuth2认证流程：</p>
 <p>　　　　<img src="/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg"></p>
 <h1 id="OAuth2-可能存在的安全隐患"><a href="#OAuth2-可能存在的安全隐患" class="headerlink" title="OAuth2 可能存在的安全隐患"></a>OAuth2 可能存在的安全隐患</h1><h2 id="跨站请求伪造（CSRF）"><a href="#跨站请求伪造（CSRF）" class="headerlink" title="跨站请求伪造（CSRF）"></a>跨站请求伪造（CSRF）</h2><p>　　我们知道，当需要用户数据时，服务方首先会向用户申请授权，接着向数据方发送请求；<br>　　　<img src="/2021/02/02/OAuth2认证缺陷分析/CSRF.png"><br>　　在前文所述的基本OAuth2认证流程中，数据方如何确保用户发出的授权来自于他本人呢？在没有做其他验证的情况下是无法确定的。以 美团-用户-微博 为例，美团需要使用用户在微博的社交名称和头像作为美团账户信息，假设这个过程使用了有缺陷的OAuth2认证方式，存在CSRF漏洞。我们先使用恶意账户进行一次绑定请求并截获返回的<code>code</code>，此code是目标美团账户绑定微博用户的凭证。接着构造一个CSRF poc 欺骗用户点击。</p>
@@ -374,6 +396,9 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
+                <a href="/2021/02/07/JWT认证与缺陷分析/" rel="prev" title="JWT认证与缺陷分析">
+                  JWT认证与缺陷分析 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
       </footer>
@@ -428,7 +453,7 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -453,17 +478,6 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
   </div>
 
 
-  <div class="links-of-blogroll motion-element">
-    <div class="links-of-blogroll-title">
-      <i class="fa fa-fw fa-vk"></i>
-      --------------------------
-    </div>
-    <ul class="links-of-blogroll-list">
-        <li class="links-of-blogroll-item">
-          <a href="https://github.com/" title="https://github.com/">我的书单</a>
-        </li>
-    </ul>
-  </div>
 
       </div>
 
@@ -492,13 +506,13 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
       <i class="fa fa-area-chart"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">78k</span>
+    <span title="站点总字数">83k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:11</span>
+    <span title="站点阅读时长">1:15</span>
 </div>
 
 <!--

@@ -1,7 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>OAuth2认证缺陷分析</title>
+    <title>JWT认证与缺陷分析</title>
+    <url>/2021/02/07/JWT%E8%AE%A4%E8%AF%81%E4%B8%8E%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　关于JWT认证的分析。全文从什么是JWT，JWT应用场景，JWT应用过程，JWT可能存在的隐患四大方面描述了ＪＷＴ的基本情况，并对可能存在的漏洞点进行了分析；总结前人的经验，化为己用。</p>
+<a id="more"></a>
+
+<h1 id="什么是JWT"><a href="#什么是JWT" class="headerlink" title="什么是JWT"></a>什么是JWT</h1><p>　　JWT (Json Web Token)，是一个开放标准(RFC 7519)，它定义了一种紧凑的、自包含的方式，用于作为JSON对象在各方之间安全地传输信息。该信息可以被验证和信任，因为它是数字签名的。简单来说，就是一种认证的方式。生产场景中常见特征于request包中: aaaaaaaa.bbbbbbbb.cccccccc  ，它可以存在于http header，url，POST参数中；形如：<br><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</code></p>
+<h1 id="JWT应用场景"><a href="#JWT应用场景" class="headerlink" title="JWT应用场景"></a>JWT应用场景</h1><h2 id="授权登录："><a href="#授权登录：" class="headerlink" title="授权登录："></a>授权登录：</h2><img src="/2021/02/07/JWT认证与缺陷分析/JWT授权登录.jpg">
+<p>　　JWT的最常见场景。一旦用户登录，后续每个请求都将包含JWT令牌，允许用户访问该令牌允许的路由、服务和资源。单点登录是现在广泛使用的JWT的一个典例，因为它的开销很小，并且可以轻松地跨域使用。</p>
+<h2 id="信息交换-："><a href="#信息交换-：" class="headerlink" title="信息交换 ："></a>信息交换 ：</h2><img src="/2021/02/07/JWT认证与缺陷分析/JWT信息传输.jpg">
+<p>　　JWT是可以被签名的，由于签名是使用头和有效负载计算的，所以可以验证内容是否被篡改。此外还能使用公钥/私钥对确定发送人的身份。</p>
+<h1 id="JWT应用过程"><a href="#JWT应用过程" class="headerlink" title="JWT应用过程"></a>JWT应用过程</h1><h2 id="认证流程"><a href="#认证流程" class="headerlink" title="认证流程"></a>认证流程</h2><p>　　客户端向服务端发出登录请求，使用登录凭证进行登录;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">POST /user/login/login.jsp HTTP/1.1</span><br><span class="line">Host: xxxxxxx</span><br><span class="line">User-Agent: xxxxxx</span><br><span class="line">Accept: */*</span><br><span class="line">Referer: xxxxxx</span><br><span class="line">Accept-Encoding: xxxxxx</span><br><span class="line">		</span><br><span class="line">username=ggboom993&amp;password=root</span><br></pre></td></tr></table></figure>
+
+<p>　　服务端校验登录凭证，校验成功则返回JWT，并进行正常登陆；<br><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiAxMCwgInVzZXJuYW1lIjogInRlc3QiLCAic2NvcGVzIjogWyJhZG1pbiIsICJ1c2VyIl19.y2k9SJDRU81ybXm-anxpD2p1N-rKekDJtJGKGJlemjY</code></p>
+<p>　　在JWT有效时间内，客户端再次向服务端请求资源，不再使用登录凭证，而是使用JWT进行身份验证；</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">GET /user/mainFrame/searchID.jsp?id=30114 HTTP/1.1</span><br><span class="line">Host: xxxxxxx</span><br><span class="line">User-Agent: xxxxxx</span><br><span class="line">Accept: */*</span><br><span class="line">Referer: xxxxxx</span><br><span class="line">Accept-Encoding: xxxxxx</span><br><span class="line">Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiAxMCwgInVzZXJuYW1lIjogInRlc3QiLCAic2NvcGVzIjogWyJhZG1pbiIsICJ1c2VyIl19.y2k9SJDRU81ybXm-anxpD2p1N-rKekDJtJGKGJlemjY</span><br><span class="line">Cookie：xxxxxx</span><br></pre></td></tr></table></figure>
+
+<p>　　使用时序图更为直观的理解JWT认证流程：<br>　　<img src="/2021/02/07/JWT认证与缺陷分析/JWT认证流程.jpg"></p>
+<h2 id="令牌机制"><a href="#令牌机制" class="headerlink" title="令牌机制"></a>令牌机制</h2><p>一个完整的JWT由三部分组成，头（header），荷载（payload），签名（signature） 。每个部分以  . 分隔。</p>
+<img src="/2021/02/07/JWT认证与缺陷分析/令牌.jpg">
+<table><tr><td bgcolor="#87CEFA">第一部分，头（header）：eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</td></tr></table>
+对header进行base64解密并进行格式化后得：
+
+<pre><code>{
+    &quot;alg&quot;:&quot;HS256&quot;,
+    &quot;typ&quot;:&quot;JWT&quot;
+}</code></pre><p>header由两部分组成：</p>
+<ul>
+<li>token类型 type:“JWT”</li>
+<li>算法名称 alg：”HS256”（其他还有：HMAC SHA256或者RSA等等）</li>
+</ul>
+<table><tr><td bgcolor="#98FB98">第二部分，荷载（payload）：eyJ1aWQiOiAxMCwgInVzZXJuYW1lIjogInRlc3QiLCAic2NvcGVzIjogWyJhZG1pbiIsICJ1c2VyIl19</td></tr></table>
+对payload进行base64解密并进行格式化后得：
+
+<pre><code>{
+    &quot;uid&quot;: 10, 
+    &quot;username&quot;: &quot;test&quot;, 
+    &quot;scopes&quot;: [&quot;admin&quot;, &quot;user&quot;]
+}</code></pre><p>　　payload中包含了声明（要求）。声明是关于实体(通常是用户)和其他数据的声明。声明有三种类型: registered, public 和 private：</p>
+<ul>
+<li>标准声明 Registered claims : 这里有一组预定义的声明，它们不是强制的，但是推荐。比如：iss (issuer), exp (expiration time), sub (subject), aud (audience)等。</li>
+<li>共有声明 Public claims : 可以随意定义。</li>
+<li>私有声明 Private claims : 用于在同意使用它们的各方之间共享信息，并且不是注册的或公开的声明。</li>
+</ul>
+<p>　　根据声明的标准定义来看，payload中实际声明的字段数应当取决于生产环境需要。如样例中的payload仅有三个字段，uid，username，scopes；</p>
+<table><tr><td bgcolor="#FFA500">第三部分，签名（sinature）：y2k9SJDRU81ybXm-anxpD2p1N-rKekDJtJGKGJlemjY</td></tr></table>
+加密之前的sinature定义了三个部分
+
+<ul>
+<li><p>header (base64.header)</p>
+</li>
+<li><p>payload (base64.payload)</p>
+</li>
+<li><p>secret（服务器生成的密钥）</p>
+</li>
+</ul>
+<p>　　签名（sinature）的加密是复杂的，它将base64加密后的header和base64加密后的payload与连接他们的　“ . “组成的字符串 header.payload  通过header中声明的加密方式进行加盐加密，生成了JWT的第三部分。</p>
+<p>　　最后用 “ . “连接这三大部分，就组成了完整的JWT令牌。</p>
+<h1 id="JWT可能存在的隐患"><a href="#JWT可能存在的隐患" class="headerlink" title="JWT可能存在的隐患"></a>JWT可能存在的隐患</h1><h2 id="信息泄露"><a href="#信息泄露" class="headerlink" title="信息泄露"></a>信息泄露</h2><p>　　由于Header和Payload部分是使用可逆base64方法编码的，因此任何能够看到令牌的人都可以读取数据。<br>　　尤其在Payload部分，常常会携带一些用于认证的敏感信息。如：</p>
+<pre><code>{
+    “username”: admin
+    “password”：Admin@123
+}</code></pre><h2 id="Token伪造"><a href="#Token伪造" class="headerlink" title="Token伪造"></a>Token伪造</h2><p>　　JWT支持将算法设定为“None”。如果将header中的“alg”字段设为“ None”，那么签名会被置空，这样任何token都是有效的。设定该功能的最初目的是为了方便调试。但是，若不在生产环境中关闭该功能，攻击者可以通过将alg字段设置为“None”来伪造他们想要的任何token，接着便可以使用伪造的token冒充任意用户登陆网站。如：</p>
+<pre><code>{
+    &quot;alg&quot;:&quot;None&quot;,
+    &quot;typ&quot;:&quot;JWT&quot;
+}</code></pre><p>　　如果页面返回有效，说明存在该漏洞；</p>
+<h2 id="密钥混淆"><a href="#密钥混淆" class="headerlink" title="密钥混淆"></a>密钥混淆</h2><p>　　JWT最常用的两种算法是HMAC和RSA。HMAC（对称加密算法）用同一个密钥对token进行签名和认证。而RSA（非对称加密算法）需要两个密钥，先用私钥加密生成JWT，然后使用其对应的公钥来解密验证。如果将算法RS256修改为HS256，后端代码将会使用公钥作为秘密密钥，然后使用HS256算法验证签名。由于公钥有时可以被攻击者获取到，所以攻击者可以修改header中算法为HS256，然后使用RSA公钥对数据进行签名。如：</p>
+<pre><code>{
+    &quot;alg&quot;:&quot;HS256&quot;,
+    &quot;typ&quot;:&quot;JWT&quot;
+}</code></pre><h2 id="签名绕过"><a href="#签名绕过" class="headerlink" title="签名绕过"></a>签名绕过</h2><p>　　当用户端提交请求给应用程序，服务端可能没有对token签名进行校验，这样，攻击者便可以通过提供无效签名简单地绕过安全机制。一个很好的例子是网站上的“个人资料”页面，因为我们只有在被授权通过有效的JWT进行访问时才能访问此页面，我们将重放请求并寻找响应的变化以发现问题。</p>
+<pre><code>{
+    &quot;user&quot;: &quot;user&quot;,     -&gt; admin
+    &quot;action&quot;: &quot;profile&quot;
+}</code></pre><p>　　可以尝试将user 字段改为 admin，获取重新生成的 token，对特定响应包进行修改重放后观察变化的结果，确认其签名校验的逻辑性。</p>
+<h2 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h2><p>　　    HMAC签名密钥（例如HS256 / HS384 / HS512）使用对称加密，这意味着对令牌进行签名的密钥也用于对其进行验证。由于签名验证是一个自包含的过程，因此可以测试令牌本身的有效密钥，而不必将其发送回应用程序进行验证。因此，HMAC JWT破解是离线的，通过JWT破解工具，可以快速检查已知的泄漏密码列表或默认密码。如果可以破解HMAC密钥，则可以伪造令牌中的任何内容，这个漏洞将会给系统带来非常严重的后果。假设攻击者无法暴力破解密钥，那么他可能通过其他途径获取密码，如git信息泄露、目录遍历，任意文件读取、XXE漏洞等，从而伪造任意token签名。</p>
+<h2 id="KID操纵"><a href="#KID操纵" class="headerlink" title="KID操纵"></a>KID操纵</h2><p>　　    KID代表“密钥序号”（Key ID）。它是JWT头部的一个可选字段，开发人员可以用它标识认证token的某一密钥。KID参数的正确用法如下所示：</p>
+<pre><code>{
+    &quot;alg&quot;: &quot;HS256&quot;,
+    &quot;typ&quot;: &quot;JWT&quot;,
+    &quot;kid&quot;: &quot;1&quot;        //使用密钥1验证token
+}</code></pre><p>　　由于此字段是由用户控制的，因此攻击者可能会操纵它并导致危险的后果</p>
+<h3 id="目录遍历"><a href="#目录遍历" class="headerlink" title="目录遍历"></a>目录遍历</h3><p>　　由于KID通常用于从文件系统中检索密钥文件，因此，如果在使用前不清理KID，文件系统可能会遭到目录遍历攻击。这样，攻击者便能够在文件系统中指定任意文件作为认证的密钥。例如，攻击者可以强行设定应用程序使用公开可用文件作为密钥，并用该文件给HMAC加密的token签名。</p>
+<p><code>&quot;kid&quot;: &quot;../../public/css/main.css&quot;   //使用公共文件main.css验证token</code></p>
+<h3 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h3><p>　　    KID也可以用于在数据库中检索密钥。在该情况下，攻击者很可能会利用SQL注入来绕过JWT安全机制。如果可以在KID参数上进行SQL注入，攻击者便能使用该注入返回任意值。下面这个注入会导致应用程序返回字符串“ key”（因为数据库中不存在名为“ aaaaaaa”的密钥）。然后使用字符串“ key”作为密钥来认证token。</p>
+<p><code>&quot;kid&quot;:&quot;aaaaaaa&#39; UNION SELECT &#39;key&#39;;--&quot;  //使用字符串&quot;key&quot;验证token</code>
+　　</p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><p>　　有时，将KID参数直接传到不安全的文件读取操作可能会让一些命令注入代码流中。一些函数就能给此类型攻击可乘之机，比如Ruby open（）。攻击者只需在输入的KID文件名后面添加命令，即可执行系统命令：</p>
+<p><code>&quot;key_file&quot; | whoami;</code><br>　　类似情况还有很多，这只是其中一个例子。理论上，每当应用程序将未审查的头部文件参数传递给类似system（），exec（）的函数时，都会产生此种漏洞。</p>
+<h2 id="头部参数操纵"><a href="#头部参数操纵" class="headerlink" title="头部参数操纵"></a>头部参数操纵</h2><h3 id="JKU"><a href="#JKU" class="headerlink" title="JKU"></a>JKU</h3><p>　　JKU全称是“JWKSet URL”，它是头部的一个可选字段，用于指定链接到一组加密token密钥的URL。若允许使用该字段且不设置限定条件，攻击者就能托管自己的密钥文件，并指定应用程序，用它来认证token。<br>　　jku URL-&gt;包含JWK集的文件-&gt;用于验证令牌的JWK</p>
+<h3 id="JWK"><a href="#JWK" class="headerlink" title="JWK"></a>JWK</h3><p>　　头部可选参数JWK（JSON Web Key）使得攻击者能将认证的密钥直接嵌入token中。</p>
+<h3 id="X5U-X5C-url"><a href="#X5U-X5C-url" class="headerlink" title="X5U,X5C_url"></a>X5U,X5C_url</h3><p>　　    同JKU或JWK头部类似，x5u和x5c头部参数允许攻击者用于验证Token的公钥证书或证书链。x5u以URI形式指定信息，而x5c允许将证书值嵌入token中。攻击Token的过程显然取决于你所测试的JWT配置和实现的情况，但是在测试JWT时，通过对目标服务的Web请求中使用的Token进行读取、篡改和签名，可能遇到已知的攻击方式以及潜在的安全漏洞和配置错误。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>　　JWT认证原理<br>　　<a href="https://blog.csdn.net/houmenghu/article/details/99181326" target="_blank" rel="noopener">https://blog.csdn.net/houmenghu/article/details/99181326</a></p>
+<p>　　JWT认证流程<br>　　<a href="https://blog.csdn.net/xyx107/article/details/104320414" target="_blank" rel="noopener">https://blog.csdn.net/xyx107/article/details/104320414</a></p>
+<p>　　几种常用的Web安全认证方式<br>　　<a href="https://blog.csdn.net/aharddreamer/article/details/90579814" target="_blank" rel="noopener">https://blog.csdn.net/aharddreamer/article/details/90579814</a></p>
+<p>　　JWT攻击手册：如何入侵你的Token<br>　　<a href="https://www.cnblogs.com/xiaozi/p/12031111.html" target="_blank" rel="noopener">https://www.cnblogs.com/xiaozi/p/12031111.html</a></p>
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OAuth2认证与缺陷分析</title>
     <url>/2021/02/02/OAuth2%E8%AE%A4%E8%AF%81%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段<br>　　<code>Authorization: AOEWQ315na39NGanUAsBO=</code><br>　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。</p>
 <a id="more"></a>
@@ -25,9 +131,15 @@
 <h1 id="OAuth2-四种授权方式"><a href="#OAuth2-四种授权方式" class="headerlink" title="OAuth2 四种授权方式"></a>OAuth2 四种授权方式</h1><p>　　密码模式<br>　　授权码模式（本文中的所有OAauth2通指授权码模式）<br>　　简化模式<br>　　客户端模式</p>
 <h1 id="OAuth2认证流程"><a href="#OAuth2认证流程" class="headerlink" title="OAuth2认证流程"></a>OAuth2认证流程</h1><p>　　以授权码模式为对象<br>　　用户在数据方有数据并且具有唯一ID <code>uid=12341234</code><br>　　服务方在数据方具有表明其身份的用户名<code>clientid=8888</code> 和密码<code>client_secret=ccppo123</code></p>
 <p>　　服务方在需要使用用户在数据方的数据时，先向用户申请授权，用户同意后会向数据方发出请求：</p>
-<p>　　　　<em>用户：“服务方，我同意授权你获取我的数据”</em><br>　　　　<em>服务方：“数据方，用户已经同意我获取它的数据，我的用户名clientid是8888”</em><br>　　　　<code>http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback</code></p>
+<p>　　　　<em>用户：“服务方，我同意授权你获取我的数据”</em><br>　　　　<em>服务方：“数据方，用户已经同意我获取它的数据，我的用户名clientid是8888”</em></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http://api.data.com/oauth2?clientid=8888&amp;redirect_rui=http://service.com/callback</span><br></pre></td></tr></table></figure>
+
+
 <p>　　用户同意后，数据方会给服务方返回一个<code>code</code>作为凭证，然后跳转至<code>redirect_uri</code> ，服务方在此接受<code>token</code></p>
-<p>　　　　<em>数据方：“服务方，你的用户同意给你数据了，这是凭证 code=1122aa3344bb55”</em><br>　　　　<code>http://service.com/callback?code=1122aa3344bb55</code></p>
+<p>　　　　<em>数据方：“服务方，你的用户同意给你数据了，这是凭证 code=1122aa3344bb55”</em></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http://service.com/callback?code=1122aa3344bb55</span><br></pre></td></tr></table></figure>
+
+
 <p>　　服务方拿着这个凭证找数据方获得钥匙，用来打开数据库：</p>
 <pre><code>POST http://api.data.com/oauth2/access_token HTTP/1.1
 Host: xxxxxxx
@@ -40,7 +152,12 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
 <p>　　　　<em>数据方：“凭证有效，这是用户uid=12341234的数据钥匙，过期时间为：20天”</em></p>
 <p>　　　　<em>＂access_token＂ = ＂j78954lynjsdcvohsafoi＂</em><br>　　　　<em>＂uid＂ = ＂12341234＂</em><br>　　　　<em>＂expires_in＂ = ＂20＂</em></p>
 <p>　　之后的20天内，服务方都可以使用这个钥匙直接获取用户在数据方的数据</p>
-<p>　　　　<code>http://api.data.com/user/data.json?access_token=j78954lynjsdcvohsafoi&amp;uid=12341234</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http://api.data.com/user/data.json?access_token=j78954lynjsdcvohsafoi&amp;uid=12341234</span><br></pre></td></tr></table></figure>
+
+
+
+
+
 <p>　　使用时序图更为直观的理解OAuth2认证流程：</p>
 <p>　　　　<img src="/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg"></p>
 <h1 id="OAuth2-可能存在的安全隐患"><a href="#OAuth2-可能存在的安全隐患" class="headerlink" title="OAuth2 可能存在的安全隐患"></a>OAuth2 可能存在的安全隐患</h1><h2 id="跨站请求伪造（CSRF）"><a href="#跨站请求伪造（CSRF）" class="headerlink" title="跨站请求伪造（CSRF）"></a>跨站请求伪造（CSRF）</h2><p>　　我们知道，当需要用户数据时，服务方首先会向用户申请授权，接着向数据方发送请求；<br>　　　<img src="/2021/02/02/OAuth2认证缺陷分析/CSRF.png"><br>　　在前文所述的基本OAuth2认证流程中，数据方如何确保用户发出的授权来自于他本人呢？在没有做其他验证的情况下是无法确定的。以 美团-用户-微博 为例，美团需要使用用户在微博的社交名称和头像作为美团账户信息，假设这个过程使用了有缺陷的OAuth2认证方式，存在CSRF漏洞。我们先使用恶意账户进行一次绑定请求并截获返回的<code>code</code>，此code是目标美团账户绑定微博用户的凭证。接着构造一个CSRF poc 欺骗用户点击。</p>
@@ -807,8 +924,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>漏洞</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -889,9 +1006,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>漏洞</tag>
         <tag>Web渗透</tag>
         <tag>靶场练习</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
