@@ -181,6 +181,9 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
 <p>　　因为gist是github自家的，所以估计github想做得简单一点，当用户访问gist的时候，不会出弹出一个OAuth的页面来让用户授权，不然，用户就会很诧异，都是你们自家的东西，还要授权？所以，hacker猜测github应该是对gist做了自动授权，于是，hacker搞了这样的一个URL（注意其中的 <code>redirect_uri</code>中的<code>scope</code> ）</p>
 <p>　　　<code>https://github.com/login/oauth/authorize?client_id=7e0a3cd836d3e544dbd9&amp;redirect_uri=https%3A%2F%2Fgist.github.com%2Fauth%2Fgithub%2Fcallback/../../../homakov/8820324&amp;response_type=code&amp;scope=repo,gists,user,delete_repo,notifications</code></p>
 <p>　　于是，这个<code>redirect-uri</code>不但帮黑客拿到了访问gist的<code>token</code>，而且还把授权<code>token</code>的<code>scope</code>扩大到了用户的代码库等其它权限。于是你就可以黑入用户的私有代码区了。</p>
+<h2 id="不安全的逻辑处理"><a href="#不安全的逻辑处理" class="headerlink" title="不安全的逻辑处理"></a>不安全的逻辑处理</h2><p>　　不正确的使用Oauth认证，再安全的认证方法一样漏洞百出，正所谓“人”才是最大的漏洞。<br>　　已知在请求<code>http://api.data.com/oauth2/access_token</code>后，会接受到access_token和uid，并使用该钥匙进一步获取数据。这是第一次认证流程。实际上在完成首次数据获取后，会将该数据作为服务方自己的用户资料保存在自己的数据库中。<br>　　有这样一种逻辑存在，Oauth认证-&gt;获取token，uid-&gt;服务方使用uid查询该用户是否已经存在-&gt;存在则直接从服务方数据库取数据并登录;不存在则进行第一次授权取数据操作。<br>　　<img src="/2021/02/02/OAuth2认证缺陷分析/Oauth不安全的逻辑.png"><br>　　很关键，在第二步时存在一个问题，判断该用户的存在性时只使用了uid吗？在已经获取到token和uid后，仅使用uid进行用户存在性判断是非常危险的。因为该行为直接影响到第三步的授权登录；这意味着，进行完第二步后，我们可以通过uid进行任意用户登录；</p>
+<p>　　案例：<a href="https://xz.aliyun.com/t/9179" target="_blank" rel="noopener">先知-手机应用中的OAuth登陆安全测试</a></p>
+<p>　　</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>　　OAuth 2.0攻击面与案例总结<br>　　<a href="https://www.freebuf.com/articles/web/110757.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/110757.html</a> </p>
 <p>　　OAuth 2.0 的四种方式<br>　　<a href="http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html</a></p>
 <p>　　OAuth2 认证流程详解<br>　　<a href="https://blog.csdn.net/wenyicodedog/article/details/101103847" target="_blank" rel="noopener">https://blog.csdn.net/wenyicodedog/article/details/101103847</a></p>
@@ -1007,8 +1010,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       <tags>
         <tag>Web</tag>
         <tag>漏洞</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1214,9 +1217,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1387,9 +1390,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>靶场练习</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
-        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -1487,9 +1490,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
+        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1705,8 +1708,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>社工</tag>
         <tag>信息搜集</tag>
+        <tag>社工</tag>
       </tags>
   </entry>
   <entry>
@@ -1773,9 +1776,9 @@ myqr.run(
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>sql注入</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
-        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>

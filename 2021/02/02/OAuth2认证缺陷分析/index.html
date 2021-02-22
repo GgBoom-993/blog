@@ -63,7 +63,8 @@
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/OAuth2认证流程.jpg">
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/CSRF.png">
 <meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/劫持.png">
-<meta property="og:updated_time" content="2021-02-07T08:40:43.346Z">
+<meta property="og:image" content="https://github.com/2021/02/02/OAuth2认证缺陷分析/Oauth不安全的逻辑.png">
+<meta property="og:updated_time" content="2021-02-22T04:50:10.066Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OAuth2认证与缺陷分析">
 <meta name="twitter:description" content="前言　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段　　Authorization: AOEWQ315na39NGanUAsBO=　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。">
@@ -257,7 +258,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-02-07 16:40:43" itemprop="dateModified" datetime="2021-02-07T16:40:43+08:00">2021-02-07</time>
+                <time title="修改时间：2021-02-22 12:50:10" itemprop="dateModified" datetime="2021-02-22T12:50:10+08:00">2021-02-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,14 +278,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.8k</span>
+              <span>4.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -368,6 +369,9 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
 <p>　　因为gist是github自家的，所以估计github想做得简单一点，当用户访问gist的时候，不会出弹出一个OAuth的页面来让用户授权，不然，用户就会很诧异，都是你们自家的东西，还要授权？所以，hacker猜测github应该是对gist做了自动授权，于是，hacker搞了这样的一个URL（注意其中的 <code>redirect_uri</code>中的<code>scope</code> ）</p>
 <p>　　　<code>https://github.com/login/oauth/authorize?client_id=7e0a3cd836d3e544dbd9&amp;redirect_uri=https%3A%2F%2Fgist.github.com%2Fauth%2Fgithub%2Fcallback/../../../homakov/8820324&amp;response_type=code&amp;scope=repo,gists,user,delete_repo,notifications</code></p>
 <p>　　于是，这个<code>redirect-uri</code>不但帮黑客拿到了访问gist的<code>token</code>，而且还把授权<code>token</code>的<code>scope</code>扩大到了用户的代码库等其它权限。于是你就可以黑入用户的私有代码区了。</p>
+<h2 id="不安全的逻辑处理"><a href="#不安全的逻辑处理" class="headerlink" title="不安全的逻辑处理"></a>不安全的逻辑处理</h2><p>　　不正确的使用Oauth认证，再安全的认证方法一样漏洞百出，正所谓“人”才是最大的漏洞。<br>　　已知在请求<code>http://api.data.com/oauth2/access_token</code>后，会接受到access_token和uid，并使用该钥匙进一步获取数据。这是第一次认证流程。实际上在完成首次数据获取后，会将该数据作为服务方自己的用户资料保存在自己的数据库中。<br>　　有这样一种逻辑存在，Oauth认证-&gt;获取token，uid-&gt;服务方使用uid查询该用户是否已经存在-&gt;存在则直接从服务方数据库取数据并登录;不存在则进行第一次授权取数据操作。<br>　　<img src="/2021/02/02/OAuth2认证缺陷分析/Oauth不安全的逻辑.png"><br>　　很关键，在第二步时存在一个问题，判断该用户的存在性时只使用了uid吗？在已经获取到token和uid后，仅使用uid进行用户存在性判断是非常危险的。因为该行为直接影响到第三步的授权登录；这意味着，进行完第二步后，我们可以通过uid进行任意用户登录；</p>
+<p>　　案例：<a href="https://xz.aliyun.com/t/9179" target="_blank" rel="noopener">先知-手机应用中的OAuth登陆安全测试</a></p>
+<p>　　</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>　　OAuth 2.0攻击面与案例总结<br>　　<a href="https://www.freebuf.com/articles/web/110757.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/110757.html</a> </p>
 <p>　　OAuth 2.0 的四种方式<br>　　<a href="http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html</a></p>
 <p>　　OAuth2 认证流程详解<br>　　<a href="https://blog.csdn.net/wenyicodedog/article/details/101103847" target="_blank" rel="noopener">https://blog.csdn.net/wenyicodedog/article/details/101103847</a></p>
@@ -437,7 +441,7 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据授权服务应用场景"><span class="nav-number">2.</span> <span class="nav-text">数据授权服务应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传统简单授权存在的安全隐患"><span class="nav-number">3.</span> <span class="nav-text">传统简单授权存在的安全隐患</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-四种授权方式"><span class="nav-number">4.</span> <span class="nav-text">OAuth2 四种授权方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2认证流程"><span class="nav-number">5.</span> <span class="nav-text">OAuth2认证流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-可能存在的安全隐患"><span class="nav-number">6.</span> <span class="nav-text">OAuth2 可能存在的安全隐患</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨站请求伪造（CSRF）"><span class="nav-number">6.1.</span> <span class="nav-text">跨站请求伪造（CSRF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授权劫持"><span class="nav-number">6.2.</span> <span class="nav-text">授权劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#越权访问"><span class="nav-number">6.3.</span> <span class="nav-text">越权访问</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据授权服务应用场景"><span class="nav-number">2.</span> <span class="nav-text">数据授权服务应用场景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传统简单授权存在的安全隐患"><span class="nav-number">3.</span> <span class="nav-text">传统简单授权存在的安全隐患</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-四种授权方式"><span class="nav-number">4.</span> <span class="nav-text">OAuth2 四种授权方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2认证流程"><span class="nav-number">5.</span> <span class="nav-text">OAuth2认证流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-可能存在的安全隐患"><span class="nav-number">6.</span> <span class="nav-text">OAuth2 可能存在的安全隐患</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#跨站请求伪造（CSRF）"><span class="nav-number">6.1.</span> <span class="nav-text">跨站请求伪造（CSRF）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授权劫持"><span class="nav-number">6.2.</span> <span class="nav-text">授权劫持</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#越权访问"><span class="nav-number">6.3.</span> <span class="nav-text">越权访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不安全的逻辑处理"><span class="nav-number">6.4.</span> <span class="nav-text">不安全的逻辑处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -512,7 +516,7 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:15</span>
+    <span title="站点阅读时长">1:16</span>
 </div>
 
 <!--
